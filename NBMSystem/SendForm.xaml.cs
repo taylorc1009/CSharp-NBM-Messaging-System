@@ -10,24 +10,20 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace NBMSystem
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    public partial class MainWindow : Window
+    public partial class SendForm : Window
     {
-        public MainWindow()
+        public SendForm()
         {
             InitializeComponent();
-        }
-        private void sendMessage_Click(object sender, EventArgs e)
-        {
-            SendForm form = new SendForm();
-            form.Show();
+            formatCombo.Items.Insert(0, "SMS");
+            formatCombo.Items.Insert(1, "Email");
+            formatCombo.Items.Insert(2, "Tweet");
+            emailCombo.Items.Insert(0, "Standard");
+            emailCombo.Items.Insert(1, "Incident Report");
         }
     }
 }
