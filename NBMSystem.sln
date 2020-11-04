@@ -4,6 +4,10 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.30503.244
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PresentationLayer", "PresentationLayer\PresentationLayer.csproj", "{7BE580B2-2166-4D8B-B500-015A3DEE06E0}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5989AB35-BE37-4E80-AD36-0658E83BC18A} = {5989AB35-BE37-4E80-AD36-0658E83BC18A}
+		{E552E2D1-23E7-4EB1-B0A6-1D553FDC9DD2} = {E552E2D1-23E7-4EB1-B0A6-1D553FDC9DD2}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataLayer", "DataLayer\DataLayer.csproj", "{5989AB35-BE37-4E80-AD36-0658E83BC18A}"
 EndProject

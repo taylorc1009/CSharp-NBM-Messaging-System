@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace NBMSystem
+namespace PresentationLayer
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -24,6 +24,7 @@ namespace NBMSystem
         {
             InitializeComponent();
         }
+
         private void sendMessage_Click(object sender, EventArgs e)
         {
             SendForm form = new SendForm();
