@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{7BE580B2-2166-4D8B-B500-015A3DEE06E0}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>PresentatationLayer</RootNamespace>
+    <RootNamespace>PresentationLayer</RootNamespace>
     <AssemblyName>PresentationLayer</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

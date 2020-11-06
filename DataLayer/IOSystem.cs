@@ -8,9 +8,6 @@ namespace DataLayer
 {
     public class IOSystem
     {
-        static void Main() { } // Is there a way to compile without this?
-
-
         // Subject to change; VERY likely I will find another, better way of managing data as I progress
 
         public IOSystem()

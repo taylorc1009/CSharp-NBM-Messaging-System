@@ -22,9 +22,6 @@ namespace BusinessLayer
         private Dictionary<String, Tweet> tweets;
 
 
-        static void Main() { } // Is there a way to compile without this?
-
-
         /// <summary>
         /// @param sender 
         /// @param text 
