@@ -20,12 +20,11 @@ namespace PresentationLayer
     {
         public string type { get; set; }
         public string message { get; set; }
+        bool SIRChecked = false;
 
         public SendForm()
         {
             InitializeComponent();
-            emailCombo.Items.Insert(0, "Standard");
-            emailCombo.Items.Insert(1, "Incident Report");
         }
 
         private void senderBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -34,8 +33,8 @@ namespace PresentationLayer
             {
                 type = null;
                 invalidLabel.Visibility = Visibility.Hidden;
-                if (emailCombo.IsVisible)
-                    emailCombo.Visibility = Visibility.Collapsed;
+                if (SIRCheck.IsVisible)
+                    SIRCheck.Visibility = Visibility.Collapsed;
                 if (subjectBox.IsVisible)
                     subjectBox.Visibility = Visibility.Collapsed;
             }
@@ -52,7 +51,7 @@ namespace PresentationLayer
                     {
                         new MailAddress(senderBox.Text.ToString());
                         type = "Email";
-                        emailCombo.Visibility = Visibility.Visible;
+                        SIRCheck.Visibility = Visibility.Visible;
                         subjectBox.Visibility = Visibility.Visible;
                     }
                     invalidLabel.Visibility = Visibility.Hidden;
@@ -60,8 +59,8 @@ namespace PresentationLayer
                 catch (FormatException)
                 {
                     invalidLabel.Visibility = Visibility.Visible;
-                    if(emailCombo.IsVisible)
-                        emailCombo.Visibility = Visibility.Collapsed;
+                    if(SIRCheck.IsVisible)
+                        SIRCheck.Visibility = Visibility.Collapsed;
                     if(subjectBox.IsVisible)
                         subjectBox.Visibility = Visibility.Collapsed;
                 }
@@ -72,7 +71,28 @@ namespace PresentationLayer
                 textBox.Focus();
             }*/
         }
-        
+
+        private void SIRCheck_Clicked(object sender, EventArgs e)
+        {
+            if (!SIRChecked)
+            {
+                SIRChecked = true;
+                subjectBox.Visibility = Visibility.Collapsed;
+                SIRDate.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                SIRChecked = false;
+                subjectBox.Visibility = Visibility.Visible;
+                SIRDate.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void SIRCheck_Checked(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
         private void sendButton_Click(object sender, EventArgs e)
         {
             message = messageBox.Text;
