@@ -24,12 +24,16 @@ namespace PresentationLayer
         public MainWindow()
         {
             InitializeComponent();
+            MessagesFacade messagesFacade = new MessagesFacade();
         }
 
         private void sendMessage_Click(object sender, EventArgs e)
         {
-            SendForm form = new SendForm();
-            form.Show();
+            var form = new SendForm();
+            form.ShowDialog();
+            String message = form.returnMessage; //values preserved after close
+            if(!message.Equals(""))
+                MessageBox.Show(message);
         }
     }
 }
