@@ -31,8 +31,8 @@ namespace PresentationLayer
         {
             var form = new SendForm();
             form.ShowDialog();
-            String message = form.returnMessage; //values preserved after close
-            if(!message.Equals(""))
+            String message = form.message; //values preserved after close
+            if(message != null && !message.Equals(""))
                 MessageBox.Show(message);
         }
     }

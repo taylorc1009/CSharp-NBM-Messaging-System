@@ -21,6 +21,7 @@ namespace BusinessLayer
 
         private Dictionary<String, Tweet> tweets;
 
+        public void addMessage() { }
 
         /// <summary>
         /// @param sender 

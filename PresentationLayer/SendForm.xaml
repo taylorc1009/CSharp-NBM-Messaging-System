@@ -7,11 +7,12 @@
         mc:Ignorable="d"
         Title="SendForm" Height="410.216" Width="556.833">
     <Grid Margin="0,0,-0.111,101.667">
-        <ComboBox x:Name="formatCombo" HorizontalAlignment="Left" Margin="460,10,0,0" VerticalAlignment="Top" Width="75"/>
-        <TextBox x:Name="subjectBox" HorizontalAlignment="Left" Height="23" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="239" TextChanged="subjectBox_TextChanged"/>
+        <TextBox x:Name="senderBox" HorizontalAlignment="Left" Height="23" Margin="65,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="211" TextChanged="senderBox_TextChanged"/>
         <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="280" Margin="10,38,0,-90.778" TextWrapping="Wrap" VerticalAlignment="Top" Width="525"/>
-        <ComboBox x:Name="emailCombo" HorizontalAlignment="Left" Margin="342,10,0,0" VerticalAlignment="Top" Width="113"/>
+        <ComboBox x:Name="emailCombo" HorizontalAlignment="Left" Margin="422,10,0,0" VerticalAlignment="Top" Width="113"/>
         <Button x:Name="sendButton" Content="Send" HorizontalAlignment="Left" Height="23" Margin="488,323,0,-76.556" VerticalAlignment="Top" Width="47" Click="sendButton_Click"/>
+        <Label x:Name="senderLabel" Content="Sender:" HorizontalAlignment="Left" Margin="10,7,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="invalidLabel" Content="Invalid sender ID" HorizontalAlignment="Left" Margin="281,7,0,0" VerticalAlignment="Top" Visibility="Hidden" Foreground="Red"/>
 
     </Grid>
 </Window>

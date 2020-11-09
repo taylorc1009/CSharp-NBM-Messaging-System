@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -17,31 +18,54 @@ namespace PresentationLayer
 {
     public partial class SendForm : Window
     {
-        public string returnMessage { get; set; }
+        public string type { get; set; }
+        public string message { get; set; }
 
         public SendForm()
         {
             InitializeComponent();
-            formatCombo.Items.Insert(0, "SMS");
-            formatCombo.Items.Insert(1, "Email");
-            formatCombo.Items.Insert(2, "Tweet");
             emailCombo.Items.Insert(0, "Standard");
             emailCombo.Items.Insert(1, "Incident Report");
         }
 
-        private void subjectBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void senderBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (subjectBox.Text.Length > 20)
+            if (senderBox.Text.Equals(""))
+            {
+                type = null;
+                invalidLabel.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                try
+                {
+                    char d = senderBox.Text[0];
+                    if (d == '+')
+                        type = "SMS";
+                    else if (d == '@')
+                        type = "Tweet";
+                    else if (!senderBox.Text.Equals(""))
+                    {
+                        new MailAddress(senderBox.Text.ToString());
+                        type = "Email";
+                    }
+                    invalidLabel.Visibility = Visibility.Hidden;
+                }
+                catch (FormatException)
+                {
+                    invalidLabel.Visibility = Visibility.Visible;
+                }
+            }
+            /*if (subjectBox.Text.Length > 20)
             {
                 System.Windows.Forms.MessageBox.Show("Text in textBox must have less than 20 characters", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 textBox.Focus();
-            }
+            }*/
         }
         
         private void sendButton_Click(object sender, EventArgs e)
         {
-            returnMessage = textBox.Text;
-            //this.ReturnValue2 = DateTime.Now.ToString(); //example
+            message = textBox.Text;
             Close();
         }
     }
