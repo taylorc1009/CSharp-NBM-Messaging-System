@@ -34,6 +34,10 @@ namespace PresentationLayer
             {
                 type = null;
                 invalidLabel.Visibility = Visibility.Hidden;
+                if (emailCombo.IsVisible)
+                    emailCombo.Visibility = Visibility.Collapsed;
+                if (subjectBox.IsVisible)
+                    subjectBox.Visibility = Visibility.Collapsed;
             }
             else
             {
@@ -48,12 +52,18 @@ namespace PresentationLayer
                     {
                         new MailAddress(senderBox.Text.ToString());
                         type = "Email";
+                        emailCombo.Visibility = Visibility.Visible;
+                        subjectBox.Visibility = Visibility.Visible;
                     }
                     invalidLabel.Visibility = Visibility.Hidden;
                 }
                 catch (FormatException)
                 {
                     invalidLabel.Visibility = Visibility.Visible;
+                    if(emailCombo.IsVisible)
+                        emailCombo.Visibility = Visibility.Collapsed;
+                    if(subjectBox.IsVisible)
+                        subjectBox.Visibility = Visibility.Collapsed;
                 }
             }
             /*if (subjectBox.Text.Length > 20)
@@ -65,7 +75,7 @@ namespace PresentationLayer
         
         private void sendButton_Click(object sender, EventArgs e)
         {
-            message = textBox.Text;
+            message = messageBox.Text;
             Close();
         }
     }
