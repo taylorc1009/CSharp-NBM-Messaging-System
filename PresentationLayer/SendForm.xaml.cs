@@ -117,6 +117,7 @@ namespace PresentationLayer
                 String concat = str[0] + Environment.NewLine + str[1];
                 messageBox.Clear();
                 messageBox.AppendText(concat);
+                messageBox.Select((str[0] + Environment.NewLine).Length, 0);
             }
         }
 
