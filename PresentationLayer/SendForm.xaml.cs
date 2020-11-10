@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Net.Mail;
 using System.Text;
@@ -14,6 +15,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using ToolTip = System.Windows.Forms.ToolTip;
 
 namespace PresentationLayer
 {
@@ -115,7 +117,6 @@ namespace PresentationLayer
                 String concat = str[0] + Environment.NewLine + str[1];
                 messageBox.Clear();
                 messageBox.AppendText(concat);
-                System.Windows.Forms.MessageBox.Show("enter pressed");
             }
         }
 
