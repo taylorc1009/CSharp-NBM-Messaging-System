@@ -21,8 +21,6 @@ namespace BusinessLayer
 
         private Dictionary<String, Tweet> tweets;
 
-        public void addMessage() { }
-
         /// <summary>
         /// @param sender 
         /// @param text 
@@ -38,7 +36,7 @@ namespace BusinessLayer
         /// @param text 
         /// @return
         /// </summary>
-        public void addEmail(String sender, String text)
+        public void addEmail(String sender, String subject, String text)
         {
             // TODO implement here
         }

@@ -21,19 +21,28 @@ namespace PresentationLayer
     /// </summary>
     public partial class MainWindow : Window
     {
+        MessagesFacade messagesFacade;
+
         public MainWindow()
         {
             InitializeComponent();
-            MessagesFacade messagesFacade = new MessagesFacade();
+            messagesFacade = new MessagesFacade();
         }
 
-        private void sendMessage_Click(object sender, EventArgs e)
+        private void sendMessage_Click(object s, EventArgs e)
         {
             var form = new SendForm();
             form.ShowDialog();
-            String message = form.message; //values preserved after close
-            if(message != null && !message.Equals(""))
-                MessageBox.Show(message);
+            String message = form.message, sender = form.sender, type = form.type;
+            if (type != null)
+            {
+                if (type.Equals("Email"))
+                    messagesFacade.addEmail(sender, form.subject, message);
+                else if (type.Equals("Tweet"))
+                    messagesFacade.addTweet(sender, message);
+                else if (type.Equals("SMS"))
+                    messagesFacade.addSMS(sender, message);
+            }
         }
     }
 }
