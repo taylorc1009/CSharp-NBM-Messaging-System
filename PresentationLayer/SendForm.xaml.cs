@@ -29,6 +29,7 @@ namespace PresentationLayer
         public string sortCode { get; set; }
         public string nature { get; set; }
         public bool SIRChecked { get; set; }
+        public bool sent { get; set; }
         bool tooLong = false;
 
         public SendForm()
@@ -40,6 +41,7 @@ namespace PresentationLayer
             messageBox.MaxLength = 1;
 
             SIRChecked = false;
+            sent = false;
 
             natureCombo.Items.Insert(0, "ATM Theft");
             natureCombo.Items.Insert(1, "Bomb Threat");
@@ -194,6 +196,7 @@ namespace PresentationLayer
                         return;
                     }
                     message = messageBox.Text;
+                    sent = true;
                     Close();
                 }
                 else

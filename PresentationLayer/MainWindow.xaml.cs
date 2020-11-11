@@ -34,7 +34,7 @@ namespace PresentationLayer
             var form = new SendForm();
             form.ShowDialog();
             String message = form.message, sender = form.sender, type = form.type;
-            if (type != null)
+            if (form.sent)
             {
                 if (type.Equals("Tweet"))
                     messagesFacade.addTweet(sender, message);
