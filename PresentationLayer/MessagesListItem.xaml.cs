@@ -21,12 +21,19 @@ namespace PresentationLayer
     public partial class MessagesListItem : UserControl
     {
         public DateTime messageDate { get; set; }
-        public String id { get; set; }
+        public String messageID { get; set; }
 
-        public MessagesListItem(string id, string sender, string breif, DateTime dateTime, char header)
+        public MessagesListItem(string id, string sender, string sub, string breif, DateTime dateTime, char header)
         {
             InitializeComponent();
+
+            messageID = id;
             head.Text = sender;
+            if (sub != null)
+            {
+                subject.Visibility = Visibility.Visible;
+                subject.Text = sub;
+            }
             body.Text = breif;
             messageDate = dateTime;
             date.Text = messageDate.ToString();

@@ -59,25 +59,25 @@ namespace PresentationLayer
             {
                 SMS value = sms.Value;
                 String brief = makeBrief(value.text);
-                items.Add(new MessagesListItem(sms.Key, value.sender, brief, value.sentAt, value.header));
+                items.Add(new MessagesListItem(sms.Key, value.sender, null, brief, value.sentAt, value.header));
             }
             foreach (KeyValuePair<String, StandardEmailMessage> sem in messagesFacade.getSEMEmails())
             {
                 StandardEmailMessage value = sem.Value;
                 String brief = makeBrief(value.text);
-                items.Add(new MessagesListItem(sem.Key, value.sender, brief, value.sentAt, value.header));
+                items.Add(new MessagesListItem(sem.Key, value.sender, value.subject, brief, value.sentAt, value.header));
             }
             foreach (KeyValuePair<String, SignificantIncidentReport> sir in messagesFacade.getSIREmails())
             {
                 SignificantIncidentReport value = sir.Value;
                 String brief = makeBrief(value.text);
-                items.Add(new MessagesListItem(sir.Key, value.sender, brief, value.sentAt, value.header));
+                items.Add(new MessagesListItem(sir.Key, value.sender, "SIR " + value.date.ToString(), brief, value.sentAt, value.header));
             }
             foreach (KeyValuePair<String, Tweet> tweet in messagesFacade.getTweets())
             {
                 Tweet value = tweet.Value;
                 String brief = makeBrief(value.text);
-                items.Add(new MessagesListItem(tweet.Key, value.sender, brief, value.sentAt, value.header));
+                items.Add(new MessagesListItem(tweet.Key, value.sender, null, brief, value.sentAt, value.header));
             }
             items.Sort((y, x) => DateTime.Compare(x.messageDate, y.messageDate));
 
