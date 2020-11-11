@@ -30,7 +30,9 @@ namespace PresentationLayer
         public string nature { get; set; }
         public bool SIRChecked { get; set; }
         public bool sent { get; set; }
+
         bool tooLong = false;
+        bool validSort = true;
 
         public SendForm()
         {
@@ -61,10 +63,15 @@ namespace PresentationLayer
             return Regex.IsMatch(email, @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase);
         }
 
-        private static bool isValidTwitter(String twitter)
+        private static bool isValidTwitter(string twitter)
         {
             //return twitter[0] == '@' && !String.IsNullOrWhiteSpace(twitter.Substring(1)) && !int.TryParse(twitter[1].ToString(), out _) && Regex.IsMatch(twitter.Substring(1), @"^[a-z0-9-_]+$", RegexOptions.IgnoreCase);
             return Regex.IsMatch(twitter, @"^@+[a-z][a-z0-9-_]*$", RegexOptions.IgnoreCase);
+        }
+
+        private static bool isValidSortCode(string sortCode)
+        {
+            return Regex.IsMatch(sortCode, @"^([0-9]{2})+[-]+([0-9]{2})+[-]+[0-9]{2}\z");
         }
 
         private void senderBox_TextChanged(object s, TextChangedEventArgs e)
@@ -160,6 +167,26 @@ namespace PresentationLayer
                 sortCodeBox.Visibility = Visibility.Collapsed;
                 natureCombo.Visibility = Visibility.Collapsed;
             }
+        }
+
+        private void sortCodeBox_TextChanged(object s, TextChangedEventArgs e)
+        {
+            if (sortCodeBox.Text.Equals(""))
+            {
+                validSort = false;
+                invalidSortLabel.Visibility = Visibility.Collapsed;
+            }
+            else if(isValidSortCode(sortCodeBox.Text))
+            {
+                validSort = true;
+                invalidSortLabel.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                validSort = false;
+                invalidSortLabel.Visibility = Visibility.Visible;
+            }
+
         }
 
         private void sendButton_Click(object s, EventArgs e)
