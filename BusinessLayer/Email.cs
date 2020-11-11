@@ -21,12 +21,18 @@ namespace BusinessLayer
         /// </summary>
         public String quarantineURLs()
         {
-            String[] tokenized = this.getText().Split(' ');
+            String[] tokenized = this.text.Split(' ');
 
             for (int i = 0; i < tokenized.Length; i++) {
 
+                //
+                //
+                // TODO currently not working
+                //
+                //
+
                 //this is used to work around non-alphabetical chars, for rexmple if we had a URL in the form ",(http://example.com)."
-                int s = 0, e = tokenized[i].Length;
+                int s = 0, e = tokenized[i].Length - 1;
                 while (!Regex.IsMatch(tokenized[i][s].ToString(), @"[a-z]", RegexOptions.IgnoreCase) && s != tokenized[i].Length)
                     s++;
                 while (!Regex.IsMatch(tokenized[i][e].ToString(), @"[a-z]", RegexOptions.IgnoreCase) && e > 0)
@@ -41,11 +47,11 @@ namespace BusinessLayer
                 }
             }
 
-            StringBuilder s = new StringBuilder();
+            StringBuilder str = new StringBuilder();
             foreach (String tok in tokenized)
-                s.Append(tok + ' ');
+                str.Append(tok + ' ');
 
-            return s.ToString().Trim();
+            return str.ToString().Trim();
         }
 
     }

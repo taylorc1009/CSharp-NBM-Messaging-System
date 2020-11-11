@@ -193,7 +193,7 @@ namespace PresentationLayer
         {
             if (sender != null && !sender.Equals("") && type != null)
             {
-                if (tooLong)
+                if (!tooLong)
                 {
                     if (type == "Email")
                     {
@@ -202,6 +202,11 @@ namespace PresentationLayer
                             if (SIRDate.Text.Equals("") || sortCodeBox.Text.Equals("") || natureCombo.SelectedItem == null)
                             {
                                 System.Windows.Forms.MessageBox.Show("SIRs must have a:\n\n1. Date of the incident\n2. Branch sort code\n3. Nature of the incident", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                return;
+                            }
+                            else if (!validSort)
+                            {
+                                System.Windows.Forms.MessageBox.Show("Branch sort code is invalid.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                                 return;
                             }
                             date = SIRDate.Text;

@@ -13,11 +13,11 @@ namespace BusinessLayer
         {
         }
 
-        private DateTime date;
+        public DateTime date { get; set; }
 
-        private String sortCode;
+        public String sortCode { get; set; }
 
-        private String nature;
+        public String nature { get; set; }
 
 
         /// <summary>
@@ -28,42 +28,15 @@ namespace BusinessLayer
         /// @param nature 
         /// @return
         /// </summary>
-        public SignificantIncidentReport(String sender, DateTime date, String sortCode, String nature, String text, char header)
+        public SignificantIncidentReport(String sender, DateTime date, String sortCode, String nature, String text, DateTime sentAt, char header)
         {
             this.sender = sender;
             this.date = date;
             this.sortCode = sortCode;
             this.nature = nature;
             this.text = text;
+            this.sentAt = sentAt;
             this.header = header;
         }
-
-        /// <summary>
-        /// @return
-        /// </summary>
-        public DateTime getDate()
-        {
-            // TODO implement here
-            return new DateTime();
-        }
-
-        /// <summary>
-        /// @return
-        /// </summary>
-        public String getSortCode()
-        {
-            // TODO implement here
-            return null;
-        }
-
-        /// <summary>
-        /// @return
-        /// </summary>
-        public String getNature()
-        {
-            // TODO implement here
-            return null;
-        }
-
     }
 }

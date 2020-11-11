@@ -13,33 +13,14 @@ namespace BusinessLayer
         {
         }
 
-        private String intent;
+        public String intent { get; set; }
 
-        private bool safe;
+        public bool safe { get; set; }
 
         public URL(String intent, bool safe)
         {
             this.intent = intent;
             this.safe = safe;
         }
-
-        /// <summary>
-        /// @return
-        /// </summary>
-        public String getIntent()
-        {
-            // TODO implement here
-            return null;
-        }
-
-        /// <summary>
-        /// @return
-        /// </summary>
-        public bool isSafe()
-        {
-            // TODO implement here
-            return false;
-        }
-
     }
 }

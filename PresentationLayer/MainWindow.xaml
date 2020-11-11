@@ -17,6 +17,5 @@
         <Button x:Name="refreshMessages" Content="Refresh" HorizontalAlignment="Left" Margin="644,64,0,0" VerticalAlignment="Top" Width="84" Height="23"/>
         <Button x:Name="importMessages" Content="Import" HorizontalAlignment="Left" Margin="644,92,0,0" VerticalAlignment="Top" Width="84" Height="23"/>
         <Button x:Name="exportMessages" Content="Export" HorizontalAlignment="Left" Margin="644,120,0,0" VerticalAlignment="Top" Width="84" Height="23"/>
-
     </Grid>
 </Window>

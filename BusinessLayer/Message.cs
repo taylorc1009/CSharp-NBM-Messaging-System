@@ -13,30 +13,12 @@ namespace BusinessLayer
         {
         }
 
-        protected String sender;
+        public String sender { get; set; }
 
-        protected String text;
+        public String text { get; set; }
 
-        protected char header;
-
-
-        /// <summary>
-        /// @return
-        /// </summary>
-        public String getSender()
-        {
-            // TODO implement here
-            return null;
-        }
-
-        /// <summary>
-        /// @return
-        /// </summary>
-        public String getText()
-        {
-            // TODO implement here
-            return null;
-        }
+        public char header { get; set; }
+        public DateTime sentAt { get; set; }
 
         /// <summary>
         /// @return

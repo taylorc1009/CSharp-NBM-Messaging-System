@@ -27,9 +27,9 @@ namespace BusinessLayer
         /// @param text 
         /// @return
         /// </summary>
-        public void addSMS(String sender, String text)
+        public void addSMS(String sender, String text, DateTime sentAt)
         {
-            SMS message = new SMS(sender, text, 'S');
+            SMS message = new SMS(sender, text, sentAt, 'S');
 
             StringBuilder id = new StringBuilder("S000000000");
             String count = sms.Count().ToString();
@@ -46,9 +46,9 @@ namespace BusinessLayer
         /// @param text 
         /// @return
         /// </summary>
-        public void addSEM(String sender, String subject, String text)
+        public void addSEM(String sender, String subject, String text, DateTime sentAt)
         {
-            StandardEmailMessage message = new StandardEmailMessage(sender, subject, text, 'E');
+            StandardEmailMessage message = new StandardEmailMessage(sender, subject, text, sentAt, 'E');
 
             message.quarantineURLs();
 
@@ -62,12 +62,12 @@ namespace BusinessLayer
             SEMEmails.Add(id.ToString(), message);
         }
 
-        public void addSIR(String sender, DateTime date, String sortCode, String nature, String text)
+        public void addSIR(String sender, DateTime date, String sortCode, String nature, String text, DateTime sentAt)
         {
             /*String[] toks = date.Split('/');
             String dateShort = toks[0] + '/' + toks[1] + '/' + toks[2].Substring(2);*/
 
-            SignificantIncidentReport message = new SignificantIncidentReport(sender, date, sortCode, nature, text, 'E');
+            SignificantIncidentReport message = new SignificantIncidentReport(sender, date, sortCode, nature, text, sentAt, 'E');
 
             message.quarantineURLs();
 
@@ -86,9 +86,9 @@ namespace BusinessLayer
         /// @param text 
         /// @return
         /// </summary>
-        public void addTweet(String sender, String text)
+        public void addTweet(String sender, String text, DateTime sentAt)
         {
-            Tweet message = new Tweet(sender, text, 'T');
+            Tweet message = new Tweet(sender, text, sentAt, 'T');
 
             StringBuilder id = new StringBuilder("T000000000");
             String count = tweets.Count().ToString();
@@ -100,6 +100,26 @@ namespace BusinessLayer
             tweets.Add(id.ToString(), message);
         }
 
+        public Dictionary<String, SMS> getSMS()
+        {
+            return sms;
+        }
+
+        public Dictionary<String, StandardEmailMessage> getSEMEmails()
+        {
+            return SEMEmails;
+        }
+
+        public Dictionary<String, SignificantIncidentReport> getSIREmails()
+        {
+            return SIREmails;
+        }
+
+        public Dictionary<String, Tweet> getTweets()
+        {
+            return tweets;
+        }
+
         /// <summary>
         /// @param file 
         /// @return
@@ -107,6 +127,11 @@ namespace BusinessLayer
         public void importMessages(String file)
         {
             // TODO implement here
+        }
+
+        public void listAll()
+        {
+            
         }
 
         /// <summary>

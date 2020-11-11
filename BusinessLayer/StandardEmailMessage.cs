@@ -13,7 +13,7 @@ namespace BusinessLayer
         {
         }
 
-        private String subject;
+        public String subject { get; set; }
 
 
         /// <summary>
@@ -22,11 +22,12 @@ namespace BusinessLayer
         /// @param subject 
         /// @return
         /// </summary>
-        public StandardEmailMessage(String sender, String subject, String text, char header)
+        public StandardEmailMessage(String sender, String subject, String text, DateTime sentAt, char header)
         {
             this.sender = sender;
             this.text = text;
             this.subject = subject;
+            this.sentAt = sentAt;
             this.header = header;
         }
 
