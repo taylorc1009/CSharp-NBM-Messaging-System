@@ -79,7 +79,7 @@ namespace PresentationLayer
                 String brief = makeBrief(value.text);
                 items.Add(new MessagesListItem(tweet.Key, value.sender, brief, value.sentAt, value.header));
             }
-            items.Sort((x, y) => DateTime.Compare(x.messageDate, y.messageDate));
+            items.Sort((y, x) => DateTime.Compare(x.messageDate, y.messageDate));
 
             fullList.Items.Clear();
             foreach(MessagesListItem item in items)
