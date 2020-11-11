@@ -106,6 +106,7 @@ namespace PresentationLayer
                 }
                 else
                 {
+                    type = null;
                     invalidLabel.Visibility = Visibility.Visible;
                     if (SIRCheck.IsVisible)
                         SIRCheck.Visibility = Visibility.Collapsed;
@@ -163,9 +164,9 @@ namespace PresentationLayer
 
         private void sendButton_Click(object s, EventArgs e)
         {
-            if (sender != null && !sender.Equals(""))
+            if (sender != null && !sender.Equals("") && type != null)
             {
-                if (!tooLong)
+                if (tooLong)
                 {
                     if (type == "Email")
                     {
@@ -203,7 +204,7 @@ namespace PresentationLayer
                     System.Windows.Forms.MessageBox.Show("Message too long for the current message type.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             else
-                System.Windows.Forms.MessageBox.Show("Messages must have a sender.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                System.Windows.Forms.MessageBox.Show("Messages must have a valid sender.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
     }
 }
