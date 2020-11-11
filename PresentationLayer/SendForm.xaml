@@ -5,20 +5,23 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PresentationLayer"
         mc:Ignorable="d"
-        Title="Send a message" Height="Auto" Width="556.833">
+        Title="Send a message" Height="Auto" Width="583.056">
     <Grid Margin="0,0,0,0" Height="Auto">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Label x:Name="senderLabel" Grid.Row="0" Content="Sender:" HorizontalAlignment="Left" Margin="10,7,0,0" VerticalAlignment="Top" Height="26" Width="50"/>
-        <TextBox x:Name="senderBox" Grid.Row="0" HorizontalAlignment="Left" Height="23" Margin="65,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="211" TextChanged="senderBox_TextChanged"/>
+        <TextBox x:Name="senderBox" Grid.Row="0" HorizontalAlignment="Left" Height="23" Margin="60,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="211" TextChanged="senderBox_TextChanged"/>
         <Label x:Name="invalidLabel" Grid.Row="0" Content="Invalid sender ID" HorizontalAlignment="Left" Margin="281,7,0,0" VerticalAlignment="Top" Visibility="Hidden" Foreground="Red" Height="26" Width="99" ToolTip="What is valid:&#x0a;&#x0a;SMS - +(0-9)&#x0a;Twitter ID - @example123&#x0a;Email - example@napierbank.com"/>
-        <TextBox x:Name="subjectBox" Grid.Row="0" HorizontalAlignment="Left" Height="23" Margin="10,38,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" Visibility="Collapsed" MaxLength="20"/>
-        <CheckBox x:Name="SIRCheck" Content="Significant Incident Report" HorizontalAlignment="Left" Margin="376,43,0,0" VerticalAlignment="Top" Visibility="Collapsed" Click="SIRCheck_Clicked"/>
-        <DatePicker x:Name="SIRDate" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top" Visibility="Collapsed" Focusable="False" SelectedDateFormat="Short"/>
-        <TextBox x:Name="messageBox" Grid.Row="1" HorizontalAlignment="Left" Height="280" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="525" KeyDown="messageBox_KeyDown"/>
+        <TextBox x:Name="subjectBox" Grid.Row="0" HorizontalAlignment="Left" Height="23" Margin="10,40,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" Visibility="Collapsed" MaxLength="20"/>
+        <CheckBox x:Name="SIRCheck" Grid.Row="0" Content="Significant Incident Report" HorizontalAlignment="Left" Margin="402,13,0,0" VerticalAlignment="Top" Visibility="Collapsed" Click="SIRCheck_Clicked"/>
+        <DatePicker x:Name="SIRDate" Grid.Row="0" HorizontalAlignment="Left" Margin="10,40,0,0" VerticalAlignment="Top" Visibility="Collapsed" Focusable="False" SelectedDateFormat="Short"/>
+        <TextBox x:Name="sortCodeBox" Grid.Row="0" HorizontalAlignment="Left" Height="23" Margin="316,40,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Visibility="Collapsed"/>
+        <Label x:Name="sortCodeLabel" Grid.Row="0" Content="Sort Code:" HorizontalAlignment="Left" Margin="246,40,0,0" VerticalAlignment="Top" Grid.RowSpan="2" Visibility="Collapsed"/>
+        <ComboBox x:Name="natureCombo" Grid.Row="0" HorizontalAlignment="Left" Margin="441,40,0,0" VerticalAlignment="Top" Width="120" Height="23" Visibility="Collapsed"/>
+        <TextBox x:Name="messageBox" Grid.Row="1" HorizontalAlignment="Left" Height="280" Margin="10,9.556,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="551" KeyDown="messageBox_KeyDown"/>
         <Label x:Name="tooLongLabel" Grid.Row="1" Content="Message body too long" HorizontalAlignment="Left" Margin="347,294.667,0,-2.444" VerticalAlignment="Top" Visibility="Hidden" Foreground="Red" Height="26" Width="136" ToolTip="Max lengths of characters:&#x0a;&#x0a;SMS - 140&#x0a;Tweet - 140&#x0a;Email - 1028"/>
-        <Button x:Name="sendButton" Grid.Row="1" Content="Send" HorizontalAlignment="Left" Height="23" Margin="488,294.556,0,0" VerticalAlignment="Top" Width="47" Click="sendButton_Click"/>
+        <Button x:Name="sendButton" Grid.Row="1" Content="Send" HorizontalAlignment="Left" Height="23" Margin="514,294.556,0,0" VerticalAlignment="Top" Width="47" Click="sendButton_Click"/>
     </Grid>
 </Window>

@@ -23,9 +23,11 @@ namespace BusinessLayer
         /// @param text 
         /// @return
         /// </summary>
-        public Tweet(String sender, String text)
+        public Tweet(String sender, String text, char header)
         {
-            // TODO implement here
+            this.sender = sender;
+            this.text = text;
+            this.header = header;
         }
 
         /// <summary>

@@ -36,12 +36,17 @@ namespace PresentationLayer
             String message = form.message, sender = form.sender, type = form.type;
             if (type != null)
             {
-                if (type.Equals("Email"))
-                    messagesFacade.addEmail(sender, form.subject, message);
-                else if (type.Equals("Tweet"))
+                if (type.Equals("Tweet"))
                     messagesFacade.addTweet(sender, message);
                 else if (type.Equals("SMS"))
                     messagesFacade.addSMS(sender, message);
+                else if (type.Equals("Email"))
+                {
+                    if (form.SIRChecked)
+                        messagesFacade.addSIR(sender, DateTime.Parse(form.date), form.sortCode, form.nature, message);
+                    else
+                        messagesFacade.addSEM(sender, form.subject, message);
+                }
             }
         }
     }

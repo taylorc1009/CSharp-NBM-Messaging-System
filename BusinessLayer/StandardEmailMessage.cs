@@ -22,9 +22,12 @@ namespace BusinessLayer
         /// @param subject 
         /// @return
         /// </summary>
-        public StandardEmailMessage(String sender, String text, String subject)
+        public StandardEmailMessage(String sender, String subject, String text, char header)
         {
-            // TODO implement here
+            this.sender = sender;
+            this.text = text;
+            this.subject = subject;
+            this.header = header;
         }
 
         /// <summary>

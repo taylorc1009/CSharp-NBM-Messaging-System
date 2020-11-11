@@ -13,11 +13,11 @@ namespace BusinessLayer
         {
         }
 
-        private String sender;
+        protected String sender;
 
-        private String text;
+        protected String text;
 
-        private char header;
+        protected char header;
 
 
         /// <summary>

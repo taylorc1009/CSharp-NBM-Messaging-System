@@ -28,9 +28,14 @@ namespace BusinessLayer
         /// @param nature 
         /// @return
         /// </summary>
-        public SignificantIncidentReport(String sender, String text, DateTime date, String sortCode, String nature)
+        public SignificantIncidentReport(String sender, DateTime date, String sortCode, String nature, String text, char header)
         {
-            // TODO implement here
+            this.sender = sender;
+            this.date = date;
+            this.sortCode = sortCode;
+            this.nature = nature;
+            this.text = text;
+            this.header = header;
         }
 
         /// <summary>

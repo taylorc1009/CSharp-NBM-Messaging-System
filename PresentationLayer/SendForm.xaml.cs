@@ -25,8 +25,10 @@ namespace PresentationLayer
         public string type { get; set; }
         public string message { get; set; }
         public string subject { get; set; }
-
-        bool SIRChecked = false;
+        public string date { get; set; }
+        public string sortCode { get; set; }
+        public string nature { get; set; }
+        public bool SIRChecked { get; set; }
         bool tooLong = false;
 
         public SendForm()
@@ -36,6 +38,20 @@ namespace PresentationLayer
             //this is initially set to 1 because 0 means infinite length
             //I set it to 1 so that a message couldn't be entered without identifying the sender, thus the type of message, first
             messageBox.MaxLength = 1;
+
+            SIRChecked = false;
+
+            natureCombo.Items.Insert(0, "ATM Theft");
+            natureCombo.Items.Insert(1, "Bomb Threat");
+            natureCombo.Items.Insert(2, "Cash Loss");
+            natureCombo.Items.Insert(3, "Customer Attack");
+            natureCombo.Items.Insert(4, "Intelligence");
+            natureCombo.Items.Insert(5, "Raid");
+            natureCombo.Items.Insert(6, "Staff Abuse");
+            natureCombo.Items.Insert(7, "Staff Attack");
+            natureCombo.Items.Insert(8, "Suspicious Incident");
+            natureCombo.Items.Insert(9, "Terrorism");
+            natureCombo.Items.Insert(10, "Theft");
         }
 
         private static bool isValidEmail(string email)
@@ -128,12 +144,18 @@ namespace PresentationLayer
                 SIRChecked = true;
                 subjectBox.Visibility = Visibility.Collapsed;
                 SIRDate.Visibility = Visibility.Visible;
+                sortCodeLabel.Visibility = Visibility.Visible;
+                sortCodeBox.Visibility = Visibility.Visible;
+                natureCombo.Visibility = Visibility.Visible;
             }
             else
             {
                 SIRChecked = false;
                 subjectBox.Visibility = Visibility.Visible;
                 SIRDate.Visibility = Visibility.Collapsed;
+                sortCodeLabel.Visibility = Visibility.Collapsed;
+                sortCodeBox.Visibility = Visibility.Collapsed;
+                natureCombo.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -147,13 +169,14 @@ namespace PresentationLayer
                     {
                         if (SIRChecked)
                         {
-                            if (SIRDate.Text.Equals(""))
+                            if (SIRDate.Text.Equals("") || sortCodeBox.Text.Equals("") || natureCombo.SelectedItem == null)
                             {
-                                System.Windows.Forms.MessageBox.Show("SIRs must have an incident date.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                System.Windows.Forms.MessageBox.Show("SIRs must have a:\n\n1. Date of the incident\n2. Branch sort code\n3. Nature of the incident", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                                 return;
                             }
-                            String[] toks = SIRDate.Text.Split('/');
-                            subject = "SIR " + toks[0] + '/' + toks[1] + '/' + toks[2].Substring(2);
+                            date = SIRDate.Text;
+                            sortCode = sortCodeBox.Text;
+                            nature = natureCombo.SelectedItem.ToString();
                         }
                         else
                         {

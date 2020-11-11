@@ -19,9 +19,11 @@ namespace BusinessLayer
         /// @param text 
         /// @return
         /// </summary>
-        public SMS(String sender, String text)
+        public SMS(String sender, String text, char header)
         {
-            // TODO implement here
+            this.sender = sender;
+            this.text = text;
+            this.header = header;
         }
 
         /// <summary>
