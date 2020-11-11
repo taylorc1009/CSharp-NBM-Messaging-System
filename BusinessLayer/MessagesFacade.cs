@@ -50,6 +50,8 @@ namespace BusinessLayer
         {
             StandardEmailMessage message = new StandardEmailMessage(sender, subject, text, 'E');
 
+            message.quarantineURLs();
+
             StringBuilder id = new StringBuilder("E000000000");
             String count = (SEMEmails.Count() + SIREmails.Count()).ToString();
 
@@ -66,6 +68,8 @@ namespace BusinessLayer
             String dateShort = toks[0] + '/' + toks[1] + '/' + toks[2].Substring(2);*/
 
             SignificantIncidentReport message = new SignificantIncidentReport(sender, date, sortCode, nature, text, 'E');
+
+            message.quarantineURLs();
 
             StringBuilder id = new StringBuilder("E000000000");
             String count = (SIREmails.Count() + SEMEmails.Count()).ToString();

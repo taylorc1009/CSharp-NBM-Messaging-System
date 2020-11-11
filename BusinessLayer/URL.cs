@@ -17,6 +17,11 @@ namespace BusinessLayer
 
         private bool safe;
 
+        public URL(String intent, bool safe)
+        {
+            this.intent = intent;
+            this.safe = safe;
+        }
 
         /// <summary>
         /// @return
