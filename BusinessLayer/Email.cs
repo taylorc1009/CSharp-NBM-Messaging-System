@@ -19,7 +19,7 @@ namespace BusinessLayer
         /// <summary>
         /// @return
         /// </summary>
-        public String quarantineURLs()
+        public void quarantineURLs()
         {
             String[] tokenized = this.text.Split(' ');
 
@@ -32,26 +32,29 @@ namespace BusinessLayer
                 //
 
                 //this is used to work around non-alphabetical chars, for rexmple if we had a URL in the form ",(http://example.com)."
-                int s = 0, e = tokenized[i].Length - 1;
-                while (!Regex.IsMatch(tokenized[i][s].ToString(), @"[a-z]", RegexOptions.IgnoreCase) && s != tokenized[i].Length)
+                int s = 0, e = tokenized[i].Length;
+                while (!Regex.IsMatch(tokenized[i][s].ToString(), @"[a-z]", RegexOptions.IgnoreCase) && s < tokenized[i].Length)
                     s++;
-                while (!Regex.IsMatch(tokenized[i][e].ToString(), @"[a-z]", RegexOptions.IgnoreCase) && e > 0)
+                while (!Regex.IsMatch(tokenized[i][e - 1].ToString(), @"[a-z]", RegexOptions.IgnoreCase) && e > 0)
                     e--;
 
-                if (Regex.IsMatch(tokenized[i].Substring(s, e), @"^http(s)?://([\w-]+.)+[\w-]+(/[\w- ./?%&=])?$", RegexOptions.IgnoreCase))
+                if (Regex.IsMatch(tokenized[i].Substring(s, e - s), @"^http(s)?://([\w-]+.)+[\w-]+(/[\w- ./?%&=])?$", RegexOptions.IgnoreCase))
                 {
                     if (urlsQuarantined == null)
                         urlsQuarantined = new Dictionary<int, URL>();
-                    urlsQuarantined.Add(urlsQuarantined.Count(), new URL(tokenized[i], false));
-                    tokenized[i] = "<URL Quarantined>";
+                    urlsQuarantined.Add(urlsQuarantined.Count(), new URL(tokenized[i].Substring(s, e), false));
+
+                    StringBuilder merger = new StringBuilder();
+                    merger.Append(tokenized[i].Substring(0, s) + "<URL Quarantined>" + tokenized[i].Substring(e));
+                    tokenized[i] = merger.ToString();
                 }
             }
 
-            StringBuilder str = new StringBuilder();
+            StringBuilder message = new StringBuilder();
             foreach (String tok in tokenized)
-                str.Append(tok + ' ');
+                message.Append(tok + ' ');
 
-            return str.ToString().Trim();
+            this.text = message.ToString().Trim();
         }
 
     }
