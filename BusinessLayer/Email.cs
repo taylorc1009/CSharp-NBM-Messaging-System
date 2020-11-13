@@ -23,29 +23,18 @@ namespace BusinessLayer
         {
             String[] tokenized = this.text.Split(' ');
 
-            for (int i = 0; i < tokenized.Length; i++) {
+            for (int i = 0; i < tokenized.Length; i++)
+            {
+                Tuple<String, int, int> trimmed = trimNonAlphabeticals(tokenized[i]);
 
-                //
-                //
-                // TODO currently not working
-                //
-                //
-
-                //this is used to work around non-alphabetical chars, for rexmple if we had a URL in the form ",(http://example.com)."
-                int s = 0, e = tokenized[i].Length;
-                while (!Regex.IsMatch(tokenized[i][s].ToString(), @"[a-z]", RegexOptions.IgnoreCase) && s < tokenized[i].Length)
-                    s++;
-                while (!Regex.IsMatch(tokenized[i][e - 1].ToString(), @"[a-z]", RegexOptions.IgnoreCase) && e > 0)
-                    e--;
-
-                if (Regex.IsMatch(tokenized[i].Substring(s, e - s), @"^http(s)?://([\w-]+.)+[\w-]+(/[\w- ./?%&=])?$", RegexOptions.IgnoreCase))
+                if (Regex.IsMatch(trimmed.Item1, @"^http(s)?://([\w-]+.)+[\w-]+(/[\w- ./?%&=])?$", RegexOptions.IgnoreCase))
                 {
                     if (urlsQuarantined == null)
                         urlsQuarantined = new Dictionary<int, URL>();
-                    urlsQuarantined.Add(urlsQuarantined.Count(), new URL(tokenized[i].Substring(s, e), false));
+                    urlsQuarantined.Add(urlsQuarantined.Count(), new URL(trimmed.Item1, false));
 
                     StringBuilder merger = new StringBuilder();
-                    merger.Append(tokenized[i].Substring(0, s) + "<URL Quarantined>" + tokenized[i].Substring(e));
+                    merger.Append(tokenized[i].Substring(0, trimmed.Item2) + "<URL Quarantined>" + tokenized[i].Substring(trimmed.Item3));
                     tokenized[i] = merger.ToString();
                 }
             }

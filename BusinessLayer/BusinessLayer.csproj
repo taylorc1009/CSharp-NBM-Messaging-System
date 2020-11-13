@@ -57,6 +57,7 @@
     <Compile Include="Email.cs" />
     <Compile Include="Message.cs" />
     <Compile Include="MessagesFacade.cs" />
+    <Compile Include="MessageSupplement.cs" />
     <Compile Include="SEMDecorator.cs" />
     <Compile Include="SignificantIncidentReport.cs" />
     <Compile Include="SIRDecorator.cs" />

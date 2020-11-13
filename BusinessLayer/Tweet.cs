@@ -7,7 +7,7 @@ using System.Text;
 
 namespace BusinessLayer
 {
-    public class Tweet : Message
+    public class Tweet : MessageSupplement
     {
 
         public Tweet()
@@ -29,14 +29,6 @@ namespace BusinessLayer
             this.text = text;
             this.sentAt = sentAt;
             this.header = header;
-        }
-
-        /// <summary>
-        /// @return
-        /// </summary>
-        public void findAbbreviations()
-        {
-            // TODO implement here
         }
 
         /// <summary>

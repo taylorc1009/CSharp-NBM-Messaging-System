@@ -26,14 +26,5 @@ namespace BusinessLayer
             this.sentAt = sentAt;
             this.header = header;
         }
-
-        /// <summary>
-        /// @return
-        /// </summary>
-        public void findAbbreviations()
-        {
-            // TODO implement here
-        }
-
     }
 }
