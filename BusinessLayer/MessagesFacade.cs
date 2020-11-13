@@ -26,6 +26,8 @@ namespace BusinessLayer
 
         private Dictionary<String, String> abbreviations;
 
+        private Dictionary<String, int> trending;
+
         private void importAbbreviations()
         {
             using (var reader = new StreamReader(Directory.GetCurrentDirectory() + "\\textwords.csv"))
@@ -112,6 +114,14 @@ namespace BusinessLayer
             Tweet message = new Tweet(sender, text, sentAt, 'T');
 
             message.findAbbreviations(abbreviations);
+            if (message.text.Contains('#'))
+            {
+                if (trending == null)
+                    trending = new Dictionary<String, int>();
+                message.findHashtags(trending);
+            }
+            if(message.text.Contains('@'))
+                message.findMentions();
 
             StringBuilder id = new StringBuilder("T000000000");
             String count = tweets.Count().ToString();

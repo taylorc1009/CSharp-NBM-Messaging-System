@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace BusinessLayer
 {
@@ -14,7 +15,7 @@ namespace BusinessLayer
         {
         }
 
-        private List<String> trending;
+        private List<String> hashtags;
 
         private List<String> mentions;
 
@@ -34,19 +35,60 @@ namespace BusinessLayer
         /// <summary>
         /// @return
         /// </summary>
-        public String findHashtags()
+        public void findHashtags(Dictionary<String, int> trending)
         {
-            // TODO implement here
-            return null;
+            String[] tokenized = this.text.Split(' ');
+
+            for (int i = 0; i < tokenized.Length; i++)
+            {
+                if (tokenized[i].Contains('#'))
+                {
+                    int s = 0, e = 1;
+                    while (tokenized[i][s] != '#' && s < tokenized[i].Length)
+                        s++;
+                    while (Regex.IsMatch(tokenized[i][s + e].ToString(), @"[a-z0-9]", RegexOptions.IgnoreCase) && e < tokenized[i].Length)
+                        e++;
+
+                    String temp = tokenized[i].Substring(s, e).ToLower();
+                    if (Regex.IsMatch(temp, @"#([a-z0-9]+)", RegexOptions.IgnoreCase))
+                    {
+                        if (hashtags == null)
+                            hashtags = new List<String>();
+                        hashtags.Add(temp);
+                        if (!trending.ContainsKey(temp))
+                            trending.Add(temp, 0);
+                        trending[temp]++;
+                    }
+                }
+            }
         }
 
         /// <summary>
         /// @return
         /// </summary>
-        public String findMentions()
+        public void findMentions()
         {
-            // TODO implement here
-            return null;
+            String[] tokenized = this.text.Split(' ');
+
+            for (int i = 0; i < tokenized.Length; i++)
+            {
+                if (tokenized[i].Contains('@'))
+                {
+                    int s = 0, e = 1;
+                    while (tokenized[i][s] != '@' && s < tokenized[i].Length)
+                        s++;
+                    while (Regex.IsMatch(tokenized[i][s + e].ToString(), @"[a-z0-9]", RegexOptions.IgnoreCase) && s < tokenized[i].Length)
+                        e++;
+
+                    String temp = tokenized[i].Substring(s, e).ToLower();
+                    if (Regex.IsMatch(tokenized[i].Substring(s, e), @"@([a-z0-9]+)", RegexOptions.IgnoreCase))
+                    {
+                        if (mentions == null)
+                            mentions = new List<String>();
+                        mentions.Add(temp);
+                    }
+                }
+            }
         }
 
     }
