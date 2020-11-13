@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.IO;
 
 namespace BusinessLayer
 {
@@ -12,6 +13,7 @@ namespace BusinessLayer
 
         public MessagesFacade()
         {
+            importAbbreviations();
         }
 
         private Dictionary<String, SMS> sms = new Dictionary<String, SMS>();
@@ -22,6 +24,23 @@ namespace BusinessLayer
 
         private Dictionary<String, Tweet> tweets = new Dictionary<String, Tweet>();
 
+        private Dictionary<String, String> abbreviations;
+
+        private void importAbbreviations()
+        {
+            using (var reader = new StreamReader(Directory.GetCurrentDirectory() + "\\textwords.csv"))
+            {
+                abbreviations = new Dictionary<String, String>();
+                while (!reader.EndOfStream)
+                {
+                    var line = reader.ReadLine();
+                    var values = line.Split(',');
+
+                    abbreviations.Add(values[0], values[1]);
+                }
+            }
+        }
+
         /// <summary>
         /// @param sender 
         /// @param text 
@@ -30,6 +49,8 @@ namespace BusinessLayer
         public void addSMS(String sender, String text, DateTime sentAt)
         {
             SMS message = new SMS(sender, text, sentAt, 'S');
+
+            message.findAbbreviations(abbreviations);
 
             StringBuilder id = new StringBuilder("S000000000");
             String count = sms.Count().ToString();
@@ -89,6 +110,8 @@ namespace BusinessLayer
         public void addTweet(String sender, String text, DateTime sentAt)
         {
             Tweet message = new Tweet(sender, text, sentAt, 'T');
+
+            message.findAbbreviations(abbreviations);
 
             StringBuilder id = new StringBuilder("T000000000");
             String count = tweets.Count().ToString();

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace BusinessLayer
 {
-    public class SMS : Message
+    public class SMS : MessageSupplement
     {
 
         public SMS()

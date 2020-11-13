@@ -2,29 +2,23 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace BusinessLayer
 {
     public class MessageSupplement : Message
     {
-        public void findAbbreviations(List<String> abbreviations)
+        public void findAbbreviations(Dictionary<String, String> abbreviations)
         {
             String[] tokenized = this.text.Split(' ');
 
-            /*for (int i = 0; i < tokenized.Length; i++)
+            for (int i = 0; i < tokenized.Length; i++)
             {
-                int s = 0, e = tokenized[i].Length;
-                while (!Regex.IsMatch(tokenized[i][s].ToString(), @"[a-z]", RegexOptions.IgnoreCase) && s < tokenized[i].Length)
-                    s++;
-                while (!Regex.IsMatch(tokenized[i][e - 1].ToString(), @"[a-z]", RegexOptions.IgnoreCase) && e > 0)
-                    e--;
-
-                if (Regex.IsMatch(tokenized[i].Substring(s, e - s), @"^http(s)?://([\w-]+.)+[\w-]+(/[\w- ./?%&=])?$", RegexOptions.IgnoreCase))
+                Tuple<String, int, int> trimmed = trimNonAlphabeticals(tokenized[i]);
+                if (abbreviations.ContainsKey(trimmed.Item1.ToUpper()))
                 {
                     StringBuilder merger = new StringBuilder();
-                    merger.Append(tokenized[i].Substring(0, s) + "<URL Quarantined>" + tokenized[i].Substring(e));
+                    merger.Append(tokenized[i].Substring(0, trimmed.Item2 + trimmed.Item1.Length) + " <" + abbreviations[trimmed.Item1.ToUpper()] + "> " + tokenized[i].Substring(trimmed.Item3));
                     tokenized[i] = merger.ToString();
                 }
             }
@@ -33,7 +27,7 @@ namespace BusinessLayer
             foreach (String tok in tokenized)
                 message.Append(tok + ' ');
 
-            this.text = message.ToString().Trim();*/
+            this.text = message.ToString().Trim();
         }
     }
 }
