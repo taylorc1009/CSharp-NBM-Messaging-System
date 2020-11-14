@@ -153,6 +153,11 @@ namespace BusinessLayer
             return tweets;
         }
 
+        public Dictionary<String, int> getTrending()
+        {
+            return trending;
+        }
+
         /// <summary>
         /// @param file 
         /// @return

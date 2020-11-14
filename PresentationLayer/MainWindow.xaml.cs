@@ -32,59 +32,134 @@ namespace PresentationLayer
 
         private void sendMessage_Click(object s, EventArgs e)
         {
-            var form = new SendForm();
+            SendForm form = new SendForm();
             form.ShowDialog();
             String message = form.message, sender = form.sender, type = form.type;
+            char header = '0';
+
             if (form.sent)
             {
                 DateTime sentAt = DateTime.Now;
                 if (type.Equals("Tweet"))
+                {
                     messagesFacade.addTweet(sender, message, sentAt);
+                    header = 'T';
+                }
                 else if (type.Equals("SMS"))
+                {
                     messagesFacade.addSMS(sender, message, sentAt);
+                    header = 'S';
+                }
                 else if (type.Equals("Email"))
                 {
                     if (form.SIRChecked)
                         messagesFacade.addSIR(sender, DateTime.Parse(form.date), form.sortCode, form.nature, message, sentAt);
                     else
                         messagesFacade.addSEM(sender, form.subject, message, sentAt);
+                    header = 'E';
                 }
             }
-            updateList();
+
+            updateList(Tuple.Create(true, header, form.SIRChecked));
         }
 
-        private void updateList()
+        private void updateList(Tuple<bool, char, bool> isAdd)
         {
-            List<MessagesListItem> items = new List<MessagesListItem>();
-            foreach(KeyValuePair<String, SMS> sms in messagesFacade.getSMS())
+            List<MessagesListItem> items = new List<MessagesListItem>(), sirs = new List<MessagesListItem>(), mentions = new List<MessagesListItem>();
+            Dictionary<MessagesListItem, int> trending = new Dictionary<MessagesListItem, int>();
+
+            if (isAdd.Item1) //this is used to add messages who's 'foreach' won't run, back into the items list
             {
-                SMS value = sms.Value;
-                String brief = makeBrief(value.text);
-                items.Add(new MessagesListItem(sms.Key, value.sender, null, brief, value.sentAt, value.header));
+                foreach (MessagesListItem item in fullList.Items)
+                {
+                    if (isAdd.Item2 == 'E')
+                    {
+                        if (item.subject.Text.Substring(0, 3) == "SIR" && !isAdd.Item3)
+                            items.Add(item);
+                        else if (item.subject.Text.Substring(0, 3) != "SIR" && isAdd.Item3)
+                            items.Add(item);
+                    }
+                    else if (item.type.Text[0] != isAdd.Item2)
+                        items.Add(item);
+                }
             }
-            foreach (KeyValuePair<String, StandardEmailMessage> sem in messagesFacade.getSEMEmails())
+
+            if ((isAdd.Item1 && isAdd.Item2 == 'S') || !isAdd.Item1) //this is used to prevent having to repopulate lists unnecessarily, and determine if we're adding a message or importing all stored messages
             {
-                StandardEmailMessage value = sem.Value;
-                String brief = makeBrief(value.text);
-                items.Add(new MessagesListItem(sem.Key, value.sender, value.subject, brief, value.sentAt, value.header));
+                foreach (KeyValuePair<String, SMS> sms in messagesFacade.getSMS())
+                {
+                    SMS value = sms.Value;
+                    String brief = makeBrief(value.text);
+                    items.Add(new MessagesListItem(sms.Key, value.sender, null, brief, value.sentAt, value.header));
+                }
             }
-            foreach (KeyValuePair<String, SignificantIncidentReport> sir in messagesFacade.getSIREmails())
+            if ((isAdd.Item1 && isAdd.Item2 == 'E' && !isAdd.Item3) || !isAdd.Item1)
             {
-                SignificantIncidentReport value = sir.Value;
-                String brief = makeBrief(value.text);
-                items.Add(new MessagesListItem(sir.Key, value.sender, value.subject, brief, value.sentAt, value.header));
+                foreach (KeyValuePair<String, StandardEmailMessage> sem in messagesFacade.getSEMEmails())
+                {
+                    StandardEmailMessage value = sem.Value;
+                    String brief = makeBrief(value.text);
+                    items.Add(new MessagesListItem(sem.Key, value.sender, value.subject, brief, value.sentAt, value.header));
+                }
             }
-            foreach (KeyValuePair<String, Tweet> tweet in messagesFacade.getTweets())
+            if ((isAdd.Item1 && isAdd.Item2 == 'E' && isAdd.Item3) || !isAdd.Item1)
             {
-                Tweet value = tweet.Value;
-                String brief = makeBrief(value.text);
-                items.Add(new MessagesListItem(tweet.Key, value.sender, null, brief, value.sentAt, value.header));
+                foreach (KeyValuePair<String, SignificantIncidentReport> sir in messagesFacade.getSIREmails())
+                {
+                    SignificantIncidentReport value = sir.Value;
+                    String brief = makeBrief(value.text);
+                    MessagesListItem item = new MessagesListItem(sir.Key, value.sender, value.subject, brief, value.sentAt, value.header);
+                    items.Add(item);
+                    sirs.Add(item);
+                }
+                sirs.Sort((y, x) => DateTime.Compare(x.messageDate, y.messageDate));
+
+                SIRList.Items.Clear();
+                foreach (MessagesListItem sir in sirs)
+                    SIRList.Items.Add(sir);
+            }
+            if ((isAdd.Item1 && isAdd.Item2 == 'T') || !isAdd.Item1)
+            {
+                Dictionary<String, int> trendingData = messagesFacade.getTrending();
+                foreach (KeyValuePair<String, Tweet> tweet in messagesFacade.getTweets())
+                {
+                    Tweet value = tweet.Value;
+                    String brief = makeBrief(value.text);
+                    MessagesListItem item = new MessagesListItem(tweet.Key, value.sender, null, brief, value.sentAt, value.header);
+                    items.Add(item);
+
+                    if (trendingData != null)
+                        foreach (KeyValuePair<String, int> hashtag in trendingData)
+                            if (value.getHashtags().Contains(hashtag.Key))
+                                trending.Add(item, hashtag.Value);
+
+                    List<String> mentionsData = value.getMentions();
+                    if(mentionsData != null)
+                        if (mentionsData.Any())
+                            mentions.Add(item);
+                }
+                trendingList.Items.Clear();
+                foreach (KeyValuePair<MessagesListItem, int> item in trending.OrderBy(i => i.Value))
+                    trendingList.Items.Add(item.Key);
+
+                mentions.Sort((y, x) => DateTime.Compare(x.messageDate, y.messageDate));
+                mentionsList.Items.Clear();
+                foreach (MessagesListItem mention in mentions)
+                    mentionsList.Items.Add(mention);
             }
             items.Sort((y, x) => DateTime.Compare(x.messageDate, y.messageDate));
 
             fullList.Items.Clear();
-            foreach(MessagesListItem item in items)
-                fullList.Items.Add(item);
+            foreach (MessagesListItem item in items)
+            {
+                if (item.Parent != null) //if a message exists in another list, we need to create a duplicate as objects cannot have more than one parent
+                {
+                    MessagesListItem dupe = new MessagesListItem(item.messageID, item.head.Text, item.subject.Text, item.body.Text, item.messageDate, item.type.Text[0]);
+                    fullList.Items.Add(dupe);
+                }
+                else
+                    fullList.Items.Add(item);
+            }
         }
 
         public String makeBrief(String text)

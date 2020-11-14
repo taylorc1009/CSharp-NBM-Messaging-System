@@ -32,9 +32,16 @@ namespace BusinessLayer
             this.header = header;
         }
 
-        /// <summary>
-        /// @return
-        /// </summary>
+        public List<String> getHashtags()
+        {
+            return hashtags;
+        }
+
+        public List<String> getMentions()
+        {
+            return mentions;
+        }
+
         public void findHashtags(Dictionary<String, int> trending)
         {
             String[] tokenized = this.text.Split(' ');
@@ -46,7 +53,7 @@ namespace BusinessLayer
                     int s = 0, e = 1;
                     while (tokenized[i][s] != '#' && s < tokenized[i].Length)
                         s++;
-                    while (Regex.IsMatch(tokenized[i][s + e].ToString(), @"[a-z0-9]", RegexOptions.IgnoreCase) && e < tokenized[i].Length)
+                    while (Regex.IsMatch(tokenized[i][s + e].ToString(), @"[a-z0-9]", RegexOptions.IgnoreCase) && e < tokenized[i].Length - 1)
                         e++;
 
                     String temp = tokenized[i].Substring(s, e).ToLower();
@@ -77,7 +84,7 @@ namespace BusinessLayer
                     int s = 0, e = 1;
                     while (tokenized[i][s] != '@' && s < tokenized[i].Length)
                         s++;
-                    while (Regex.IsMatch(tokenized[i][s + e].ToString(), @"[a-z0-9]", RegexOptions.IgnoreCase) && s < tokenized[i].Length)
+                    while (Regex.IsMatch(tokenized[i][s + e].ToString(), @"[a-z0-9]", RegexOptions.IgnoreCase) && e < tokenized[i].Length - 1)
                         e++;
 
                     String temp = tokenized[i].Substring(s, e).ToLower();
