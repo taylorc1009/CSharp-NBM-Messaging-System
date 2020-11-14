@@ -4,26 +4,25 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PresentationLayer"
-             mc:Ignorable="d">
-    <Grid Height="Auto" Width="Auto">
-        <ListBoxItem>
-            <Grid Height="Auto" Width="Auto">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <TextBlock x:Name="head" Grid.Row="0" Grid.Column="0" Text="sender" HorizontalAlignment="Left" Height="19" TextWrapping="Wrap" VerticalAlignment="Top" Width="Auto" FontWeight="Bold"/>
-                <TextBlock x:Name="subject" Grid.Row="1" Grid.Column="0" Text="subject" HorizontalAlignment="Left" Height="19" TextWrapping="Wrap" VerticalAlignment="Top" Width="Auto" Visibility="Collapsed"/>
-                <TextBlock x:Name="body" Grid.Row="2" Grid.Column="0" Text="body" HorizontalAlignment="Left" Height="19" TextWrapping="Wrap" VerticalAlignment="Top" Width="Auto"/>
-                <TextBlock x:Name="type" Grid.Row="2" Grid.Column="1" Text="type" HorizontalAlignment="Right" Height="19" TextWrapping="Wrap" VerticalAlignment="Top" Width="Auto"/>
-                <TextBlock x:Name="date" Grid.Row="3" Grid.Column="0" Text="dd/mm/yyyy" HorizontalAlignment="Left" Height="19" TextWrapping="Wrap" VerticalAlignment="Top" Width="Auto" FontStyle="Italic"/>
-            </Grid>
-        </ListBoxItem>
-    </Grid>
+             mc:Ignorable="d"
+             Focusable="False">
+    <ListBoxItem Focusable="False">
+        <Grid Height="Auto" Width="Auto" Focusable="False">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" Focusable="False"/>
+                <ColumnDefinition Width="Auto" Focusable="False"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" Focusable="False"/>
+                <RowDefinition Height="Auto" Focusable="False"/>
+                <RowDefinition Height="Auto" Focusable="False"/>
+                <RowDefinition Height="Auto" Focusable="False"/>
+            </Grid.RowDefinitions>
+            <TextBlock x:Name="head" Grid.Row="0" Grid.Column="0" Text="sender" HorizontalAlignment="Left" Height="19" TextWrapping="Wrap" VerticalAlignment="Top" Width="Auto" FontWeight="Bold" Focusable="False"/>
+            <TextBlock x:Name="subject" Grid.Row="1" Grid.Column="0" Text="subject" HorizontalAlignment="Left" Height="19" TextWrapping="Wrap" VerticalAlignment="Top" Width="Auto" Visibility="Collapsed" Focusable="False"/>
+            <TextBlock x:Name="body" Grid.Row="2" Grid.Column="0" Text="body" HorizontalAlignment="Left" Height="19" TextWrapping="Wrap" VerticalAlignment="Top" Width="Auto" Focusable="False"/>
+            <TextBlock x:Name="type" Grid.Row="2" Grid.Column="1" Text="type" HorizontalAlignment="Right" Height="19" TextWrapping="Wrap" VerticalAlignment="Top" Width="Auto" Margin="7,0,0,0" Focusable="False"/>
+            <TextBlock x:Name="date" Grid.Row="3" Grid.Column="0" Text="dd/mm/yyyy" HorizontalAlignment="Left" Height="19" TextWrapping="Wrap" VerticalAlignment="Top" Width="Auto" FontStyle="Italic" FontSize="11" Focusable="False"/>
+        </Grid>
+    </ListBoxItem>
 </UserControl>

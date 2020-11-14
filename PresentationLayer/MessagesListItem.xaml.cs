@@ -36,7 +36,7 @@ namespace PresentationLayer
             }
             body.Text = breif;
             messageDate = dateTime;
-            date.Text = messageDate.ToString();
+            date.Text = messageDate.ToString("HH:mm dd/MM/yy");
             switch(header)
             {
                 case 'S':

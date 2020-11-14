@@ -13,6 +13,8 @@ namespace BusinessLayer
         {
         }
 
+        public String subject { get; set; }
+
         private Dictionary<int, URL> urlsQuarantined;
 
 
@@ -27,15 +29,18 @@ namespace BusinessLayer
             {
                 Tuple<String, int, int> trimmed = trimNonAlphabeticals(tokenized[i]);
 
-                if (Regex.IsMatch(trimmed.Item1, @"^http(s)?://([\w-]+.)+[\w-]+(/[\w- ./?%&=])?$", RegexOptions.IgnoreCase))
+                if (trimmed != null)
                 {
-                    if (urlsQuarantined == null)
-                        urlsQuarantined = new Dictionary<int, URL>();
-                    urlsQuarantined.Add(urlsQuarantined.Count(), new URL(trimmed.Item1, false));
+                    if (Regex.IsMatch(trimmed.Item1, @"^http(s)?://([\w-]+.)+[\w-]+(/[\w- ./?%&=])?$", RegexOptions.IgnoreCase))
+                    {
+                        if (urlsQuarantined == null)
+                            urlsQuarantined = new Dictionary<int, URL>();
+                        urlsQuarantined.Add(urlsQuarantined.Count(), new URL(trimmed.Item1, false));
 
-                    StringBuilder merger = new StringBuilder();
-                    merger.Append(tokenized[i].Substring(0, trimmed.Item2) + "<URL Quarantined>" + tokenized[i].Substring(trimmed.Item3));
-                    tokenized[i] = merger.ToString();
+                        StringBuilder merger = new StringBuilder();
+                        merger.Append(tokenized[i].Substring(0, trimmed.Item2) + "<URL Quarantined>" + tokenized[i].Substring(trimmed.Item3));
+                        tokenized[i] = merger.ToString();
+                    }
                 }
             }
 

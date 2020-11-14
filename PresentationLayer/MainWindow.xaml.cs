@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -71,7 +72,7 @@ namespace PresentationLayer
             {
                 SignificantIncidentReport value = sir.Value;
                 String brief = makeBrief(value.text);
-                items.Add(new MessagesListItem(sir.Key, value.sender, "SIR " + value.date.ToString(), brief, value.sentAt, value.header));
+                items.Add(new MessagesListItem(sir.Key, value.sender, value.subject, brief, value.sentAt, value.header));
             }
             foreach (KeyValuePair<String, Tweet> tweet in messagesFacade.getTweets())
             {
@@ -91,6 +92,54 @@ namespace PresentationLayer
             if (text.Length > 20)
                 return text.Substring(0, 16) + "...";
             return text;
+        }
+
+        private void fullList_SelectionChanged(object sender, SelectionChangedEventArgs args)
+        {
+            if (fullList.SelectedIndex == -1)
+                return;
+
+            MessagesListItem listItem = fullList.SelectedItem as MessagesListItem;
+            /* Other ways to do this
+            MessagesListItem second = (MessagesListItem)fullList.Items[fullList.SelectedIndex];
+            MessagesListItem third = (sender as ListBox).SelectedItem as MessagesListItem;
+            MessagesListItem fourth = args.AddedItems[0] as MessagesListItem;*/
+
+            String id = listItem.messageID;
+            char header = id[0];
+            if (header == 'S')
+            {
+                Dictionary<String, SMS> messages = messagesFacade.getSMS();
+                SMS message = messages[id];
+                var form = new ViewMessage(Tuple.Create(message.sender, String.Empty, message.text, message.sentAt));
+                form.ShowDialog();
+            }
+            else if (header == 'T')
+            {
+                Dictionary<String, Tweet> messages = messagesFacade.getTweets();
+                Tweet message = messages[id];
+                var form = new ViewMessage(Tuple.Create(message.sender, String.Empty, message.text, message.sentAt));
+                form.ShowDialog();
+            }
+            else if (header == 'E')
+            {
+                if (messagesFacade.getSEMEmails().ContainsKey(id))
+                {
+                    Dictionary<String, StandardEmailMessage> messages = messagesFacade.getSEMEmails();
+                    StandardEmailMessage message = messages[id];
+                    var form = new ViewMessage(Tuple.Create(message.sender, message.subject, message.text, message.sentAt));
+                    form.ShowDialog();
+                }
+                else if (messagesFacade.getSIREmails().ContainsKey(id))
+                {
+                    Dictionary<String, SignificantIncidentReport> messages = messagesFacade.getSIREmails();
+                    SignificantIncidentReport message = messages[id];
+                    var form = new ViewMessage(Tuple.Create(message.sender, message.subject, message.text, message.sentAt));
+                    form.ShowDialog();
+                }
+                else
+                    System.Windows.Forms.MessageBox.Show("Message was not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
     }
 }

@@ -34,9 +34,16 @@ namespace BusinessLayer
             this.date = date;
             this.sortCode = sortCode;
             this.nature = nature;
-            this.text = text;
             this.sentAt = sentAt;
             this.header = header;
+
+            String s = "SIR " + this.date.ToString("dd/MM/yy");
+            this.subject = s;
+
+            String t = "Sort Code: " + this.sortCode + Environment.NewLine
+                    + "Nature of Incident: " + this.nature + Environment.NewLine + Environment.NewLine
+                    + text;
+            this.text = t;
         }
     }
 }

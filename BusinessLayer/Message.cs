@@ -24,13 +24,17 @@ namespace BusinessLayer
         protected Tuple<String, int, int> trimNonAlphabeticals(String str)
         {
             //this is used to work around non-alphabetical chars, for rexmple if we had a URL in the form ",(http://example.com)."
-            int s = 0, e = str.Length;
-            while (!Regex.IsMatch(str[s].ToString(), @"[a-z]", RegexOptions.IgnoreCase) && s < str.Length)
-                s++;
-            while (!Regex.IsMatch(str[e - 1].ToString(), @"[a-z]", RegexOptions.IgnoreCase) && e > 0)
-                e--;
+            if (!str.Equals(""))
+            {
+                int s = 0, e = str.Length;
+                while (!Regex.IsMatch(str[s].ToString(), @"[a-z]", RegexOptions.IgnoreCase) && s < str.Length)
+                    s++;
+                while (!Regex.IsMatch(str[e - 1].ToString(), @"[a-z]", RegexOptions.IgnoreCase) && e > 0)
+                    e--;
 
-            return Tuple.Create(str.Substring(s, e - s), s, e);
+                return Tuple.Create(str.Substring(s, e - s), s, e);
+            }
+            return null;
         }
 
         /// <summary>

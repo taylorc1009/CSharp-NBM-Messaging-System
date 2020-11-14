@@ -13,8 +13,6 @@ namespace BusinessLayer
         {
         }
 
-        public String subject { get; set; }
-
 
         /// <summary>
         /// @param sender 

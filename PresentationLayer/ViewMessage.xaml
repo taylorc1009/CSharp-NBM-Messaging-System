@@ -1,0 +1,20 @@
+﻿<Window x:Class="PresentationLayer.ViewMessage"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PresentationLayer"
+        mc:Ignorable="d"
+        Title="Message" Height="416.444" Width="578.222">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Label x:Name="fromLabel" Grid.Row="0" Content="From:" HorizontalAlignment="Left" Margin="10,7,0,0" VerticalAlignment="Top" Height="26"/>
+        <TextBox x:Name="fromBox" Grid.Row="0" HorizontalAlignment="Left" Height="23" Margin="50,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="211" Focusable="False"/>
+        <TextBox x:Name="subjectBox" Grid.Row="0" HorizontalAlignment="Left" Height="23" Margin="10,40,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" Visibility="Collapsed" Focusable="False"/>
+        <TextBox x:Name="messageBox" Grid.Row="1" HorizontalAlignment="Left" Height="280" Margin="10,9.556,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="551" Focusable="False"/>
+        <TextBlock x:Name="dateBlock" HorizontalAlignment="Left" Margin="10,294.667,0,-3.556" Grid.Row="1" TextWrapping="Wrap" Text="dd/mm/yy at hh:mm" VerticalAlignment="Top" FontStyle="Italic"/>
+    </Grid>
+</Window>

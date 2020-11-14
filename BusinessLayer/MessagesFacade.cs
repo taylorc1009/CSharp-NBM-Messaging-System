@@ -50,7 +50,7 @@ namespace BusinessLayer
         /// </summary>
         public void addSMS(String sender, String text, DateTime sentAt)
         {
-            SMS message = new SMS(sender, text, sentAt, 'S');
+            SMS message = new SMS(sender, text.Trim(), sentAt, 'S');
 
             message.findAbbreviations(abbreviations);
 
@@ -71,7 +71,7 @@ namespace BusinessLayer
         /// </summary>
         public void addSEM(String sender, String subject, String text, DateTime sentAt)
         {
-            StandardEmailMessage message = new StandardEmailMessage(sender, subject, text, sentAt, 'E');
+            StandardEmailMessage message = new StandardEmailMessage(sender, subject.Trim(), text.Trim(), sentAt, 'E');
 
             message.quarantineURLs();
 
@@ -90,7 +90,7 @@ namespace BusinessLayer
             /*String[] toks = date.Split('/');
             String dateShort = toks[0] + '/' + toks[1] + '/' + toks[2].Substring(2);*/
 
-            SignificantIncidentReport message = new SignificantIncidentReport(sender, date, sortCode, nature, text, sentAt, 'E');
+            SignificantIncidentReport message = new SignificantIncidentReport(sender, date, sortCode, nature, text.Trim(), sentAt, 'E');
 
             message.quarantineURLs();
 
@@ -111,7 +111,7 @@ namespace BusinessLayer
         /// </summary>
         public void addTweet(String sender, String text, DateTime sentAt)
         {
-            Tweet message = new Tweet(sender, text, sentAt, 'T');
+            Tweet message = new Tweet(sender, text.Trim(), sentAt, 'T');
 
             message.findAbbreviations(abbreviations);
             if (message.text.Contains('#'))

@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PresentationLayer"
         mc:Ignorable="d"
-        Title="Napier Bank Messaging" Height="348.68" Width="748.991">
-    <Grid Margin="0,-12,-0.444,11.667">
-        <ListBox x:Name="fullList" HorizontalAlignment="Left" Height="278" Margin="10,36,0,0" VerticalAlignment="Top" Width="179"/>
+        Title="Napier Bank Messaging" Height="360.68" Width="748.991">
+    <Grid>
+        <ListBox x:Name="fullList" HorizontalAlignment="Left" Height="278" Margin="10,36,0,0" VerticalAlignment="Top" Width="179" SelectionChanged="fullList_SelectionChanged"/>
         <Label x:Name="fullLabel" Content="All Messages" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
         <ListBox x:Name="SIRList" HorizontalAlignment="Left" Height="278" Margin="211,36,0,0" VerticalAlignment="Top" Width="179"/>
         <Label x:Name="SIRLabel" Content="Significant Incident Reports" HorizontalAlignment="Left" Margin="211,10,0,0" VerticalAlignment="Top"/>
