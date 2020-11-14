@@ -7,13 +7,13 @@
         mc:Ignorable="d"
         Title="Napier Bank Messaging" Height="360.68" Width="933.657">
     <Grid>
-        <ListBox x:Name="fullList" HorizontalAlignment="Left" Height="278" Margin="10,36,0,0" VerticalAlignment="Top" Width="179" SelectionChanged="fullList_SelectionChanged"/>
+        <ListBox x:Name="fullList" HorizontalAlignment="Left" Height="278" Margin="10,36,0,0" VerticalAlignment="Top" Width="179" SelectionChanged="list_SelectionChanged"/>
         <Label x:Name="fullLabel" Content="All Messages" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
-        <ListBox x:Name="SIRList" HorizontalAlignment="Left" Height="278" Margin="211,36,0,0" VerticalAlignment="Top" Width="179"/>
+        <ListBox x:Name="SIRList" HorizontalAlignment="Left" Height="278" Margin="211,36,0,0" VerticalAlignment="Top" Width="179" SelectionChanged="list_SelectionChanged"/>
         <Label x:Name="SIRLabel" Content="Significant Incident Reports" HorizontalAlignment="Left" Margin="211,10,0,0" VerticalAlignment="Top"/>
-        <ListBox x:Name="trendingList" HorizontalAlignment="Left" Height="278" Margin="412,36,0,0" VerticalAlignment="Top" Width="179"/>
+        <ListBox x:Name="trendingList" HorizontalAlignment="Left" Height="278" Margin="412,36,0,0" VerticalAlignment="Top" Width="179" SelectionChanged="list_SelectionChanged"/>
         <Label x:Name="trendingLabel" Content="Trending on Twitter" HorizontalAlignment="Left" Margin="414,10,0,0" VerticalAlignment="Top"/>
-        <ListBox x:Name="mentionsList" HorizontalAlignment="Left" Height="278" Margin="613,36,0,0" VerticalAlignment="Top" Width="179"/>
+        <ListBox x:Name="mentionsList" HorizontalAlignment="Left" Height="278" Margin="613,36,0,0" VerticalAlignment="Top" Width="179" SelectionChanged="list_SelectionChanged"/>
         <Label x:Name="mentionsLabel" Content="Twitter Mentions" HorizontalAlignment="Left" Margin="613,10,0,0" VerticalAlignment="Top"/>
         <Button x:Name="sendMessage" Content="Send Message" HorizontalAlignment="Left" Margin="818,36,0,0" VerticalAlignment="Top" Width="84" Height="23" Click="sendMessage_Click"/>
         <Button x:Name="refreshMessages" Content="Refresh" HorizontalAlignment="Left" Margin="818,64,0,0" VerticalAlignment="Top" Width="84" Height="23"/>

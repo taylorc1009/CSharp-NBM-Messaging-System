@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using BusinessLayer;
+using ListBox = System.Windows.Controls.ListBox;
 
 namespace PresentationLayer
 {
@@ -128,9 +129,10 @@ namespace PresentationLayer
                     MessagesListItem item = new MessagesListItem(tweet.Key, value.sender, null, brief, value.sentAt, value.header);
                     items.Add(item);
 
-                    if (trendingData != null)
+                    List<String> hashtagsData = value.getHashtags();
+                    if (trendingData != null && hashtagsData != null)
                         foreach (KeyValuePair<String, int> hashtag in trendingData)
-                            if (value.getHashtags().Contains(hashtag.Key))
+                            if (hashtagsData.Contains(hashtag.Key))
                                 trending.Add(item, hashtag.Value);
 
                     List<String> mentionsData = value.getMentions();
@@ -148,13 +150,14 @@ namespace PresentationLayer
                     mentionsList.Items.Add(mention);
             }
             items.Sort((y, x) => DateTime.Compare(x.messageDate, y.messageDate));
-
             fullList.Items.Clear();
+
             foreach (MessagesListItem item in items)
             {
                 if (item.Parent != null) //if a message exists in another list, we need to create a duplicate as objects cannot have more than one parent
                 {
-                    MessagesListItem dupe = new MessagesListItem(item.messageID, item.head.Text, item.subject.Text, item.body.Text, item.messageDate, item.type.Text[0]);
+                    char header = item.type.Text[0];
+                    MessagesListItem dupe = new MessagesListItem(item.messageID, item.head.Text, header == 'E' ? item.subject.Text : null, item.body.Text, item.messageDate, header);
                     fullList.Items.Add(dupe);
                 }
                 else
@@ -169,16 +172,15 @@ namespace PresentationLayer
             return text;
         }
 
-        private void fullList_SelectionChanged(object sender, SelectionChangedEventArgs args)
+        private void list_SelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (fullList.SelectedIndex == -1)
+            ListBox l = null;
+            if (sender.GetType() == fullList.GetType())
+                l = (ListBox)sender;
+            if (l == null || l.SelectedIndex == -1)
                 return;
 
-            MessagesListItem listItem = fullList.SelectedItem as MessagesListItem;
-            /* Other ways to do this
-            MessagesListItem second = (MessagesListItem)fullList.Items[fullList.SelectedIndex];
-            MessagesListItem third = (sender as ListBox).SelectedItem as MessagesListItem;
-            MessagesListItem fourth = args.AddedItems[0] as MessagesListItem;*/
+            MessagesListItem listItem = args.AddedItems[0] as MessagesListItem;
 
             String id = listItem.messageID;
             char header = id[0];
