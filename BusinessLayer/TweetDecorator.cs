@@ -10,10 +10,13 @@ namespace BusinessLayer
     {
         public TweetDecorator() { }
 
-        public override bool validate(String sender, String subject, String message, DateTime sentAt, String sortCode, String nature)
+        public override bool validate(String sender, String subject, String message, DateTime sentAt, DateTime SIRDate, String sortCode, String nature)
         {
-            // TODO implement here
-            return false;
+            return !String.IsNullOrEmpty(sender)
+                && Utilities.isValidTwitter(sender)
+                && !String.IsNullOrEmpty(message)
+                && message.Length <= 140
+                && (sentAt >= DateTime.Now.AddYears(-1) && sentAt <= DateTime.Now);
         }
     }
 }

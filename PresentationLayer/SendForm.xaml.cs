@@ -89,7 +89,7 @@ namespace PresentationLayer
                 else if (Utilities.isValidEmail(senderBox.Text))
                 {
                     type = "Email";
-                    senderBox.MaxLength = 50;
+                    senderBox.MaxLength = 40;
                     messageBox.MaxLength = 1028;
                     SIRCheck.Visibility = Visibility.Visible;
                     if (SIRChecked)

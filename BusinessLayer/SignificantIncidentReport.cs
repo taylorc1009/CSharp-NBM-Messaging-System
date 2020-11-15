@@ -8,10 +8,7 @@ namespace BusinessLayer
 {
     public class SignificantIncidentReport : Email
     {
-
-        public SignificantIncidentReport()
-        {
-        }
+        public SignificantIncidentReport() { }
 
         public DateTime date { get; set; }
 
@@ -19,15 +16,6 @@ namespace BusinessLayer
 
         public String nature { get; set; }
 
-
-        /// <summary>
-        /// @param sender 
-        /// @param text 
-        /// @param date 
-        /// @param sortCode 
-        /// @param nature 
-        /// @return
-        /// </summary>
         public SignificantIncidentReport(String sender, DateTime date, String sortCode, String nature, String text, DateTime sentAt)
         {
             this.sender = sender;

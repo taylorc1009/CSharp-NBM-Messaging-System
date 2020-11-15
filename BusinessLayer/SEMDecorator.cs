@@ -8,19 +8,18 @@ namespace BusinessLayer
 {
     public class SEMDecorator : ValidateDecorator
     {
-
-        public SEMDecorator()
+        public SEMDecorator() { }
+        
+        public override bool validate(String sender, String subject, String message, DateTime sentAt, DateTime SIRDate, String sortCode, String nature)
         {
+            return !String.IsNullOrEmpty(sender)
+                && Utilities.isValidEmail(sender)
+                && sender.Length <= 40
+                && !String.IsNullOrEmpty(subject)
+                && subject.Length <= 20
+                && !String.IsNullOrEmpty(message)
+                && message.Length <= 1028
+                && (sentAt >= DateTime.Now.AddYears(-1) && sentAt <= DateTime.Now);
         }
-
-        /// <summary>
-        /// @return
-        /// </summary>
-        public override bool validate(String sender, String subject, String message, DateTime sentAt, String sortCode, String nature)
-        {
-            // TODO implement here
-            return false;
-        }
-
     }
 }

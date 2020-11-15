@@ -22,12 +22,12 @@ namespace BusinessLayer
         public static bool isValidTwitter(string twitter)
         {
             //return twitter[0] == '@' && !String.IsNullOrWhiteSpace(twitter.Substring(1)) && !int.TryParse(twitter[1].ToString(), out _) && Regex.IsMatch(twitter.Substring(1), @"^[a-z0-9-_]+$", RegexOptions.IgnoreCase);
-            return Regex.IsMatch(twitter, @"^@+[a-z][a-z0-9-_]*$", RegexOptions.IgnoreCase);
+            return Regex.IsMatch(twitter, @"^@+[a-z]([a-z0-9-_]{0,14})$", RegexOptions.IgnoreCase);
         }
 
         public static bool isValidSortCode(string sortCode)
         {
-            return Regex.IsMatch(sortCode, @"^([0-9]{2})+[-]+([0-9]{2})+[-]+[0-9]{2}\z");
+            return Regex.IsMatch(sortCode, @"^([0-9]{2})+[-]+([0-9]{2})+[-]+[0-9]{2}$");
         }
     }
 }

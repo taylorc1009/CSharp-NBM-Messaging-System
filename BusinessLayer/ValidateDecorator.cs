@@ -15,10 +15,10 @@ namespace BusinessLayer
             this.component = component;
         }
 
-        public override bool validate(String sender, String subject, String message, DateTime sentAt, String sortCode, String nature)
+        public override bool validate(String sender, String subject, String message, DateTime sentAt, DateTime SIRDate, String sortCode, String nature)
         {
             if (component != null)
-                return component.validate(sender, subject, message, sentAt, sortCode, nature);
+                return component.validate(sender, subject, message, sentAt, SIRDate, sortCode, nature);
             return false;
         }
 
