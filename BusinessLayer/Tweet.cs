@@ -10,26 +10,18 @@ namespace BusinessLayer
 {
     public class Tweet : MessageSupplement
     {
-
-        public Tweet()
-        {
-        }
+        public Tweet() { }
 
         private List<String> hashtags;
-
         private List<String> mentions;
 
-        /// <summary>
-        /// @param sender 
-        /// @param text 
-        /// @return
-        /// </summary>
         public Tweet(String sender, String text, DateTime sentAt, char header)
         {
             this.sender = sender;
             this.text = text;
             this.sentAt = sentAt;
             this.header = header;
+            this.decorate(2);
         }
 
         public List<String> getHashtags()
@@ -70,9 +62,6 @@ namespace BusinessLayer
             }
         }
 
-        /// <summary>
-        /// @return
-        /// </summary>
         public void findMentions()
         {
             String[] tokenized = this.text.Split(' ');
@@ -97,6 +86,5 @@ namespace BusinessLayer
                 }
             }
         }
-
     }
 }

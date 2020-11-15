@@ -8,19 +8,12 @@ namespace BusinessLayer
 {
     public class SIRDecorator : ValidateDecorator
     {
+        public SIRDecorator() { }
 
-        public SIRDecorator()
-        {
-        }
-
-        /// <summary>
-        /// @return
-        /// </summary>
         public override bool validate()
         {
             // TODO implement here
             return false;
         }
-
     }
 }

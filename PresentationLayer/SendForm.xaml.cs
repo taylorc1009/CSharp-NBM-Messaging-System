@@ -45,6 +45,9 @@ namespace PresentationLayer
             SIRChecked = false;
             sent = false;
 
+            SIRDate.DisplayDateStart = DateTime.Now.AddYears(-1);
+            SIRDate.DisplayDateEnd = DateTime.Now;
+
             natureCombo.Items.Insert(0, "ATM Theft");
             natureCombo.Items.Insert(1, "Bomb Threat");
             natureCombo.Items.Insert(2, "Cash Loss");

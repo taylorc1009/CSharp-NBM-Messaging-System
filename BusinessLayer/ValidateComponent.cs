@@ -8,16 +8,6 @@ namespace BusinessLayer
 {
     public abstract class ValidateComponent
     {
-
-        public ValidateComponent()
-        {
-        }
-
-
-        /// <summary>
-        /// @return
-        /// </summary>
         public abstract bool validate();
-
     }
 }

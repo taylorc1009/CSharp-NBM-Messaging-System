@@ -8,18 +8,8 @@ namespace BusinessLayer
 {
     public class StandardEmailMessage : Email
     {
+        public StandardEmailMessage() { }
 
-        public StandardEmailMessage()
-        {
-        }
-
-
-        /// <summary>
-        /// @param sender 
-        /// @param text 
-        /// @param subject 
-        /// @return
-        /// </summary>
         public StandardEmailMessage(String sender, String subject, String text, DateTime sentAt, char header)
         {
             this.sender = sender;
@@ -27,16 +17,7 @@ namespace BusinessLayer
             this.subject = subject;
             this.sentAt = sentAt;
             this.header = header;
+            this.decorate(3);
         }
-
-        /// <summary>
-        /// @return
-        /// </summary>
-        public String getSubject()
-        {
-            // TODO implement here
-            return null;
-        }
-
     }
 }
