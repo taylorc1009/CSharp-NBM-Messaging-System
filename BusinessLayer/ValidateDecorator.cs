@@ -8,30 +8,17 @@ namespace BusinessLayer
 {
     public class ValidateDecorator : ValidateComponent
     {
-
-        public ValidateDecorator()
-        {
-        }
-
         protected ValidateComponent component;
 
-
-
-        /// <summary>
-        /// @param component 
-        /// @return
-        /// </summary>
         public void setComponent(ValidateComponent component)
         {
-            // TODO implement here
+            this.component = component;
         }
 
-        /// <summary>
-        /// @return
-        /// </summary>
         public override bool validate()
         {
-            // TODO implement here
+            if (component != null)
+                return component.validate();
             return false;
         }
 

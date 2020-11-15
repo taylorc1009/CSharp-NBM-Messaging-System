@@ -8,19 +8,12 @@ namespace BusinessLayer
 {
     public class Email : Message
     {
-
-        public Email()
-        {
-        }
+        public Email() { }
 
         public String subject { get; set; }
 
         private Dictionary<int, URL> urlsQuarantined;
 
-
-        /// <summary>
-        /// @return
-        /// </summary>
         public void quarantineURLs()
         {
             String[] tokenized = this.text.Split(' ');
@@ -50,6 +43,5 @@ namespace BusinessLayer
 
             this.text = message.ToString().Trim();
         }
-
     }
 }

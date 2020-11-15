@@ -7,17 +7,10 @@ using System.Text.RegularExpressions;
 
 namespace BusinessLayer
 {
-    public class Message
+    public class Message : ValidateDecorator
     {
-
-        public Message()
-        {
-        }
-
         public String sender { get; set; }
-
         public String text { get; set; }
-
         public char header { get; set; }
         public DateTime sentAt { get; set; }
 
@@ -37,14 +30,22 @@ namespace BusinessLayer
             return null;
         }
 
-        /// <summary>
-        /// @return
-        /// </summary>
-        public bool validate()
+        protected void decorate(int type)
         {
-            // TODO implement here
-            return false;
+            switch (type) {
+                case 1:
+                    setComponent(new SMSDecorator());
+                    break;
+                case 2:
+                    setComponent(new TweetDecorator());
+                    break;
+                case 3:
+                    setComponent(new SEMDecorator());
+                    break;
+                case 4:
+                    setComponent(new SIRDecorator());
+                    break;
+            }
         }
-
     }
 }

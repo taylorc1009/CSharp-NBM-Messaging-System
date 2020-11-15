@@ -44,6 +44,8 @@ namespace BusinessLayer
                     + "Nature of Incident: " + this.nature + Environment.NewLine + Environment.NewLine
                     + text;
             this.text = t;
+
+            this.decorate(4);
         }
     }
 }

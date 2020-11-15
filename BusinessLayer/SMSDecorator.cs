@@ -8,19 +8,12 @@ namespace BusinessLayer
 {
     public class SMSDecorator : ValidateDecorator
     {
+        public SMSDecorator() { }
 
-        public SMSDecorator()
-        {
-        }
-
-        /// <summary>
-        /// @return
-        /// </summary>
         public override bool validate()
         {
-            // TODO implement here
+            
             return false;
         }
-
     }
 }
