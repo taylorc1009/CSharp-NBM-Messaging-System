@@ -1,3 +1,21 @@
+/* TODO List
+ * 
+ * Implement:
+ *      decorator
+ *      JSON serialization
+ *      import messages
+ *      export message (?)
+ *      message filter (?)
+ *      credentials/log-in system (?)
+ * 
+ * Testing:
+ *      Unit Tests
+ *      Compare with Use Cases
+ *      
+ * Other:
+ *      Finish Class Diagram
+ *      Double check Use Case Diagram
+ */
 
 using System;
 using System.Collections.Generic;
