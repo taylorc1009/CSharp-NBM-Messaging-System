@@ -8,6 +8,6 @@ namespace BusinessLayer
 {
     public abstract class ValidateComponent
     {
-        public abstract bool validate();
+        public abstract bool validate(String sender, String subject, String message, DateTime sentAt, String sortCode, String nature);
     }
 }

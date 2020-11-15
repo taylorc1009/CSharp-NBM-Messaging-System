@@ -67,6 +67,7 @@
     <Compile Include="Tweet.cs" />
     <Compile Include="TweetDecorator.cs" />
     <Compile Include="URL.cs" />
+    <Compile Include="Utilities.cs" />
     <Compile Include="ValidateComponent.cs" />
     <Compile Include="ValidateDecorator.cs" />
   </ItemGroup>

@@ -88,7 +88,7 @@ namespace PresentationLayer
                 {
                     SMS value = sms.Value;
                     String brief = makeBrief(value.text);
-                    items.Add(new MessagesListItem(sms.Key, value.sender, null, brief, value.sentAt, value.header));
+                    items.Add(new MessagesListItem(sms.Key, value.sender, null, brief, value.sentAt, isAdd.Item2));
                 }
             }
             if ((isAdd.Item1 && isAdd.Item2 == 'E' && !isAdd.Item3) || !isAdd.Item1)
@@ -97,7 +97,7 @@ namespace PresentationLayer
                 {
                     StandardEmailMessage value = sem.Value;
                     String brief = makeBrief(value.text);
-                    items.Add(new MessagesListItem(sem.Key, value.sender, value.subject, brief, value.sentAt, value.header));
+                    items.Add(new MessagesListItem(sem.Key, value.sender, value.subject, brief, value.sentAt, isAdd.Item2));
                 }
             }
             if ((isAdd.Item1 && isAdd.Item2 == 'E' && isAdd.Item3) || !isAdd.Item1)
@@ -106,7 +106,7 @@ namespace PresentationLayer
                 {
                     SignificantIncidentReport value = sir.Value;
                     String brief = makeBrief(value.text);
-                    MessagesListItem item = new MessagesListItem(sir.Key, value.sender, value.subject, brief, value.sentAt, value.header);
+                    MessagesListItem item = new MessagesListItem(sir.Key, value.sender, value.subject, brief, value.sentAt, isAdd.Item2);
                     items.Add(item);
                     sirs.Add(item);
                 }
@@ -123,7 +123,7 @@ namespace PresentationLayer
                 {
                     Tweet value = tweet.Value;
                     String brief = makeBrief(value.text);
-                    MessagesListItem item = new MessagesListItem(tweet.Key, value.sender, null, brief, value.sentAt, value.header);
+                    MessagesListItem item = new MessagesListItem(tweet.Key, value.sender, null, brief, value.sentAt, isAdd.Item2);
                     items.Add(item);
 
                     List<String> hashtagsData = value.getHashtags();

@@ -28,14 +28,13 @@ namespace BusinessLayer
         /// @param nature 
         /// @return
         /// </summary>
-        public SignificantIncidentReport(String sender, DateTime date, String sortCode, String nature, String text, DateTime sentAt, char header)
+        public SignificantIncidentReport(String sender, DateTime date, String sortCode, String nature, String text, DateTime sentAt)
         {
             this.sender = sender;
             this.date = date;
             this.sortCode = sortCode;
             this.nature = nature;
             this.sentAt = sentAt;
-            this.header = header;
 
             String s = "SIR " + this.date.ToString("dd/MM/yy");
             this.subject = s;

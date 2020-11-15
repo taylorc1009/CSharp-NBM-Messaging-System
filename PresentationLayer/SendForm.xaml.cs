@@ -1,21 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Net.Mail;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Forms;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using ToolTip = System.Windows.Forms.ToolTip;
+using BusinessLayer;
 
 namespace PresentationLayer
 {
@@ -61,22 +50,6 @@ namespace PresentationLayer
             natureCombo.Items.Insert(10, "Theft");
         }
 
-        private static bool isValidEmail(string email)
-        {
-            return Regex.IsMatch(email, @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase);
-        }
-
-        private static bool isValidTwitter(string twitter)
-        {
-            //return twitter[0] == '@' && !String.IsNullOrWhiteSpace(twitter.Substring(1)) && !int.TryParse(twitter[1].ToString(), out _) && Regex.IsMatch(twitter.Substring(1), @"^[a-z0-9-_]+$", RegexOptions.IgnoreCase);
-            return Regex.IsMatch(twitter, @"^@+[a-z][a-z0-9-_]*$", RegexOptions.IgnoreCase);
-        }
-
-        private static bool isValidSortCode(string sortCode)
-        {
-            return Regex.IsMatch(sortCode, @"^([0-9]{2})+[-]+([0-9]{2})+[-]+[0-9]{2}\z");
-        }
-
         private void senderBox_TextChanged(object s, TextChangedEventArgs e)
         {
             if (senderBox.Text.Equals(""))
@@ -87,31 +60,47 @@ namespace PresentationLayer
                     SIRCheck.Visibility = Visibility.Collapsed;
                 if (subjectBox.IsVisible)
                     subjectBox.Visibility = Visibility.Collapsed;
+                if (SIRDate.IsVisible)
+                    SIRDate.Visibility = Visibility.Collapsed;
+                if (sortCodeLabel.IsVisible)
+                    sortCodeLabel.Visibility = Visibility.Collapsed;
+                if (sortCodeBox.IsVisible)
+                    sortCodeBox.Visibility = Visibility.Collapsed;
+                if (natureCombo.IsVisible)
+                    natureCombo.Visibility = Visibility.Collapsed;
                 messageBox.MaxLength = 1;
             }
             else
             {
-                if (senderBox.Text[0] == '+' && int.TryParse(senderBox.Text.Substring(1), out _))
+                if (Utilities.isValidPhoneNumber(senderBox.Text))
                 {
                     type = "SMS";
                     senderBox.MaxLength = 12;
                     messageBox.MaxLength = 140;
                     invalidLabel.Visibility = Visibility.Hidden;
                 }
-                else if (isValidTwitter(senderBox.Text))
+                else if (Utilities.isValidTwitter(senderBox.Text))
                 {
                     type = "Tweet";
                     senderBox.MaxLength = 16;
                     messageBox.MaxLength = 140;
                     invalidLabel.Visibility = Visibility.Hidden;
                 }
-                else if (isValidEmail(senderBox.Text))
+                else if (Utilities.isValidEmail(senderBox.Text))
                 {
                     type = "Email";
                     senderBox.MaxLength = 50;
                     messageBox.MaxLength = 1028;
                     SIRCheck.Visibility = Visibility.Visible;
-                    subjectBox.Visibility = Visibility.Visible;
+                    if (SIRChecked)
+                    {
+                        SIRDate.Visibility = Visibility.Visible;
+                        sortCodeLabel.Visibility = Visibility.Visible;
+                        sortCodeBox.Visibility = Visibility.Visible;
+                        natureCombo.Visibility = Visibility.Visible;
+                    }
+                    else
+                        subjectBox.Visibility = Visibility.Visible;
                     invalidLabel.Visibility = Visibility.Hidden;
                 }
                 else
@@ -122,6 +111,14 @@ namespace PresentationLayer
                         SIRCheck.Visibility = Visibility.Collapsed;
                     if (subjectBox.IsVisible)
                         subjectBox.Visibility = Visibility.Collapsed;
+                    if (SIRDate.IsVisible)
+                        SIRDate.Visibility = Visibility.Collapsed;
+                    if (sortCodeLabel.IsVisible)
+                        sortCodeLabel.Visibility = Visibility.Collapsed;
+                    if (sortCodeBox.IsVisible)
+                        sortCodeBox.Visibility = Visibility.Collapsed;
+                    if (natureCombo.IsVisible)
+                        natureCombo.Visibility = Visibility.Collapsed;
                     messageBox.MaxLength = 1;
                 }
             }
@@ -179,7 +176,7 @@ namespace PresentationLayer
                 validSort = false;
                 invalidSortLabel.Visibility = Visibility.Collapsed;
             }
-            else if(isValidSortCode(sortCodeBox.Text))
+            else if(Utilities.isValidSortCode(sortCodeBox.Text))
             {
                 validSort = true;
                 invalidSortLabel.Visibility = Visibility.Collapsed;

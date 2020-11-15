@@ -10,9 +10,9 @@ namespace BusinessLayer
     {
         public SIRDecorator() { }
 
-        public override bool validate()
+        public override bool validate(String sender, String subject, String message, DateTime sentAt, String sortCode, String nature)
         {
-            // TODO implement here
+            
             return false;
         }
     }

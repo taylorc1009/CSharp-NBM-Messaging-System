@@ -15,12 +15,11 @@ namespace BusinessLayer
         private List<String> hashtags;
         private List<String> mentions;
 
-        public Tweet(String sender, String text, DateTime sentAt, char header)
+        public Tweet(String sender, String text, DateTime sentAt)
         {
             this.sender = sender;
             this.text = text;
             this.sentAt = sentAt;
-            this.header = header;
             this.decorate(2);
         }
 
