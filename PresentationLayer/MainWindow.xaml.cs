@@ -230,7 +230,23 @@ namespace PresentationLayer
                 IOSystem import = new IOSystem();
                 if(import.importFile(dialog.FileName))
                 {
-                    //import
+                    if (import.header == 'S')
+                    {
+                        if (import.sms != null)
+                            messagesFacade.addSMS(import.sms);
+                    }
+                    else if (import.header == 'T')
+                    {
+                        messagesFacade.addTweet(import.tweet);
+                    }
+                    else if (import.header == 'E')
+                    {
+                        if (import.sir != null)
+                            messagesFacade.addSIR(import.sir);
+                        else if (import.sem != null)
+                            messagesFacade.addSEM(import.sem);
+                    }
+                    updateList(Tuple.Create(true, import.header, import.sir != null));
                 }
                 else
                     System.Windows.Forms.MessageBox.Show("Message was not valid to be imported.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);

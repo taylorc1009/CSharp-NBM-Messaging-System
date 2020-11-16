@@ -16,6 +16,7 @@ namespace BusinessLayer
             this.text = text;
             this.subject = subject;
             this.decorate(3);
+            this.quarantineURLs();
         }
     }
 }

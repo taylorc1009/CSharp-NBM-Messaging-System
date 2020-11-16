@@ -52,25 +52,7 @@ namespace PresentationLayer
 
         private void senderBox_TextChanged(object s, TextChangedEventArgs e)
         {
-            if (senderBox.Text.Equals(""))
-            {
-                type = null;
-                invalidLabel.Visibility = Visibility.Hidden;
-                if (SIRCheck.IsVisible)
-                    SIRCheck.Visibility = Visibility.Collapsed;
-                if (subjectBox.IsVisible)
-                    subjectBox.Visibility = Visibility.Collapsed;
-                if (SIRDate.IsVisible)
-                    SIRDate.Visibility = Visibility.Collapsed;
-                if (sortCodeLabel.IsVisible)
-                    sortCodeLabel.Visibility = Visibility.Collapsed;
-                if (sortCodeBox.IsVisible)
-                    sortCodeBox.Visibility = Visibility.Collapsed;
-                if (natureCombo.IsVisible)
-                    natureCombo.Visibility = Visibility.Collapsed;
-                messageBox.MaxLength = 1;
-            }
-            else
+            if (!senderBox.Text.Equals(""))
             {
                 if (Utilities.isValidPhoneNumber(senderBox.Text))
                 {
@@ -104,33 +86,40 @@ namespace PresentationLayer
                     invalidLabel.Visibility = Visibility.Hidden;
                 }
                 else
-                {
                     type = null;
-                    invalidLabel.Visibility = Visibility.Visible;
-                    if (SIRCheck.IsVisible)
-                        SIRCheck.Visibility = Visibility.Collapsed;
-                    if (subjectBox.IsVisible)
-                        subjectBox.Visibility = Visibility.Collapsed;
-                    if (SIRDate.IsVisible)
-                        SIRDate.Visibility = Visibility.Collapsed;
-                    if (sortCodeLabel.IsVisible)
-                        sortCodeLabel.Visibility = Visibility.Collapsed;
-                    if (sortCodeBox.IsVisible)
-                        sortCodeBox.Visibility = Visibility.Collapsed;
-                    if (natureCombo.IsVisible)
-                        natureCombo.Visibility = Visibility.Collapsed;
-                    messageBox.MaxLength = 1;
-                }
             }
-            if (messageBox.Text.Length > messageBox.MaxLength)
+            else
+                type = null;
+
+            if (type == null)
             {
-                tooLong = true;
-                tooLongLabel.Visibility = Visibility.Visible;
+                invalidLabel.Visibility = Visibility.Visible;
+                if (SIRCheck.IsVisible)
+                    SIRCheck.Visibility = Visibility.Collapsed;
+                if (subjectBox.IsVisible)
+                    subjectBox.Visibility = Visibility.Collapsed;
+                if (SIRDate.IsVisible)
+                    SIRDate.Visibility = Visibility.Collapsed;
+                if (sortCodeLabel.IsVisible)
+                    sortCodeLabel.Visibility = Visibility.Collapsed;
+                if (sortCodeBox.IsVisible)
+                    sortCodeBox.Visibility = Visibility.Collapsed;
+                if (natureCombo.IsVisible)
+                    natureCombo.Visibility = Visibility.Collapsed;
+                messageBox.MaxLength = 1;
             }
             else
             {
-                tooLong = false;
-                tooLongLabel.Visibility = Visibility.Hidden;
+                if (messageBox.Text.Length > messageBox.MaxLength)
+                {
+                    tooLong = true;
+                    tooLongLabel.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    tooLong = false;
+                    tooLongLabel.Visibility = Visibility.Hidden;
+                }
             }
             sender = senderBox.Text;
         }

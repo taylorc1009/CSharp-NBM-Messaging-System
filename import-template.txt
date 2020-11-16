@@ -1,8 +1,8 @@
 S;E;T 			   //message type - either one, and only one, of these three here.
 sender 			   //this can be left blank and be entered in the form manually.
 true;false 		   //if the message is type 'E', determine a Significant Incident Report using 'true' or 'false' (if it isn't 'E', remove this line completely).
-subject 		   //if SIR email is 'false', provide an email subject (max 20 characters).
-dd/mm/yy:sort-code:nature  //if SIR email is 'true', provide all three of these values separated by colons.
+subject 		   //if SIR email is 'false', provide an email subject (max 20 characters), otherwise remove this line completely.
+dd/mm/yy:sort-code:nature  //if SIR email is 'true', provide all three of these values separated by colons, otherwise remove this line completely.
 message 		   //message body (max lengths: S/T = 140, E = 1028).
 
 /* Keys - ';' separates different accepted values (should not be present upon import), ':' separates attributes required in a single line.
@@ -42,5 +42,13 @@ message 		   //message body (max lengths: S/T = 140, E = 1028).
  * example@napierbank.com
  * true
  * 16/11/20:80-40-11:Intelligence
+ * This is the message body, no further information is needed after this.
+ * 
+ * Example 3 (Standard Email Message)
+ * 
+ * E
+ * example@gmail.com
+ * false
+ * This is the message subject.
  * This is the message body, no further information is needed after this.
  */

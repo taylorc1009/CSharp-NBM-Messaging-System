@@ -55,61 +55,60 @@ namespace BusinessLayer
             }
         }
 
+        private String generateID(char header, int count)
+        {
+            StringBuilder id = new StringBuilder(header + "000000000");
+            String countStr = count.ToString();
+
+            if (countStr.Length < 10)
+                for (int i = 0; i < countStr.Length; i++)
+                    id[id.Length - countStr.Length + i] = countStr[i];
+
+            return id.ToString();
+        }
+
+        public void addSMS(SMS message)
+        {
+            message.findAbbreviations(abbreviations);
+
+            sms.Add(generateID('S', sms.Count()), message);
+        }
+
         public void addSMS(String sender, String text)
         {
             SMS message = new SMS(sender, text.Trim());
 
             message.findAbbreviations(abbreviations);
 
-            StringBuilder id = new StringBuilder("S000000000");
-            String count = sms.Count().ToString();
+            sms.Add(generateID('S', sms.Count()), message);
+        }
 
-            if (count.Length < 10)
-                for (int i = 0; i < count.Length; i++)
-                    id[id.Length - count.Length + i] = count[i];
-
-            sms.Add(id.ToString(), message);
+        public void addSEM(StandardEmailMessage message)
+        {
+            SEMEmails.Add(generateID('E', SEMEmails.Count() + SIREmails.Count()), message);
         }
 
         public void addSEM(String sender, String subject, String text)
         {
             StandardEmailMessage message = new StandardEmailMessage(sender, subject.Trim(), text.Trim());
 
-            message.quarantineURLs();
+            SEMEmails.Add(generateID('E', SEMEmails.Count() + SIREmails.Count()), message);
+        }
 
-            StringBuilder id = new StringBuilder("E000000000");
-            String count = (SEMEmails.Count() + SIREmails.Count()).ToString();
-
-            if (count.Length < 10)
-                for (int i = 0; i < count.Length; i++)
-                    id[id.Length - count.Length + i] = count[i];
-
-            SEMEmails.Add(id.ToString(), message);
+        public void addSIR(SignificantIncidentReport message)
+        {
+            SIREmails.Add(generateID('E', SEMEmails.Count() + SIREmails.Count()), message);
         }
 
         public void addSIR(String sender, DateTime date, String sortCode, String nature, String text)
         {
-            /*String[] toks = date.Split('/');
-            String dateShort = toks[0] + '/' + toks[1] + '/' + toks[2].Substring(2);*/
-
             SignificantIncidentReport message = new SignificantIncidentReport(sender, date, sortCode, nature, text.Trim());
 
-            message.quarantineURLs();
-
-            StringBuilder id = new StringBuilder("E000000000");
-            String count = (SIREmails.Count() + SEMEmails.Count()).ToString();
-
-            if (count.Length < 10)
-                for (int i = 0; i < count.Length; i++)
-                    id[id.Length - count.Length + i] = count[i];
-
-            SIREmails.Add(id.ToString(), message);
+            SIREmails.Add(generateID('E', SEMEmails.Count() + SIREmails.Count()), message);
         }
 
-        public void addTweet(String sender, String text)
+        private void analyseTweet(Tweet message)
         {
-            Tweet message = new Tweet(sender, text.Trim());
-
             message.findAbbreviations(abbreviations);
             if (message.text.Contains('#'))
             {
@@ -117,17 +116,24 @@ namespace BusinessLayer
                     trending = new Dictionary<String, int>();
                 message.findHashtags(trending);
             }
-            if(message.text.Contains('@'))
+            if (message.text.Contains('@'))
                 message.findMentions();
+        }
 
-            StringBuilder id = new StringBuilder("T000000000");
-            String count = tweets.Count().ToString();
+        public void addTweet(Tweet message)
+        {
+            analyseTweet(message);
 
-            if (count.Length < 10)
-                for (int i = 0; i < count.Length; i++)
-                    id[id.Length - count.Length + i] = count[i];
+            tweets.Add(generateID('E', SEMEmails.Count() + SIREmails.Count()), message);
+        }
 
-            tweets.Add(id.ToString(), message);
+        public void addTweet(String sender, String text)
+        {
+            Tweet message = new Tweet(sender, text.Trim());
+
+            analyseTweet(message);
+
+            tweets.Add(generateID('T', tweets.Count()), message);
         }
 
         public Dictionary<String, SMS> getSMS()
