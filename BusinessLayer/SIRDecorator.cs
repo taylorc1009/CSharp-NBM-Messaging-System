@@ -11,7 +11,7 @@ namespace BusinessLayer
     {
         public SIRDecorator() { }
 
-        public override bool validate(String sender, String subject, String message, DateTime sentAt, DateTime SIRDate, String sortCode, String nature)
+        public override bool validate(String sender, String subject, String message, DateTime SIRDate, String sortCode, String nature)
         {
             string[] natures = { "ATM Theft", "Bomb Threat", "Cash Loss", "Customer Attack", "Intelligence", "Raid", "Staff Abuse", "Staff Attack", "Suspicious Incident", "Terrorism", "Theft" };
             return !String.IsNullOrEmpty(sender)

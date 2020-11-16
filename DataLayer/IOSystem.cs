@@ -31,7 +31,10 @@ namespace DataLayer
                 string[] values = contents.Split('\n');
                 char header = values[0][0];
                 if (header == 'S')
+                {
                     sms = new SMS(values[1], values[2]);
+                    return sms.validate(sms.s)
+                }
 
                 return true;
             }

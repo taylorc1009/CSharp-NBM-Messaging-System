@@ -10,7 +10,7 @@ namespace BusinessLayer
     {
         public SEMDecorator() { }
         
-        public override bool validate(String sender, String subject, String message, DateTime sentAt, DateTime SIRDate, String sortCode, String nature)
+        public override bool validate(String sender, String subject, String message, DateTime SIRDate, String sortCode, String nature)
         {
             return !String.IsNullOrEmpty(sender)
                 && Utilities.isValidEmail(sender)
