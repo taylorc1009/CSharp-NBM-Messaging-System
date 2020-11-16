@@ -10,11 +10,10 @@ namespace BusinessLayer
     {
         public SMS() { }
 
-        public SMS(String sender, String text, DateTime sentAt)
+        public SMS(String sender, String text)
         {
             this.sender = sender;
             this.text = text;
-            this.sentAt = sentAt;
             this.decorate(1);
         }
     }

@@ -16,8 +16,8 @@ namespace BusinessLayer
                 && Utilities.isValidPhoneNumber(sender)
                 && sender.Length <= 12
                 && !String.IsNullOrEmpty(message)
-                && message.Length <= 140
-                && (sentAt >= DateTime.Now.AddYears(-1) && sentAt <= DateTime.Now);
+                && message.Length <= 140;
+                //&& (sentAt >= DateTime.Now.AddYears(-1) && sentAt <= DateTime.Now);
         }
     }
 }

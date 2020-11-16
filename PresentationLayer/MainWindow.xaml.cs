@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using BusinessLayer;
+using DataLayer;
 using ListBox = System.Windows.Controls.ListBox;
 
 namespace PresentationLayer
@@ -37,23 +39,22 @@ namespace PresentationLayer
 
             if (form.sent)
             {
-                DateTime sentAt = DateTime.Now;
                 if (type.Equals("Tweet"))
                 {
-                    messagesFacade.addTweet(sender, message, sentAt);
+                    messagesFacade.addTweet(sender, message);
                     header = 'T';
                 }
                 else if (type.Equals("SMS"))
                 {
-                    messagesFacade.addSMS(sender, message, sentAt);
+                    messagesFacade.addSMS(sender, message);
                     header = 'S';
                 }
                 else if (type.Equals("Email"))
                 {
                     if (form.SIRChecked)
-                        messagesFacade.addSIR(sender, DateTime.Parse(form.date), form.sortCode, form.nature, message, sentAt);
+                        messagesFacade.addSIR(sender, DateTime.Parse(form.date), form.sortCode, form.nature, message);
                     else
-                        messagesFacade.addSEM(sender, form.subject, message, sentAt);
+                        messagesFacade.addSEM(sender, form.subject, message);
                     header = 'E';
                 }
             }
@@ -213,6 +214,26 @@ namespace PresentationLayer
                 }
                 else
                     System.Windows.Forms.MessageBox.Show("Message was not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void importMessage_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+
+            dialog.InitialDirectory = Directory.GetCurrentDirectory();
+            dialog.Filter = "Text file (*.txt)|*.txt";
+            dialog.RestoreDirectory = true;
+
+            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                IOSystem import = new IOSystem();
+                if(import.importFile(dialog.FileName))
+                {
+                    //import
+                }
+                else
+                    System.Windows.Forms.MessageBox.Show("Message was not valid to be imported.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
     }

@@ -18,8 +18,8 @@ namespace BusinessLayer
                 && !String.IsNullOrEmpty(subject)
                 && subject.Length <= 20
                 && !String.IsNullOrEmpty(message)
-                && message.Length <= 1028
-                && (sentAt >= DateTime.Now.AddYears(-1) && sentAt <= DateTime.Now);
+                && message.Length <= 1028;
+                //&& (sentAt >= DateTime.Now.AddYears(-1) && sentAt <= DateTime.Now);
         }
     }
 }

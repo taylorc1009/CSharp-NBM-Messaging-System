@@ -28,22 +28,16 @@ namespace BusinessLayer
 {
     public class MessagesFacade
     {
-
         public MessagesFacade()
         {
             importAbbreviations();
         }
 
         private Dictionary<String, SMS> sms = new Dictionary<String, SMS>();
-
         private Dictionary<String, StandardEmailMessage> SEMEmails = new Dictionary<String, StandardEmailMessage>();
-
         private Dictionary<String, SignificantIncidentReport> SIREmails = new Dictionary<String, SignificantIncidentReport>();
-
         private Dictionary<String, Tweet> tweets = new Dictionary<String, Tweet>();
-
         private Dictionary<String, String> abbreviations;
-
         private Dictionary<String, int> trending;
 
         private void importAbbreviations()
@@ -61,14 +55,9 @@ namespace BusinessLayer
             }
         }
 
-        /// <summary>
-        /// @param sender 
-        /// @param text 
-        /// @return
-        /// </summary>
-        public void addSMS(String sender, String text, DateTime sentAt)
+        public void addSMS(String sender, String text)
         {
-            SMS message = new SMS(sender, text.Trim(), sentAt);
+            SMS message = new SMS(sender, text.Trim());
 
             message.findAbbreviations(abbreviations);
 
@@ -82,14 +71,9 @@ namespace BusinessLayer
             sms.Add(id.ToString(), message);
         }
 
-        /// <summary>
-        /// @param sender 
-        /// @param text 
-        /// @return
-        /// </summary>
-        public void addSEM(String sender, String subject, String text, DateTime sentAt)
+        public void addSEM(String sender, String subject, String text)
         {
-            StandardEmailMessage message = new StandardEmailMessage(sender, subject.Trim(), text.Trim(), sentAt);
+            StandardEmailMessage message = new StandardEmailMessage(sender, subject.Trim(), text.Trim());
 
             message.quarantineURLs();
 
@@ -103,12 +87,12 @@ namespace BusinessLayer
             SEMEmails.Add(id.ToString(), message);
         }
 
-        public void addSIR(String sender, DateTime date, String sortCode, String nature, String text, DateTime sentAt)
+        public void addSIR(String sender, DateTime date, String sortCode, String nature, String text)
         {
             /*String[] toks = date.Split('/');
             String dateShort = toks[0] + '/' + toks[1] + '/' + toks[2].Substring(2);*/
 
-            SignificantIncidentReport message = new SignificantIncidentReport(sender, date, sortCode, nature, text.Trim(), sentAt);
+            SignificantIncidentReport message = new SignificantIncidentReport(sender, date, sortCode, nature, text.Trim());
 
             message.quarantineURLs();
 
@@ -122,14 +106,9 @@ namespace BusinessLayer
             SIREmails.Add(id.ToString(), message);
         }
 
-        /// <summary>
-        /// @param sender 
-        /// @param text 
-        /// @return
-        /// </summary>
-        public void addTweet(String sender, String text, DateTime sentAt)
+        public void addTweet(String sender, String text)
         {
-            Tweet message = new Tweet(sender, text.Trim(), sentAt);
+            Tweet message = new Tweet(sender, text.Trim());
 
             message.findAbbreviations(abbreviations);
             if (message.text.Contains('#'))
@@ -176,10 +155,6 @@ namespace BusinessLayer
             return trending;
         }
 
-        /// <summary>
-        /// @param file 
-        /// @return
-        /// </summary>
         public void importMessages(String file)
         {
             // TODO implement here
@@ -190,37 +165,24 @@ namespace BusinessLayer
             
         }
 
-        /// <summary>
-        /// @return
-        /// </summary>
         public void listTrending()
         {
             // TODO implement here
         }
 
-        /// <summary>
-        /// @return
-        /// </summary>
         public void listMentions()
         {
             // TODO implement here
         }
 
-        /// <summary>
-        /// @return
-        /// </summary>
         public void listSIRs()
         {
             // TODO implement here
         }
 
-        /// <summary>
-        /// @return
-        /// </summary>
         private void outputMessages()
         {
             // TODO implement here
         }
-
     }
 }

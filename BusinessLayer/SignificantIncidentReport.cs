@@ -16,13 +16,12 @@ namespace BusinessLayer
 
         public String nature { get; set; }
 
-        public SignificantIncidentReport(String sender, DateTime date, String sortCode, String nature, String text, DateTime sentAt)
+        public SignificantIncidentReport(String sender, DateTime date, String sortCode, String nature, String text)
         {
             this.sender = sender;
             this.date = date;
             this.sortCode = sortCode;
             this.nature = nature;
-            this.sentAt = sentAt;
 
             String s = "SIR " + this.date.ToString("dd/MM/yy");
             this.subject = s;

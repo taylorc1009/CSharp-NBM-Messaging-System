@@ -10,12 +10,11 @@ namespace BusinessLayer
     {
         public StandardEmailMessage() { }
 
-        public StandardEmailMessage(String sender, String subject, String text, DateTime sentAt)
+        public StandardEmailMessage(String sender, String subject, String text)
         {
             this.sender = sender;
             this.text = text;
             this.subject = subject;
-            this.sentAt = sentAt;
             this.decorate(3);
         }
     }

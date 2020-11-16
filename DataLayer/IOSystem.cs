@@ -1,14 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BusinessLayer;
 
 namespace DataLayer
 {
     public class IOSystem
     {
-        // Subject to change; VERY likely I will find another, better way of managing data as I progress
+        SMS sms;
+        Tweet tweet;
+        StandardEmailMessage sem;
+        SignificantIncidentReport sir;
 
         public IOSystem()
         {
@@ -18,19 +23,27 @@ namespace DataLayer
         /// @param file 
         /// @return
         /// </summary>
-        public void importFile(String file)
+        public bool importFile(String file)
         {
-            // TODO implement here
+            try
+            {
+                string contents = File.ReadAllText(file);
+                string[] values = contents.Split('\n');
+                char header = values[0][0];
+                if (header == 'S')
+                    sms = new SMS(values[1], values[2]);
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
         }
 
-        /// <summary>
-        /// @param file 
-        /// @return
-        /// </summary>
         public void exportFile(String file)
         {
             // TODO implement here
         }
-
     }
 }

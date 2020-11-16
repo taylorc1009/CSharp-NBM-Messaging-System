@@ -11,7 +11,7 @@ namespace BusinessLayer
     {
         public String sender { get; set; }
         public String text { get; set; }
-        public DateTime sentAt { get; set; }
+        public DateTime sentAt { get; } = DateTime.Now;
 
         protected Tuple<String, int, int> trimNonAlphabeticals(String str)
         {
