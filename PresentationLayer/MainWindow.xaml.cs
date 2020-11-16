@@ -22,153 +22,158 @@ namespace PresentationLayer
 {
     public partial class MainWindow : Window
     {
+        List<MessagesListItem> items = new List<MessagesListItem>(), sirs = new List<MessagesListItem>(), mentions = new List<MessagesListItem>();
+        Dictionary<MessagesListItem, int> trending = new Dictionary<MessagesListItem, int>();
         MessagesFacade messagesFacade;
 
         public MainWindow()
         {
             InitializeComponent();
             messagesFacade = new MessagesFacade();
+            importList();
+        }
+
+        private MessagesListItem createListItem(String id, String sender, String subject, String text, DateTime sentAt, char header)
+        {
+            String brief = makeBrief(text);
+            MessagesListItem item = new MessagesListItem(id, sender, subject, brief, sentAt, header);
+            items.Add(item);
+            return item;
+        }
+
+        public void addMessage(char type, String sender, String subject, String message, bool SIRChecked, String date, String sortCode, String nature)
+        {
+            if (type == 'T')
+            {
+                KeyValuePair<String, Tweet> tweet = messagesFacade.addTweet(sender, message);
+                MessagesListItem item = createListItem(tweet.Key, tweet.Value.sender, null, tweet.Value.text, tweet.Value.sentAt, 'T');
+                categoriseTweetItem(item, tweet.Value);
+            }
+            else if (type == 'S')
+            {
+                KeyValuePair<String, SMS> sms = messagesFacade.addSMS(sender, message);
+                createListItem(sms.Key, sms.Value.sender, null, sms.Value.text, sms.Value.sentAt, 'S');
+            }
+            else if (type == 'E')
+            {
+                if (SIRChecked)
+                {
+                    KeyValuePair<String, SignificantIncidentReport> sir = messagesFacade.addSIR(sender, DateTime.Parse(date), sortCode, nature, message);
+                    MessagesListItem item = createListItem(sir.Key, sir.Value.sender, sir.Value.subject, sir.Value.text, sir.Value.sentAt, 'E');
+                    sirs.Add(item);
+                }
+                else
+                {
+                    KeyValuePair<String, StandardEmailMessage> sem = messagesFacade.addSEM(sender, subject, message);
+                    createListItem(sem.Key, sem.Value.sender, sem.Value.subject, sem.Value.text, sem.Value.sentAt, 'E');
+                }
+            }
         }
 
         private void sendMessage_Click(object s, EventArgs e)
         {
             SendForm form = new SendForm();
             form.ShowDialog();
-            String message = form.message, sender = form.sender, type = form.type;
-            char header = '0';
+            char header = form.type;
 
             if (form.sent)
             {
-                if (type.Equals("Tweet"))
-                {
-                    messagesFacade.addTweet(sender, message);
-                    header = 'T';
-                }
-                else if (type.Equals("SMS"))
-                {
-                    messagesFacade.addSMS(sender, message);
-                    header = 'S';
-                }
-                else if (type.Equals("Email"))
-                {
-                    if (form.SIRChecked)
-                        messagesFacade.addSIR(sender, DateTime.Parse(form.date), form.sortCode, form.nature, message);
-                    else
-                        messagesFacade.addSEM(sender, form.subject, message);
-                    header = 'E';
-                }
+                addMessage(header, form.sender, form.subject, form.message, form.SIRChecked, form.date, form.sortCode, form.nature);
+                refreshList(header, form.SIRChecked);
             }
-
-            updateList(Tuple.Create(true, header, form.SIRChecked));
         }
 
-        private void updateList(Tuple<bool, char, bool> isAdd)
+        private void categoriseTweetItem(MessagesListItem item, Tweet tweet)
         {
-            List<MessagesListItem> items = new List<MessagesListItem>(), sirs = new List<MessagesListItem>(), mentions = new List<MessagesListItem>();
-            Dictionary<MessagesListItem, int> trending = new Dictionary<MessagesListItem, int>();
+            Dictionary<String, int> trendingData = messagesFacade.getTrending();
+            List<String> hashtagsData = tweet.getHashtags();
+            if (trendingData != null && hashtagsData != null)
+                foreach (KeyValuePair<String, int> hashtag in trendingData)
+                    if (hashtagsData.Contains(hashtag.Key))
+                        trending.Add(item, hashtag.Value);
 
-            if (isAdd.Item1) //this is used to add messages who's 'foreach' won't run, back into the items list
-            {
-                foreach (MessagesListItem item in fullList.Items)
-                {
-                    if (isAdd.Item2 == 'E')
-                    {
-                        if (item.subject.Text.Substring(0, 3) == "SIR" && !isAdd.Item3)
-                            items.Add(item);
-                        else if (item.subject.Text.Substring(0, 3) != "SIR" && isAdd.Item3)
-                            items.Add(item);
-                    }
-                    else if (item.type.Text[0] != isAdd.Item2)
-                        items.Add(item);
-                }
-            }
+            List<String> mentionsData = tweet.getMentions();
+            if (mentionsData != null)
+                if (mentionsData.Any())
+                    mentions.Add(item);
+        }
 
-            if ((isAdd.Item1 && isAdd.Item2 == 'S') || !isAdd.Item1) //this is used to prevent having to repopulate lists unnecessarily, and determine if we're adding a message or importing all stored messages
+        private void addDuplicateFix(MessagesListItem item, ListBox control) //if the message exists in another list, we need to create a duplicate as objects cannot have more than one parent
+        {
+            if (item.Parent != null)
             {
-                foreach (KeyValuePair<String, SMS> sms in messagesFacade.getSMS())
-                {
-                    SMS value = sms.Value;
-                    String brief = makeBrief(value.text);
-                    items.Add(new MessagesListItem(sms.Key, value.sender, null, brief, value.sentAt, isAdd.Item2));
-                }
+                char header = item.messageID[0];
+                MessagesListItem dupe = new MessagesListItem(item.messageID, item.head.Text, header == 'E' ? item.subject.Text : null, item.body.Text, item.messageDate, header);
+                control.Items.Add(dupe);
             }
-            if ((isAdd.Item1 && isAdd.Item2 == 'E' && !isAdd.Item3) || !isAdd.Item1)
+            else
+                control.Items.Add(item);
+        }
+
+        private void refreshList(char header, bool isSIR)
+        {
+            if (header == '0' || (header == 'E' && isSIR))
             {
-                foreach (KeyValuePair<String, StandardEmailMessage> sem in messagesFacade.getSEMEmails())
-                {
-                    StandardEmailMessage value = sem.Value;
-                    String brief = makeBrief(value.text);
-                    items.Add(new MessagesListItem(sem.Key, value.sender, value.subject, brief, value.sentAt, isAdd.Item2));
-                }
-            }
-            if ((isAdd.Item1 && isAdd.Item2 == 'E' && isAdd.Item3) || !isAdd.Item1)
-            {
-                foreach (KeyValuePair<String, SignificantIncidentReport> sir in messagesFacade.getSIREmails())
-                {
-                    SignificantIncidentReport value = sir.Value;
-                    String brief = makeBrief(value.text);
-                    MessagesListItem item = new MessagesListItem(sir.Key, value.sender, value.subject, brief, value.sentAt, isAdd.Item2);
-                    items.Add(item);
-                    sirs.Add(item);
-                }
                 sirs.Sort((y, x) => DateTime.Compare(x.messageDate, y.messageDate));
-
                 SIRList.Items.Clear();
                 foreach (MessagesListItem sir in sirs)
-                    SIRList.Items.Add(sir);
+                    addDuplicateFix(sir, SIRList);
             }
-            if ((isAdd.Item1 && isAdd.Item2 == 'T') || !isAdd.Item1)
+            else if (header == '0' || header == 'T')
             {
-                Dictionary<String, int> trendingData = messagesFacade.getTrending();
-                foreach (KeyValuePair<String, Tweet> tweet in messagesFacade.getTweets())
-                {
-                    Tweet value = tweet.Value;
-                    String brief = makeBrief(value.text);
-                    MessagesListItem item = new MessagesListItem(tweet.Key, value.sender, null, brief, value.sentAt, isAdd.Item2);
-                    items.Add(item);
-
-                    List<String> hashtagsData = value.getHashtags();
-                    if (trendingData != null && hashtagsData != null)
-                        foreach (KeyValuePair<String, int> hashtag in trendingData)
-                            if (hashtagsData.Contains(hashtag.Key))
-                                trending.Add(item, hashtag.Value);
-
-                    List<String> mentionsData = value.getMentions();
-                    if(mentionsData != null)
-                        if (mentionsData.Any())
-                            mentions.Add(item);
-                }
                 trendingList.Items.Clear();
-                foreach (KeyValuePair<MessagesListItem, int> item in trending.OrderBy(i => i.Value))
-                    trendingList.Items.Add(item.Key);
+                foreach (KeyValuePair<MessagesListItem, int> hashtag in trending.OrderBy(i => i.Value))
+                    addDuplicateFix(hashtag.Key, trendingList);
 
                 mentions.Sort((y, x) => DateTime.Compare(x.messageDate, y.messageDate));
                 mentionsList.Items.Clear();
                 foreach (MessagesListItem mention in mentions)
-                    mentionsList.Items.Add(mention);
+                    addDuplicateFix(mention, mentionsList);
             }
+
             items.Sort((y, x) => DateTime.Compare(x.messageDate, y.messageDate));
             fullList.Items.Clear();
-
             foreach (MessagesListItem item in items)
+                addDuplicateFix(item, fullList);
+        }
+
+        private void importList()
+        {
+            foreach (KeyValuePair<String, SMS> sms in messagesFacade.getSMS())
+                createListItem(sms.Key, sms.Value.sender, null, sms.Value.text, sms.Value.sentAt, 'S');
+            foreach (KeyValuePair<String, StandardEmailMessage> sem in messagesFacade.getSEMEmails())
+                createListItem(sem.Key, sem.Value.sender, sem.Value.subject, sem.Value.text, sem.Value.sentAt, 'E');
+            foreach (KeyValuePair<String, SignificantIncidentReport> sir in messagesFacade.getSIREmails())
             {
-                if (item.Parent != null) //if a message exists in another list, we need to create a duplicate as objects cannot have more than one parent
-                {
-                    char header = item.type.Text[0];
-                    MessagesListItem dupe = new MessagesListItem(item.messageID, item.head.Text, header == 'E' ? item.subject.Text : null, item.body.Text, item.messageDate, header);
-                    fullList.Items.Add(dupe);
-                }
-                else
-                    fullList.Items.Add(item);
+                MessagesListItem item = createListItem(sir.Key, sir.Value.sender, sir.Value.subject, sir.Value.text, sir.Value.sentAt, 'E');
+                sirs.Add(item);
             }
+            foreach (KeyValuePair<String, Tweet> tweet in messagesFacade.getTweets())
+            {
+                MessagesListItem item = new MessagesListItem(tweet.Key, tweet.Value.sender, null, tweet.Value.text, tweet.Value.sentAt, 'T');
+                categoriseTweetItem(item, tweet.Value);
+            }
+            refreshList('0', false);
         }
 
         public String makeBrief(String text)
         {
             if (text.Length > 20)
-                return text.Substring(0, 16) + "...";
+                return text.Substring(0, 17) + "...";
             return text;
         }
+
+        /* This was an attempt to allow the user to click the MessagesListItem control to open the message, but it doesn't work
+        
+        private void listBoxItem_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            ListBoxItem item = (ListBoxItem)sender;
+            ListBox parent = (ListBox)item.Parent;
+            if (parent == null || parent.SelectedIndex == -1)
+                return;
+            MessagesListItem message = (MessagesListItem)parent.SelectedItem;
+            openMessage(message.messageID);
+        }*/
 
         private void list_SelectionChanged(object sender, SelectionChangedEventArgs args)
         {
@@ -180,7 +185,11 @@ namespace PresentationLayer
 
             MessagesListItem listItem = args.AddedItems[0] as MessagesListItem;
 
-            String id = listItem.messageID;
+            openMessage(listItem.messageID);
+        }
+
+        private void openMessage(String id)
+        {
             char header = id[0];
             if (header == 'S')
             {
@@ -230,23 +239,9 @@ namespace PresentationLayer
                 IOSystem import = new IOSystem();
                 if(import.importFile(dialog.FileName))
                 {
-                    if (import.header == 'S')
-                    {
-                        if (import.sms != null)
-                            messagesFacade.addSMS(import.sms);
-                    }
-                    else if (import.header == 'T')
-                    {
-                        messagesFacade.addTweet(import.tweet);
-                    }
-                    else if (import.header == 'E')
-                    {
-                        if (import.sir != null)
-                            messagesFacade.addSIR(import.sir);
-                        else if (import.sem != null)
-                            messagesFacade.addSEM(import.sem);
-                    }
-                    updateList(Tuple.Create(true, import.header, import.sir != null));
+                    String[] values = import.getCollection();
+                    addMessage(import.header, values[0], values[1], values[2], values[3] == "1", values[4], values[5], values[6]);
+                    refreshList(import.header, values[3] == "1");
                 }
                 else
                     System.Windows.Forms.MessageBox.Show("Message was not valid to be imported.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);

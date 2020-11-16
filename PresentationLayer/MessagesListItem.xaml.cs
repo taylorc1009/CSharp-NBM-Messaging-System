@@ -15,11 +15,9 @@ using System.Windows.Shapes;
 
 namespace PresentationLayer
 {
-    /// <summary>
-    /// Interaction logic for MessagesListBox.xaml
-    /// </summary>
     public partial class MessagesListItem : UserControl
     {
+
         public DateTime messageDate { get; set; }
         public String messageID { get; set; }
 

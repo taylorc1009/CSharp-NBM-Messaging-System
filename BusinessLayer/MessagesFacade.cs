@@ -7,6 +7,8 @@
  *      export message (?)
  *      message filter (?)
  *      credentials/log-in system (?)
+ *      make list items width match parent (?)
+ *      change list item type text to bitmap and collapse in in lists other than 'fullList' (?)
  * 
  * Testing:
  *      Unit Tests
@@ -67,44 +69,33 @@ namespace BusinessLayer
             return id.ToString();
         }
 
-        public void addSMS(SMS message)
-        {
-            message.findAbbreviations(abbreviations);
-
-            sms.Add(generateID('S', sms.Count()), message);
-        }
-
-        public void addSMS(String sender, String text)
+        public KeyValuePair<String, SMS> addSMS(String sender, String text)
         {
             SMS message = new SMS(sender, text.Trim());
 
             message.findAbbreviations(abbreviations);
 
-            sms.Add(generateID('S', sms.Count()), message);
+            String id = generateID('S', sms.Count());
+            sms.Add(id, message);
+            return new KeyValuePair<String, SMS>(id, sms[id]);
         }
 
-        public void addSEM(StandardEmailMessage message)
-        {
-            SEMEmails.Add(generateID('E', SEMEmails.Count() + SIREmails.Count()), message);
-        }
-
-        public void addSEM(String sender, String subject, String text)
+        public KeyValuePair<String, StandardEmailMessage> addSEM(String sender, String subject, String text)
         {
             StandardEmailMessage message = new StandardEmailMessage(sender, subject.Trim(), text.Trim());
-
-            SEMEmails.Add(generateID('E', SEMEmails.Count() + SIREmails.Count()), message);
+            
+            String id = generateID('E', SEMEmails.Count() + SIREmails.Count());
+            SEMEmails.Add(id, message);
+            return new KeyValuePair<String, StandardEmailMessage>(id, SEMEmails[id]);
         }
 
-        public void addSIR(SignificantIncidentReport message)
-        {
-            SIREmails.Add(generateID('E', SEMEmails.Count() + SIREmails.Count()), message);
-        }
-
-        public void addSIR(String sender, DateTime date, String sortCode, String nature, String text)
+        public KeyValuePair<String, SignificantIncidentReport> addSIR(String sender, DateTime date, String sortCode, String nature, String text)
         {
             SignificantIncidentReport message = new SignificantIncidentReport(sender, date, sortCode, nature, text.Trim());
 
-            SIREmails.Add(generateID('E', SEMEmails.Count() + SIREmails.Count()), message);
+            String id = generateID('E', SEMEmails.Count() + SIREmails.Count());
+            SIREmails.Add(id, message);
+            return new KeyValuePair<String, SignificantIncidentReport>(id, SIREmails[id]);
         }
 
         private void analyseTweet(Tweet message)
@@ -120,20 +111,15 @@ namespace BusinessLayer
                 message.findMentions();
         }
 
-        public void addTweet(Tweet message)
-        {
-            analyseTweet(message);
-
-            tweets.Add(generateID('E', SEMEmails.Count() + SIREmails.Count()), message);
-        }
-
-        public void addTweet(String sender, String text)
+        public KeyValuePair<String, Tweet> addTweet(String sender, String text)
         {
             Tweet message = new Tweet(sender, text.Trim());
 
             analyseTweet(message);
 
-            tweets.Add(generateID('T', tweets.Count()), message);
+            String id = generateID('T', tweets.Count());
+            tweets.Add(id, message);
+            return new KeyValuePair<String, Tweet>(id, tweets[id]);
         }
 
         public Dictionary<String, SMS> getSMS()
@@ -168,7 +154,7 @@ namespace BusinessLayer
 
         public void listAll()
         {
-            
+            // TODO implement here
         }
 
         public void listTrending()

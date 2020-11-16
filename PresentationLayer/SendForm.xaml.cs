@@ -11,12 +11,12 @@ namespace PresentationLayer
     public partial class SendForm : Window
     {
         public string sender { get; set; }
-        public string type { get; set; }
+        public char type { get; set; }
         public string message { get; set; }
-        public string subject { get; set; }
-        public string date { get; set; }
-        public string sortCode { get; set; }
-        public string nature { get; set; }
+        public string subject { get; set; } = String.Empty;
+        public string date { get; set; } = String.Empty;
+        public string sortCode { get; set; } = String.Empty;
+        public string nature { get; set; } = String.Empty;
         public bool SIRChecked { get; set; }
         public bool sent { get; set; }
 
@@ -56,21 +56,21 @@ namespace PresentationLayer
             {
                 if (Utilities.isValidPhoneNumber(senderBox.Text))
                 {
-                    type = "SMS";
+                    type = 'S';
                     senderBox.MaxLength = 12;
                     messageBox.MaxLength = 140;
                     invalidLabel.Visibility = Visibility.Hidden;
                 }
                 else if (Utilities.isValidTwitter(senderBox.Text))
                 {
-                    type = "Tweet";
+                    type = 'T';
                     senderBox.MaxLength = 16;
                     messageBox.MaxLength = 140;
                     invalidLabel.Visibility = Visibility.Hidden;
                 }
                 else if (Utilities.isValidEmail(senderBox.Text))
                 {
-                    type = "Email";
+                    type = 'E';
                     senderBox.MaxLength = 40;
                     messageBox.MaxLength = 1028;
                     SIRCheck.Visibility = Visibility.Visible;
@@ -86,12 +86,12 @@ namespace PresentationLayer
                     invalidLabel.Visibility = Visibility.Hidden;
                 }
                 else
-                    type = null;
+                    type = '0';
             }
             else
-                type = null;
+                type = '0';
 
-            if (type == null)
+            if (type == '0')
             {
                 invalidLabel.Visibility = Visibility.Visible;
                 if (SIRCheck.IsVisible)
@@ -175,51 +175,52 @@ namespace PresentationLayer
                 validSort = false;
                 invalidSortLabel.Visibility = Visibility.Visible;
             }
-
         }
 
         private void sendButton_Click(object s, EventArgs e)
         {
-            if (sender != null && !sender.Equals("") && type != null)
+            if (sender != null && !sender.Equals("") && type != '0')
             {
                 if (!tooLong)
                 {
-                    if (type == "Email")
+                    if (!messageBox.Text.Equals(""))
                     {
-                        if (SIRChecked)
+                        if (type == 'E')
                         {
-                            if (SIRDate.Text.Equals("") || sortCodeBox.Text.Equals("") || natureCombo.SelectedItem == null)
+                            if (SIRChecked)
                             {
-                                System.Windows.Forms.MessageBox.Show("SIRs must have a:\n\n1. Date of the incident\n2. Branch sort code\n3. Nature of the incident", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                                return;
+                                if (SIRDate.Text.Equals("") || sortCodeBox.Text.Equals("") || natureCombo.SelectedItem == null)
+                                {
+                                    System.Windows.Forms.MessageBox.Show("SIRs must have a:\n\n1. Date of the incident\n2. Branch sort code\n3. Nature of the incident", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                    return;
+                                }
+                                else if (!validSort)
+                                {
+                                    System.Windows.Forms.MessageBox.Show("Branch sort code is invalid.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                    return;
+                                }
+                                date = SIRDate.Text;
+                                sortCode = sortCodeBox.Text;
+                                nature = natureCombo.SelectedItem.ToString();
                             }
-                            else if (!validSort)
+                            else
                             {
-                                System.Windows.Forms.MessageBox.Show("Branch sort code is invalid.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                                return;
+                                if (subjectBox.Text.Equals(""))
+                                {
+                                    System.Windows.Forms.MessageBox.Show("Please give the recipient a short subject description.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                    return;
+                                }
+                                subject = subjectBox.Text;
                             }
-                            date = SIRDate.Text;
-                            sortCode = sortCodeBox.Text;
-                            nature = natureCombo.SelectedItem.ToString();
                         }
-                        else
-                        {
-                            if (subjectBox.Text.Equals(""))
-                            {
-                                System.Windows.Forms.MessageBox.Show("Please give the recipient a short subject description.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                                return;
-                            }
-                            subject = subjectBox.Text;
-                        }
+                        message = messageBox.Text;
+                        sent = true;
+                        if (!SIRCheck.IsVisible)
+                            SIRChecked = false;
+                        Close();
                     }
-                    if (messageBox.Text.Equals(""))
-                    {
+                    else
                         System.Windows.Forms.MessageBox.Show("Cannot send an empty message.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return;
-                    }
-                    message = messageBox.Text;
-                    sent = true;
-                    Close();
                 }
                 else
                     System.Windows.Forms.MessageBox.Show("Message too long for the current message type.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);

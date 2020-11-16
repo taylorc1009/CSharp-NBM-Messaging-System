@@ -8,6 +8,13 @@
         Title="Napier Bank Messaging" Height="360.68" Width="933.657">
     <Grid>
         <ListBox x:Name="fullList" HorizontalAlignment="Left" Height="278" Margin="10,36,0,0" VerticalAlignment="Top" Width="179" SelectionChanged="list_SelectionChanged"/>
+        <!-- XAML portion of click MessagesListItem to open message
+        <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <EventSetter Event="MouseLeftButtonUp" Handler="listBoxItem_MouseLeftButtonUp"/>
+                </Style>
+            </ListBox.ItemContainerStyle>
+        </ListBox>-->
         <Label x:Name="fullLabel" Content="All Messages" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
         <ListBox x:Name="SIRList" HorizontalAlignment="Left" Height="278" Margin="211,36,0,0" VerticalAlignment="Top" Width="179" SelectionChanged="list_SelectionChanged"/>
         <Label x:Name="SIRLabel" Content="Significant Incident Reports" HorizontalAlignment="Left" Margin="211,10,0,0" VerticalAlignment="Top"/>

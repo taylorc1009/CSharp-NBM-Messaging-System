@@ -6,6 +6,7 @@ namespace DataLayer
 {
     public class IOSystem
     {
+        //we need to put the file contents in an instance of their class, as without which we'd need a static 'validate' method which we cannot have with a decorator
         public SMS sms { get; set; }
         public Tweet tweet { get; set; }
         public StandardEmailMessage sem { get; set; }
@@ -48,6 +49,27 @@ namespace DataLayer
             catch (Exception e)
             {
                 return false;
+            }
+        }
+
+        public String[] getCollection()
+        {
+            switch (header)
+            {
+                case 'S':
+                    return new String[] { sms.sender, String.Empty, sms.text, "0", String.Empty, String.Empty, String.Empty };
+                case 'T':
+                    return new String[] { tweet.sender, String.Empty, tweet.text, "0", String.Empty, String.Empty, String.Empty };
+                case 'E':
+                    if (sir != null)
+                    {
+                        String[] text = sir.text.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries); //used to elimitae the generated lines so they aren't generated twice
+                        return new String[] { sir.sender, String.Empty, String.Join(Environment.NewLine, text, 2, text.Length - 2), "1", sir.date.ToString(), sir.sortCode, sir.nature };
+                    }
+                    else
+                        return new String[] { sem.sender, sem.subject, sir.text, "0", sir.date.ToString(), sir.sortCode, sir.nature };
+                default:
+                    return null;
             }
         }
 
