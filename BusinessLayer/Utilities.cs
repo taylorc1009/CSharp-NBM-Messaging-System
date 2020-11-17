@@ -11,7 +11,8 @@ namespace BusinessLayer
     {
         public static bool isValidPhoneNumber(string number)
         {
-            return number[0] == '+' && int.TryParse(number.Substring(1), out _);
+            String sub = number.Substring(1);
+            return number[0] == '+' && int.TryParse(sub, out _) && sub.Length <= 11;
         }
 
         public static bool isValidEmail(string email)

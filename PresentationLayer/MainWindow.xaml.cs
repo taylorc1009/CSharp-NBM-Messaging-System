@@ -41,17 +41,21 @@ namespace PresentationLayer
             return item;
         }
 
-        public void addMessage(char type, String sender, String subject, String message, bool SIRChecked, String date, String sortCode, String nature)
+        public bool addMessage(char type, String sender, String subject, String message, bool SIRChecked, String date, String sortCode, String nature)
         {
             if (type == 'T')
             {
                 KeyValuePair<String, Tweet> tweet = messagesFacade.addTweet(sender, message);
+                if (tweet.Key == null)
+                    return false;
                 MessagesListItem item = createListItem(tweet.Key, tweet.Value.sender, null, tweet.Value.text, tweet.Value.sentAt, 'T');
                 categoriseTweetItem(item, tweet.Value);
             }
             else if (type == 'S')
             {
                 KeyValuePair<String, SMS> sms = messagesFacade.addSMS(sender, message);
+                if (sms.Key == null)
+                    return false;
                 createListItem(sms.Key, sms.Value.sender, null, sms.Value.text, sms.Value.sentAt, 'S');
             }
             else if (type == 'E')
@@ -59,27 +63,52 @@ namespace PresentationLayer
                 if (SIRChecked)
                 {
                     KeyValuePair<String, SignificantIncidentReport> sir = messagesFacade.addSIR(sender, DateTime.Parse(date), sortCode, nature, message);
+                    if (sir.Key == null)
+                        return false;
                     MessagesListItem item = createListItem(sir.Key, sir.Value.sender, sir.Value.subject, sir.Value.text, sir.Value.sentAt, 'E');
                     sirs.Add(item);
                 }
                 else
                 {
                     KeyValuePair<String, StandardEmailMessage> sem = messagesFacade.addSEM(sender, subject, message);
+                    if (sem.Key == null)
+                        return false;
                     createListItem(sem.Key, sem.Value.sender, sem.Value.subject, sem.Value.text, sem.Value.sentAt, 'E');
                 }
             }
+            return true;
         }
 
         private void sendMessage_Click(object s, EventArgs e)
         {
-            SendForm form = new SendForm();
-            form.ShowDialog();
-            char header = form.type;
+            String sender = String.Empty, subject = String.Empty, message = String.Empty, date = String.Empty, sortCode = String.Empty, nature = String.Empty;
+            bool SIRChecked = false, valid = false;
 
-            if (form.sent)
+            while (!valid)
             {
-                addMessage(header, form.sender, form.subject, form.message, form.SIRChecked, form.date, form.sortCode, form.nature);
-                refreshList(header, form.SIRChecked);
+                SendForm form = new SendForm(sender, subject, message, SIRChecked, date, sortCode, nature);
+                form.ShowDialog();
+                char header = form.type;
+
+                if (form.sent)
+                {
+                    valid = addMessage(header, form.sender, form.subject, form.message, form.SIRChecked, form.date, form.sortCode, form.nature);
+                    if (!valid)
+                    {
+                        sender = form.sender;
+                        subject = form.subject;
+                        message = form.message;
+                        SIRChecked = form.SIRChecked;
+                        date = form.date;
+                        sortCode = form.sortCode;
+                        nature = form.nature;
+                        System.Windows.Forms.MessageBox.Show("Message was not valid to be sent.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                    else
+                        refreshList(header, form.SIRChecked);
+                }
+                else
+                    valid = true;
             }
         }
 
@@ -237,12 +266,10 @@ namespace PresentationLayer
             if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 IOSystem import = new IOSystem();
-                if(import.importFile(dialog.FileName))
-                {
-                    String[] values = import.getCollection();
-                    addMessage(import.header, values[0], values[1], values[2], values[3] == "1", values[4], values[5], values[6]);
-                    refreshList(import.header, values[3] == "1");
-                }
+                String[] values = import.importFile(dialog.FileName);
+                if (values != null)
+                    if(addMessage(import.header, values[0], values[1], values[2], values[3] == "true", values[4], values[5], values[6]))
+                        refreshList(import.header, values[3] == "true");
                 else
                     System.Windows.Forms.MessageBox.Show("Message was not valid to be imported.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }

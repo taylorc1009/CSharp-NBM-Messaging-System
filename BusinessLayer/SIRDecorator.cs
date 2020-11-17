@@ -20,6 +20,7 @@ namespace BusinessLayer
                 /*&& !String.IsNullOrEmpty(subject)
                 && (subject.Substring(0, 4) == "SIR " && DateTime.TryParseExact(subject.Substring(4), "dd/MM/yy", CultureInfo.InvariantCulture, DateTimeStyles.None, out _))*/
                 && !String.IsNullOrEmpty(message)
+                && message.Length <= 1028
                 //&& checkSIRStandard(message)
                 //&& (sentAt >= DateTime.Now.AddYears(-1) && sentAt <= DateTime.Now)
                 && (SIRDate >= DateTime.Now.AddYears(-1) && SIRDate <= DateTime.Now)

@@ -17,22 +17,19 @@ namespace PresentationLayer
         public string date { get; set; } = String.Empty;
         public string sortCode { get; set; } = String.Empty;
         public string nature { get; set; } = String.Empty;
-        public bool SIRChecked { get; set; }
-        public bool sent { get; set; }
+        public bool SIRChecked { get; set; } = false;
+        public bool sent { get; set; } = false;
 
         bool tooLong = false;
         bool validSort = true;
 
-        public SendForm()
+        public SendForm(String pSender, String pSubject, String pMessage, bool pSIRChecked, String pDate, String pSortCode, String pNature)
         {
             InitializeComponent();
 
             //this is initially set to 1 because 0 means infinite length
             //I set it to 1 so that a message couldn't be entered without identifying the sender, thus the type of message, first
             messageBox.MaxLength = 1;
-
-            SIRChecked = false;
-            sent = false;
 
             SIRDate.DisplayDateStart = DateTime.Now.AddYears(-1);
             SIRDate.DisplayDateEnd = DateTime.Now;
@@ -48,6 +45,30 @@ namespace PresentationLayer
             natureCombo.Items.Insert(8, "Suspicious Incident");
             natureCombo.Items.Insert(9, "Terrorism");
             natureCombo.Items.Insert(10, "Theft");
+
+            //reopens an invalid message to be edited
+            if (!String.IsNullOrEmpty(pSender))
+                senderBox.Text = pSender;
+            if (!String.IsNullOrEmpty(pSubject))
+                subjectBox.Text = pSubject;
+            if (!String.IsNullOrEmpty(pMessage))
+                messageBox.Text = pMessage;
+            if (!String.IsNullOrEmpty(pDate))
+                SIRDate.SelectedDate = DateTime.Parse(pDate);
+            if (!String.IsNullOrEmpty(pSortCode))
+                sortCodeBox.Text = pSortCode;
+            if (!String.IsNullOrEmpty(pNature))
+                natureCombo.SelectedItem = pNature;
+            if (pSIRChecked)
+            {
+                SIRCheck.IsChecked = pSIRChecked;
+                SIRChecked = pSIRChecked;
+                subjectBox.Visibility = Visibility.Collapsed;
+                SIRDate.Visibility = Visibility.Visible;
+                sortCodeLabel.Visibility = Visibility.Visible;
+                sortCodeBox.Visibility = Visibility.Visible;
+                natureCombo.Visibility = Visibility.Visible;
+            }
         }
 
         private void senderBox_TextChanged(object s, TextChangedEventArgs e)
@@ -93,6 +114,7 @@ namespace PresentationLayer
 
             if (type == '0')
             {
+                senderBox.MaxLength = 40;
                 invalidLabel.Visibility = Visibility.Visible;
                 if (SIRCheck.IsVisible)
                     SIRCheck.Visibility = Visibility.Collapsed;

@@ -4,6 +4,8 @@
  *      decorator
  *      JSON serialization
  *      import messages
+ *      search query (?)
+ *      Fins a better way (using classes, like the old way) to import message (?)
  *      export message (?)
  *      message filter (?)
  *      credentials/log-in system (?)
@@ -23,8 +25,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Windows.Forms;
 using System.IO;
+using Newtonsoft.Json;
+using DataLayer;
 
 namespace BusinessLayer
 {
@@ -75,27 +78,42 @@ namespace BusinessLayer
 
             message.findAbbreviations(abbreviations);
 
-            String id = generateID('S', sms.Count());
-            sms.Add(id, message);
-            return new KeyValuePair<String, SMS>(id, sms[id]);
+            if (message.validate(message.sender, null, text, DateTime.MinValue, null, null))
+            {
+                String id = generateID('S', sms.Count());
+                sms.Add(id, message);
+                return new KeyValuePair<String, SMS>(id, sms[id]);
+            }
+            else
+                return new KeyValuePair<string, SMS>();
         }
 
         public KeyValuePair<String, StandardEmailMessage> addSEM(String sender, String subject, String text)
         {
             StandardEmailMessage message = new StandardEmailMessage(sender, subject.Trim(), text.Trim());
-            
-            String id = generateID('E', SEMEmails.Count() + SIREmails.Count());
-            SEMEmails.Add(id, message);
-            return new KeyValuePair<String, StandardEmailMessage>(id, SEMEmails[id]);
+
+            if (message.validate(message.sender, message.subject, text, DateTime.MinValue, null, null))
+            {
+                String id = generateID('E', SEMEmails.Count() + SIREmails.Count());
+                SEMEmails.Add(id, message);
+                return new KeyValuePair<String, StandardEmailMessage>(id, SEMEmails[id]);
+            }
+            else
+                return new KeyValuePair<String, StandardEmailMessage>();
         }
 
         public KeyValuePair<String, SignificantIncidentReport> addSIR(String sender, DateTime date, String sortCode, String nature, String text)
         {
             SignificantIncidentReport message = new SignificantIncidentReport(sender, date, sortCode, nature, text.Trim());
 
-            String id = generateID('E', SEMEmails.Count() + SIREmails.Count());
-            SIREmails.Add(id, message);
-            return new KeyValuePair<String, SignificantIncidentReport>(id, SIREmails[id]);
+            if (message.validate(message.sender, null, text, message.date, message.sortCode, message.nature))
+            {
+                String id = generateID('E', SEMEmails.Count() + SIREmails.Count());
+                SIREmails.Add(id, message);
+                return new KeyValuePair<String, SignificantIncidentReport>(id, SIREmails[id]);
+            }
+            else
+                return new KeyValuePair<String, SignificantIncidentReport>();
         }
 
         private void analyseTweet(Tweet message)
@@ -117,9 +135,14 @@ namespace BusinessLayer
 
             analyseTweet(message);
 
-            String id = generateID('T', tweets.Count());
-            tweets.Add(id, message);
-            return new KeyValuePair<String, Tweet>(id, tweets[id]);
+            if (message.validate(message.sender, null, text, DateTime.MinValue, null, null))
+            {
+                String id = generateID('T', tweets.Count());
+                tweets.Add(id, message);
+                return new KeyValuePair<String, Tweet>(id, tweets[id]);
+            }
+            else
+                return new KeyValuePair<String, Tweet>();
         }
 
         public Dictionary<String, SMS> getSMS()
@@ -174,7 +197,7 @@ namespace BusinessLayer
 
         private void outputMessages()
         {
-            // TODO implement here
+            //IOSystem.
         }
     }
 }
