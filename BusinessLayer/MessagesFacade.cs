@@ -1,9 +1,6 @@
 /* TODO List
  * 
  * Implement:
- *      decorator
- *      JSON serialization
- *      import messages
  *      search query (?)
  *      Fins a better way (using classes, like the old way) to import message (?)
  *      export message (?)

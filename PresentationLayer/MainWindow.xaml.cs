@@ -189,8 +189,8 @@ namespace PresentationLayer
 
         public String makeBrief(String text)
         {
-            if (text.Length > 20)
-                return text.Substring(0, 17) + "...";
+            if (text.Length > 40)
+                return text.Substring(0, 37) + "...";
             return text;
         }
 
