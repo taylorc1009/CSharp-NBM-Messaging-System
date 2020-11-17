@@ -1,14 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Windows.Forms;
+using Newtonsoft.Json;
 
 namespace DataLayer
 {
     public class IOSystem
     {
-        /*public SMS sms { get; set; }
-        public Tweet tweet { get; set; }
-        public StandardEmailMessage sem { get; set; }
-        public SignificantIncidentReport sir { get; set; }*/
         public char header { get; set; }
 
         public IOSystem() { }
@@ -36,29 +35,6 @@ namespace DataLayer
                     default:
                         return null;
                 }
-                /*switch (header) {
-                    case 'S':
-                        sms = new SMS(values[1], values[2]);
-                        return sms.validate(sms.sender, String.Empty, sms.text, DateTime.MinValue, String.Empty, String.Empty);
-                    case 'T':
-                        tweet = new Tweet(values[1], values[2]);
-                        return tweet.validate(tweet.sender, String.Empty, tweet.text, DateTime.MinValue, String.Empty, String.Empty);
-                    case 'E':
-                        if (values[2] == "true")
-                        {
-                            String[] sirData = values[3].Split(':');
-                            sir = new SignificantIncidentReport(values[1], DateTime.Parse(sirData[0]), sirData[1], sirData[2], values[4]);
-                            return sir.validate(sir.sender, sir.subject, sir.text, sir.date, sir.sortCode, sir.nature);
-                        }
-                        else if (values[2] == "false")
-                        {
-                            sem = new StandardEmailMessage(values[1], values[3], values[4]);
-                            return sem.validate(sem.sender, sem.subject, sem.text, DateTime.MinValue, String.Empty, String.Empty);
-                        }
-                        return false;
-                    default:
-                        return false;
-                }*/
             }
             catch (Exception e)
             {
@@ -66,30 +42,38 @@ namespace DataLayer
             }
         }
 
-        /*public String[] getCollection()
+        public static void exportMessages(string[] output)
         {
-            switch (header)
-            {
-                case 'S':
-                    return new String[] { sms.sender, String.Empty, sms.text, "0", String.Empty, String.Empty, String.Empty };
-                case 'T':
-                    return new String[] { tweet.sender, String.Empty, tweet.text, "0", String.Empty, String.Empty, String.Empty };
-                case 'E':
-                    if (sir != null)
-                    {
-                        String[] text = sir.text.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries); //used to eliminate the generated lines so they aren't generated twice
-                        return new String[] { sir.sender, String.Empty, String.Join(Environment.NewLine, text, 2, text.Length - 2), "1", sir.date.ToString(), sir.sortCode, sir.nature };
-                    }
-                    else
-                        return new String[] { sem.sender, sem.subject, sir.text, "0", sir.date.ToString(), sir.sortCode, sir.nature };
-                default:
-                    return null;
-            }
-        }*/
+            JsonSerializer serializer = new JsonSerializer();
+            serializer.Formatting = Formatting.Indented;
+            serializer.NullValueHandling = NullValueHandling.Ignore;
 
-        public void exportFile(String file)
+            using (StreamWriter stream = new StreamWriter(Directory.GetCurrentDirectory() + "/messages.json"))
+            using (JsonWriter writer = new JsonTextWriter(stream))
+            {
+                serializer.Serialize(writer, output);
+            }
+        }
+
+        public static String[] importMessages()
         {
-            // TODO implement here
+            String[] import = null;
+            JsonSerializer deserializer = new JsonSerializer();
+            deserializer.Formatting = Formatting.Indented;
+            deserializer.NullValueHandling = NullValueHandling.Ignore;
+
+            try
+            {
+                using (StreamReader reader = new StreamReader(Directory.GetCurrentDirectory() + "/messages.json"))
+                {
+                    import = (String[])deserializer.Deserialize(reader, typeof(String[]));
+                }
+                return import;
+            }
+            catch(FileNotFoundException e)
+            {
+                return null;
+            }
         }
     }
 }

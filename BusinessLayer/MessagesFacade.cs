@@ -37,7 +37,7 @@ namespace BusinessLayer
         {
             importAbbreviations();
         }
-
+        
         private Dictionary<String, SMS> sms = new Dictionary<String, SMS>();
         private Dictionary<String, StandardEmailMessage> SEMEmails = new Dictionary<String, StandardEmailMessage>();
         private Dictionary<String, SignificantIncidentReport> SIREmails = new Dictionary<String, SignificantIncidentReport>();
@@ -170,34 +170,23 @@ namespace BusinessLayer
             return trending;
         }
 
-        public void importMessages(String file)
+        public void importMessages()
         {
-            // TODO implement here
+            String[] import = IOSystem.importMessages();
+            if(import != null)
+            {
+                sms = JsonConvert.DeserializeAnonymousType(import[0], sms);
+                tweets = JsonConvert.DeserializeAnonymousType(import[1], tweets);
+                SEMEmails = JsonConvert.DeserializeAnonymousType(import[2], SEMEmails);
+                SIREmails = JsonConvert.DeserializeAnonymousType(import[3], SIREmails);
+                trending = JsonConvert.DeserializeAnonymousType(import[4], trending);
+            }
         }
 
-        public void listAll()
+        public void outputMessages()
         {
-            // TODO implement here
-        }
-
-        public void listTrending()
-        {
-            // TODO implement here
-        }
-
-        public void listMentions()
-        {
-            // TODO implement here
-        }
-
-        public void listSIRs()
-        {
-            // TODO implement here
-        }
-
-        private void outputMessages()
-        {
-            //IOSystem.
+            string[] output = { JsonConvert.SerializeObject(sms), JsonConvert.SerializeObject(tweets), JsonConvert.SerializeObject(SEMEmails), JsonConvert.SerializeObject(SIREmails), JsonConvert.SerializeObject(trending) };
+            IOSystem.exportMessages(output);
         }
     }
 }

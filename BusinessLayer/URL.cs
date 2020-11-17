@@ -8,10 +8,7 @@ namespace BusinessLayer
 {
     public class URL
     {
-
-        public URL()
-        {
-        }
+        public URL() { }
 
         public String intent { get; set; }
 

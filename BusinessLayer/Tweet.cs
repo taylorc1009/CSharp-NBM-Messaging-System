@@ -12,8 +12,9 @@ namespace BusinessLayer
     {
         public Tweet() { }
 
-        private List<String> hashtags;
-        private List<String> mentions;
+        //attributes are public for serialization purposes
+        public List<String> hashtags;
+        public List<String> mentions;
 
         public Tweet(String sender, String text)
         {
@@ -46,15 +47,15 @@ namespace BusinessLayer
                     while (Regex.IsMatch(tokenized[i][s + e].ToString(), @"[a-z0-9]", RegexOptions.IgnoreCase) && e < tokenized[i].Length - 1)
                         e++;
 
-                    String temp = tokenized[i].Substring(s, e).ToLower();
-                    if (Regex.IsMatch(temp, @"#([a-z0-9]+)", RegexOptions.IgnoreCase))
+                    String hashtag = tokenized[i].Substring(s, e + 1).ToLower();
+                    if (Regex.IsMatch(hashtag, @"#([a-z0-9]+)", RegexOptions.IgnoreCase))
                     {
                         if (hashtags == null)
                             hashtags = new List<String>();
-                        hashtags.Add(temp);
-                        if (!trending.ContainsKey(temp))
-                            trending.Add(temp, 0);
-                        trending[temp]++;
+                        hashtags.Add(hashtag);
+                        if (!trending.ContainsKey(hashtag))
+                            trending.Add(hashtag, 0);
+                        trending[hashtag]++;
                     }
                 }
             }
@@ -74,12 +75,12 @@ namespace BusinessLayer
                     while (Regex.IsMatch(tokenized[i][s + e].ToString(), @"[a-z0-9]", RegexOptions.IgnoreCase) && e < tokenized[i].Length - 1)
                         e++;
 
-                    String temp = tokenized[i].Substring(s, e).ToLower();
-                    if (Regex.IsMatch(tokenized[i].Substring(s, e), @"@([a-z0-9]+)", RegexOptions.IgnoreCase))
+                    String mention = tokenized[i].Substring(s, e + 1).ToLower();
+                    if (Regex.IsMatch(mention, @"@([a-z0-9]+)", RegexOptions.IgnoreCase))
                     {
                         if (mentions == null)
                             mentions = new List<String>();
-                        mentions.Add(temp);
+                        mentions.Add(mention);
                     }
                 }
             }

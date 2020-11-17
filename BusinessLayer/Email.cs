@@ -12,7 +12,8 @@ namespace BusinessLayer
 
         public String subject { get; set; }
 
-        private Dictionary<int, URL> urlsQuarantined;
+        //attribute is public for serialization purposes
+        public Dictionary<int, URL> urlsQuarantined;
 
         public void quarantineURLs()
         {

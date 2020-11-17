@@ -30,6 +30,7 @@ namespace PresentationLayer
         {
             InitializeComponent();
             messagesFacade = new MessagesFacade();
+            messagesFacade.importMessages();
             importList();
         }
 
@@ -76,6 +77,7 @@ namespace PresentationLayer
                     createListItem(sem.Key, sem.Value.sender, sem.Value.subject, sem.Value.text, sem.Value.sentAt, 'E');
                 }
             }
+            messagesFacade.outputMessages();
             return true;
         }
 
@@ -115,13 +117,13 @@ namespace PresentationLayer
         private void categoriseTweetItem(MessagesListItem item, Tweet tweet)
         {
             Dictionary<String, int> trendingData = messagesFacade.getTrending();
-            List<String> hashtagsData = tweet.getHashtags();
+            List<String> hashtagsData = tweet.hashtags;
             if (trendingData != null && hashtagsData != null)
                 foreach (KeyValuePair<String, int> hashtag in trendingData)
                     if (hashtagsData.Contains(hashtag.Key))
                         trending.Add(item, hashtag.Value);
 
-            List<String> mentionsData = tweet.getMentions();
+            List<String> mentionsData = tweet.mentions;
             if (mentionsData != null)
                 if (mentionsData.Any())
                     mentions.Add(item);
@@ -148,7 +150,7 @@ namespace PresentationLayer
                 foreach (MessagesListItem sir in sirs)
                     addDuplicateFix(sir, SIRList);
             }
-            else if (header == '0' || header == 'T')
+            if (header == '0' || header == 'T')
             {
                 trendingList.Items.Clear();
                 foreach (KeyValuePair<MessagesListItem, int> hashtag in trending.OrderBy(i => i.Value))
@@ -179,7 +181,7 @@ namespace PresentationLayer
             }
             foreach (KeyValuePair<String, Tweet> tweet in messagesFacade.getTweets())
             {
-                MessagesListItem item = new MessagesListItem(tweet.Key, tweet.Value.sender, null, tweet.Value.text, tweet.Value.sentAt, 'T');
+                MessagesListItem item = createListItem(tweet.Key, tweet.Value.sender, null, tweet.Value.text, tweet.Value.sentAt, 'T');
                 categoriseTweetItem(item, tweet.Value);
             }
             refreshList('0', false);

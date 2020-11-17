@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,6 +32,9 @@ namespace PresentationLayer
             {
                 subject.Visibility = Visibility.Visible;
                 subject.Text = sub;
+                /*grid.RowDefinitions.ElementAt(grid.Children.IndexOf(type)).
+                grid.Children[grid.Children.IndexOf(type)].*/
+                type.SetValue(Grid.RowSpanProperty, 4);
             }
             body.Text = breif;
             messageDate = dateTime;
@@ -38,13 +42,13 @@ namespace PresentationLayer
             switch(header)
             {
                 case 'S':
-                    type.Text = "SMS";
+                    type.Source = new BitmapImage(new Uri(Directory.GetCurrentDirectory() + "/image-cache/sms.png", UriKind.Relative));
                     break;
                 case 'E':
-                    type.Text = "Email";
+                    type.Source = new BitmapImage(new Uri(Directory.GetCurrentDirectory() + "/image-cache/email.png", UriKind.Relative));
                     break;
                 case 'T':
-                    type.Text = "Tweet";
+                    type.Source = new BitmapImage(new Uri(Directory.GetCurrentDirectory() + "/image-cache/twitter.png", UriKind.Relative));
                     break;
             }
         }
