@@ -30,7 +30,6 @@ namespace PresentationLayer
         {
             InitializeComponent();
             messagesFacade = new MessagesFacade();
-            messagesFacade.importMessages();
             importList();
         }
 

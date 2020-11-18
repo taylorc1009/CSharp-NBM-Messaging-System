@@ -33,6 +33,7 @@ namespace BusinessLayer
         public MessagesFacade()
         {
             importAbbreviations();
+            importMessages();
         }
         
         private Dictionary<String, SMS> sms = new Dictionary<String, SMS>();

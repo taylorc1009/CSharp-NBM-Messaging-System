@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using BusinessLayer;
-using PresentationLayer;
+using DataLayer;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
@@ -44,7 +44,7 @@ namespace UnitTest
             messagesFacade.addSEM(semValid[0], semValid[1], semValid[2]);
             semResults[0] = messagesFacade.getSEMEmails()["E000000000"].sender == "example@domain.com" && messagesFacade.getSEMEmails()["E000000000"].subject == "SEM email subject" && messagesFacade.getSEMEmails()["E000000000"].text == "SEM email body.";
 
-            String[] semInvalid = { "my email", "", "SEM email body." }; //the email format should be invalid
+            String[] semInvalid = { "my email", "", "SEM email body." }; //the email address format should be invalid and the subject should be recognized as missing
             KeyValuePair<String, StandardEmailMessage> semPair = messagesFacade.addSEM(semInvalid[0], semInvalid[1], semInvalid[2]);
             semResults[1] = semPair.Key == null; //again, if it's not null, the invalid message was stored, which shouldn't happen
 
@@ -109,6 +109,12 @@ namespace UnitTest
             String[] emailWithURL = { "example@domain.com", "URL quarantine test", "Click the URL (https://www.website.com) for details." }; //the code should also not crash because of the single #
             KeyValuePair<String, StandardEmailMessage> email = messagesFacade.addSEM(emailWithURL[0], emailWithURL[1], emailWithURL[2]);
             Assert.IsTrue(email.Value.urlsQuarantined[0].intent == "https://www.website.com" && email.Value.text == "Click the URL (<URL Quarantined>) for details.");
+        }
+
+        [TestMethod]
+        public void importText()
+        {
+            IOSystem import = new IOSystem();
         }
     }
 }
