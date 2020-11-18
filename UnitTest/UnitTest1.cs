@@ -30,9 +30,7 @@ namespace UnitTest
 
             String[] smsValid = { "+09878765274", "SMS message body." };
             messagesFacade.addSMS(smsValid[0], smsValid[1]);
-
-            Dictionary<String, SMS> sms = messagesFacade.getSMS();
-            smsResults[0] = sms["S000000000"].sender == "+09878765274" && sms["S000000000"].text == "SMS message body.";
+            smsResults[0] = messagesFacade.getSMS()["S000000000"].sender == "+09878765274" && messagesFacade.getSMS()["S000000000"].text == "SMS message body.";
 
             String[] smsInvalid = { "07839274826", "SMS message body." }; //the phone number format should be recognised as invalid (lack of an international number '+')
             KeyValuePair<String, SMS> smsPair = messagesFacade.addSMS(smsInvalid[0], smsInvalid[1]);
@@ -79,9 +77,20 @@ namespace UnitTest
 
             bool result = true;
             foreach (bool[] r in results)
-                result = r[0] && r[1];
+                if (!(r[0] && r[1])) //if all values were stored and validated as expected, result will remain true
+                    result = false;
 
             Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        public void expandsAbbreviations()
+        {
+            //both Tweets and SMS messages use the same abbreviation expansion method, so if it works for one it will for for the other
+
+            String[] smsAbbrevated = { "+08927382", "I hope this expands lol." };
+            KeyValuePair<String, SMS> sms = messagesFacade.addSMS(smsAbbrevated[0], smsAbbrevated[1]);
+            Assert.IsTrue(sms.Value.text == "I hope this expands lol <Laughing out loud>.");
         }
     }
 }

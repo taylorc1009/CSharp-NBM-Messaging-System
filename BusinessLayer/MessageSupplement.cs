@@ -20,7 +20,7 @@ namespace BusinessLayer
                     if (abbreviations.ContainsKey(trimmed.Item1.ToUpper()))
                     {
                         StringBuilder merger = new StringBuilder();
-                        merger.Append(tokenized[i].Substring(0, trimmed.Item2 + trimmed.Item1.Length) + " <" + abbreviations[trimmed.Item1.ToUpper()] + "> " + tokenized[i].Substring(trimmed.Item3));
+                        merger.Append(tokenized[i].Substring(0, trimmed.Item2 + trimmed.Item1.Length) + " <" + abbreviations[trimmed.Item1.ToUpper()] + ">" + tokenized[i].Substring(trimmed.Item3));
                         tokenized[i] = merger.ToString();
                     }
                 }
