@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Napier Bank Messaging" Height="676.975" Width="1427.632">
     <Grid>
-        <ListBox x:Name="fullList" HorizontalAlignment="Left" Height="588" Margin="10,36,0,0" VerticalAlignment="Top" Width="312" SelectionChanged="list_SelectionChanged"/>
+        <ListBox x:Name="fullList" HorizontalAlignment="Left" Height="588" Margin="10,36,0,0" VerticalAlignment="Top" Width="312" FontSize="14" SelectionChanged="list_SelectionChanged"/>
         <!-- XAML portion of click MessagesListItem to open message
         <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
@@ -16,11 +16,11 @@
             </ListBox.ItemContainerStyle>
         </ListBox>-->
         <Label x:Name="fullLabel" Content="All Messages" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontSize="14" FontWeight="Bold"/>
-        <ListBox x:Name="SIRList" HorizontalAlignment="Left" Height="588" Margin="332,36,0,0" VerticalAlignment="Top" Width="312" SelectionChanged="list_SelectionChanged"/>
+        <ListBox x:Name="SIRList" HorizontalAlignment="Left" Height="588" Margin="332,36,0,0" VerticalAlignment="Top" Width="312" FontSize="14" SelectionChanged="list_SelectionChanged"/>
         <Label x:Name="SIRLabel" Content="Significant Incident Reports" HorizontalAlignment="Left" Margin="332,10,0,0" VerticalAlignment="Top" FontSize="14" FontWeight="Bold"/>
-        <ListBox x:Name="trendingList" HorizontalAlignment="Left" Height="588" Margin="654,36,0,0" VerticalAlignment="Top" Width="312" SelectionChanged="list_SelectionChanged"/>
+        <ListBox x:Name="trendingList" HorizontalAlignment="Left" Height="588" Margin="654,36,0,0" VerticalAlignment="Top" Width="312" FontSize="14" SelectionChanged="list_SelectionChanged"/>
         <Label x:Name="trendingLabel" Content="Trending on Twitter" HorizontalAlignment="Left" Margin="654,10,0,0" VerticalAlignment="Top" FontSize="14" FontWeight="Bold"/>
-        <ListBox x:Name="mentionsList" HorizontalAlignment="Left" Height="588" Margin="976,36,0,0" VerticalAlignment="Top" Width="312" SelectionChanged="list_SelectionChanged"/>
+        <ListBox x:Name="mentionsList" HorizontalAlignment="Left" Height="588" Margin="976,36,0,0" VerticalAlignment="Top" Width="312" FontSize="14" SelectionChanged="list_SelectionChanged"/>
         <Label x:Name="mentionsLabel" Content="Twitter Mentions" HorizontalAlignment="Left" Margin="976,10,0,0" VerticalAlignment="Top" FontSize="14" FontWeight="Bold"/>
         <Button x:Name="sendMessage" Content="Send Message" HorizontalAlignment="Left" Margin="1302,36,0,0" VerticalAlignment="Top" FontSize="14" Width="98" Height="24" Click="sendMessage_Click"/>
         <Button x:Name="refreshMessages" Content="Refresh" HorizontalAlignment="Left" Margin="1302,65,0,0" VerticalAlignment="Top" FontSize="14" Width="98" Height="24" Click="refresh_Click"/>

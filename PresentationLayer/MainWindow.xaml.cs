@@ -163,25 +163,45 @@ namespace PresentationLayer
             {
                 sirs.Sort((y, x) => DateTime.Compare(x.messageDate, y.messageDate));
                 SIRList.Items.Clear();
-                foreach (MessagesListItem sir in sirs)
-                    addDuplicateFix(sir, SIRList);
+                if (sirs.Any())
+                {
+                    foreach (MessagesListItem sir in sirs)
+                        addDuplicateFix(sir, SIRList);
+                }
+                else
+                    SIRList.Items.Add("No incidents to show...");
             }
             if (header == '0' || header == 'T')
             {
                 trendingList.Items.Clear();
-                foreach (KeyValuePair<MessagesListItem, int> hashtag in trending.OrderBy(i => i.Value))
-                    addDuplicateFix(hashtag.Key, trendingList);
+                if (trending.Any())
+                {
+                    foreach (KeyValuePair<MessagesListItem, int> hashtag in trending.OrderBy(i => i.Value))
+                        addDuplicateFix(hashtag.Key, trendingList);
+                }
+                else
+                    trendingList.Items.Add("No hashtags to show...");
 
                 mentions.Sort((y, x) => DateTime.Compare(x.messageDate, y.messageDate));
                 mentionsList.Items.Clear();
-                foreach (MessagesListItem mention in mentions)
-                    addDuplicateFix(mention, mentionsList);
+                if (mentions.Any())
+                {
+                    foreach (MessagesListItem mention in mentions)
+                        addDuplicateFix(mention, mentionsList);
+                }
+                else
+                    mentionsList.Items.Add("No mentions to show...");
             }
 
             items.Sort((y, x) => DateTime.Compare(x.messageDate, y.messageDate));
             fullList.Items.Clear();
-            foreach (MessagesListItem item in items)
-                addDuplicateFix(item, fullList);
+            if (items.Any())
+            {
+                foreach (MessagesListItem item in items)
+                    addDuplicateFix(item, fullList);
+            }
+            else
+                fullList.Items.Add("No messages to show...");
         }
 
         private void importList()
@@ -232,7 +252,8 @@ namespace PresentationLayer
 
             MessagesListItem listItem = args.AddedItems[0] as MessagesListItem;
 
-            openMessage(listItem.messageID);
+            if (listItem != null)
+                openMessage(listItem.messageID);
         }
 
         private void openMessage(String id)

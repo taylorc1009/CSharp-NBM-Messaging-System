@@ -8,6 +8,7 @@
  *      credentials/log-in system (?)
  *      make list items width match parent (?)
  *      change list item type text to bitmap and collapse in in lists other than 'fullList' (?)
+ *      line separator to ListBoxes (?)
  * 
  * Testing:
  *      Unit Tests
