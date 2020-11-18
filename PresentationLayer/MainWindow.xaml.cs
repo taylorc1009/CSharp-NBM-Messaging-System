@@ -113,6 +113,23 @@ namespace PresentationLayer
             }
         }
 
+        private void refresh_Click(object s, EventArgs e)
+        {
+            //clear all ListBoxes
+            fullList.Items.Clear();
+            SIRList.Items.Clear();
+            trendingList.Items.Clear();
+            mentionsList.Items.Clear();
+
+            //clear all Lists containing ListBox's data
+            items.Clear();
+            sirs.Clear();
+            mentions.Clear();
+            trending.Clear();
+
+            importList();
+        }
+
         private void categoriseTweetItem(MessagesListItem item, Tweet tweet)
         {
             Dictionary<String, int> trendingData = messagesFacade.getTrending();

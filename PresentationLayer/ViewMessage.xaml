@@ -11,10 +11,10 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Label x:Name="fromLabel" Grid.Row="0" Content="From:" HorizontalAlignment="Left" Margin="10,7,0,0" VerticalAlignment="Top" Height="26"/>
-        <TextBox x:Name="fromBox" Grid.Row="0" HorizontalAlignment="Left" Height="23" Margin="50,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="211" Focusable="False"/>
-        <TextBox x:Name="subjectBox" Grid.Row="0" HorizontalAlignment="Left" Height="23" Margin="10,40,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" Visibility="Collapsed" Focusable="False"/>
-        <TextBox x:Name="messageBox" Grid.Row="1" HorizontalAlignment="Left" Height="280" Margin="10,9.556,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="551" Focusable="False"/>
-        <TextBlock x:Name="dateBlock" HorizontalAlignment="Left" Margin="10,294.667,0,-3.556" Grid.Row="1" TextWrapping="Wrap" Text="dd/mm/yy at hh:mm" VerticalAlignment="Top" FontStyle="Italic"/>
+        <Label x:Name="fromLabel" Grid.Row="0" Content="From:" HorizontalAlignment="Left" Margin="10,7,0,0" FontSize="14" VerticalAlignment="Top" Height="26"/>
+        <TextBox x:Name="fromBox" Grid.Row="0" HorizontalAlignment="Left" Height="23" Margin="55,10,0,0" TextWrapping="Wrap" FontSize="13" VerticalAlignment="Top" Width="211" Focusable="False"/>
+        <TextBox x:Name="subjectBox" Grid.Row="0" HorizontalAlignment="Left" Height="23" Margin="10,40,0,0" TextWrapping="Wrap" FontSize="13" VerticalAlignment="Top" Width="200" Visibility="Collapsed" Focusable="False"/>
+        <TextBox x:Name="messageBox" Grid.Row="1" HorizontalAlignment="Left" Height="280" Margin="10,9.556,0,0" TextWrapping="Wrap" FontSize="13" VerticalAlignment="Top" Width="551" Focusable="False"/>
+        <TextBlock x:Name="dateBlock" HorizontalAlignment="Left" Margin="10,294.667,0,-3.556" Grid.Row="1" TextWrapping="Wrap" Text="dd/mm/yy at hh:mm" FontSize="13" VerticalAlignment="Top" FontStyle="Italic"/>
     </Grid>
 </Window>
