@@ -69,7 +69,7 @@ namespace UnitTest
 
             String[] tweetValid = { "@example", "Tweet body." };
             messagesFacade.addTweet(tweetValid[0], tweetValid[1]);
-            tweetResults[0] = messagesFacade.getTweets()["T000000000"].sender == "@example" && messagesFacade.getTweets()["S000000000"].text == "Tweet body.";
+            tweetResults[0] = messagesFacade.getTweets()["T000000000"].sender == "@example" && messagesFacade.getTweets()["T000000000"].text == "Tweet body.";
 
             String[] tweetInvalid = { "twitterID", "SMS message body." }; //the Twitter ID format should be recognised as invalid (lack of an '@')
             KeyValuePair<String, Tweet> tweetPair = messagesFacade.addTweet(tweetInvalid[0], tweetInvalid[1]);
