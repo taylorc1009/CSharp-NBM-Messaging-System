@@ -44,10 +44,10 @@ namespace BusinessLayer
                     int s = 0, e = 1;
                     while (tokenized[i][s] != '#' && s < tokenized[i].Length)
                         s++;
-                    while (Regex.IsMatch(tokenized[i][s + e].ToString(), @"[a-z0-9]", RegexOptions.IgnoreCase) && e < tokenized[i].Length - 1)
+                    while (e < tokenized[i].Length && Regex.IsMatch(tokenized[i][s + e].ToString(), @"[a-z0-9]", RegexOptions.IgnoreCase))
                         e++;
 
-                    String hashtag = tokenized[i].Substring(s, e + 1).ToLower();
+                    String hashtag = tokenized[i].Substring(s, e).ToLower();
                     if (Regex.IsMatch(hashtag, @"#([a-z0-9]+)", RegexOptions.IgnoreCase))
                     {
                         if (hashtags == null)
@@ -72,10 +72,10 @@ namespace BusinessLayer
                     int s = 0, e = 1;
                     while (tokenized[i][s] != '@' && s < tokenized[i].Length)
                         s++;
-                    while (Regex.IsMatch(tokenized[i][s + e].ToString(), @"[a-z0-9]", RegexOptions.IgnoreCase) && e < tokenized[i].Length - 1)
+                    while (e < tokenized[i].Length && Regex.IsMatch(tokenized[i][s + e].ToString(), @"[a-z0-9]", RegexOptions.IgnoreCase))
                         e++;
 
-                    String mention = tokenized[i].Substring(s, e + 1).ToLower();
+                    String mention = tokenized[i].Substring(s, e).ToLower();
                     if (Regex.IsMatch(mention, @"@([a-z0-9]+)", RegexOptions.IgnoreCase))
                     {
                         if (mentions == null)

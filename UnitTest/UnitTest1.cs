@@ -84,13 +84,29 @@ namespace UnitTest
         }
 
         [TestMethod]
-        public void expandsAbbreviations()
+        public void expandAbbreviations()
         {
             //both Tweets and SMS messages use the same abbreviation expansion method, so if it works for one it will for for the other
 
             String[] smsAbbrevated = { "+08927382", "I hope this expands lol." };
             KeyValuePair<String, SMS> sms = messagesFacade.addSMS(smsAbbrevated[0], smsAbbrevated[1]);
             Assert.IsTrue(sms.Value.text == "I hope this expands lol <Laughing out loud>.");
+        }
+
+        [TestMethod]
+        public void acquireHashtagAndMention()
+        {
+            //here we try to find if the Tweet.hashtags and Tweet.mentions lists contain the hashtags/mentions we enter in a message body, indicating a successful classification
+
+            String[] tweetWithItems = { "@example", "Can it #find either the # or the @mention?" }; //the code should also not crash because of the single #
+            KeyValuePair<String, Tweet> tweet = messagesFacade.addTweet(tweetWithItems[0], tweetWithItems[1]);
+            Assert.IsTrue(tweet.Value.getHashtags().Contains("#find") && tweet.Value.getMentions().Contains("@mention"));
+        }
+
+        [TestMethod]
+        public void quarantineURL()
+        {
+
         }
     }
 }

@@ -117,7 +117,7 @@ namespace PresentationLayer
         private void categoriseTweetItem(MessagesListItem item, Tweet tweet)
         {
             Dictionary<String, int> trendingData = messagesFacade.getTrending();
-            List<String> hashtagsData = tweet.hashtags;
+            List<String> hashtagsData = tweet.getHashtags();
             if (trendingData != null && hashtagsData != null)
                 foreach (KeyValuePair<String, int> hashtag in trendingData)
                     if (hashtagsData.Contains(hashtag.Key))

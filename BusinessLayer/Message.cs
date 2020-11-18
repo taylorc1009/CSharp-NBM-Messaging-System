@@ -19,12 +19,12 @@ namespace BusinessLayer
             if (!str.Equals(""))
             {
                 int s = 0, e = str.Length;
-                while (!Regex.IsMatch(str[s].ToString(), @"[a-z]", RegexOptions.IgnoreCase) && s < str.Length)
+                while (s < str.Length && !Regex.IsMatch(str[s].ToString(), @"[a-z]", RegexOptions.IgnoreCase))
                     s++;
-                while (!Regex.IsMatch(str[e - 1].ToString(), @"[a-z]", RegexOptions.IgnoreCase) && e > 0)
+                while (e > 0 && !Regex.IsMatch(str[e - 1].ToString(), @"[a-z]", RegexOptions.IgnoreCase))
                     e--;
 
-                return Tuple.Create(str.Substring(s, e - s), s, e);
+                return Tuple.Create(str.Substring(s, e - s < 0 ? 0 : e - s), s, e);
             }
             return null;
         }

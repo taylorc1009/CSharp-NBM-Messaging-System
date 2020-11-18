@@ -32,7 +32,6 @@ namespace BusinessLayer
             this.text = t;
 
             this.decorate(4);
-            this.quarantineURLs();
         }
     }
 }

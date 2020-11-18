@@ -73,10 +73,9 @@ namespace BusinessLayer
         {
             SMS message = new SMS(sender, text.Trim());
 
-            message.findAbbreviations(abbreviations);
-
             if (message.validate(message.sender, null, text, DateTime.MinValue, null, null))
             {
+                message.findAbbreviations(abbreviations);
                 String id = generateID('S', sms.Count());
                 sms.Add(id, message);
                 return new KeyValuePair<String, SMS>(id, sms[id]);
@@ -91,6 +90,7 @@ namespace BusinessLayer
 
             if (message.validate(message.sender, message.subject, text, DateTime.MinValue, null, null))
             {
+                message.quarantineURLs();
                 String id = generateID('E', SEMEmails.Count() + SIREmails.Count());
                 SEMEmails.Add(id, message);
                 return new KeyValuePair<String, StandardEmailMessage>(id, SEMEmails[id]);
@@ -105,6 +105,7 @@ namespace BusinessLayer
 
             if (message.validate(message.sender, null, text, message.date, message.sortCode, message.nature))
             {
+                message.quarantineURLs();
                 String id = generateID('E', SEMEmails.Count() + SIREmails.Count());
                 SIREmails.Add(id, message);
                 return new KeyValuePair<String, SignificantIncidentReport>(id, SIREmails[id]);
@@ -130,10 +131,9 @@ namespace BusinessLayer
         {
             Tweet message = new Tweet(sender, text.Trim());
 
-            analyseTweet(message);
-
             if (message.validate(message.sender, null, text, DateTime.MinValue, null, null))
             {
+                analyseTweet(message);
                 String id = generateID('T', tweets.Count());
                 tweets.Add(id, message);
                 return new KeyValuePair<String, Tweet>(id, tweets[id]);
