@@ -98,7 +98,7 @@ namespace UnitTest
         {
             //here we try to find if the Tweet.hashtags and Tweet.mentions lists contain the hashtags/mentions we enter in a message body, indicating a successful classification
 
-            String[] tweetWithItems = { "@example", "Can it #find either the # or the @mention?" }; //the code should also not crash because of the single #
+            String[] tweetWithItems = { "@example", "Can it #find either the # or the @mention?" }; //the code should also: not crash because of the single #, exclude the '?'
             KeyValuePair<String, Tweet> tweet = messagesFacade.addTweet(tweetWithItems[0], tweetWithItems[1]);
             Assert.IsTrue(tweet.Value.getHashtags().Contains("#find") && tweet.Value.getMentions().Contains("@mention"));
         }
@@ -106,7 +106,9 @@ namespace UnitTest
         [TestMethod]
         public void quarantineURL()
         {
-
+            String[] emailWithURL = { "example@domain.com", "URL quarantine test", "Click the URL (https://www.website.com) for details." }; //the code should also not crash because of the single #
+            KeyValuePair<String, StandardEmailMessage> email = messagesFacade.addSEM(emailWithURL[0], emailWithURL[1], emailWithURL[2]);
+            Assert.IsTrue(email.Value.urlsQuarantined[0].intent == "https://www.website.com" && email.Value.text == "Click the URL (<URL Quarantined>) for details.");
         }
     }
 }
