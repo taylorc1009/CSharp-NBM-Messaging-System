@@ -8,7 +8,7 @@ using System.Windows.Forms;
 namespace UnitTest
 {
     [TestClass]
-    public class UnitTest1
+    public class UnitTests
     {
         MessagesFacade messagesFacade = new MessagesFacade();
 
