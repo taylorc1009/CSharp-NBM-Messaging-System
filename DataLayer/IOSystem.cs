@@ -40,20 +40,20 @@ namespace DataLayer
             }
         }
 
-        public static void exportMessages(string[] output)
+        public static void exportMessages(String file, string[] output)
         {
             JsonSerializer serializer = new JsonSerializer();
             serializer.Formatting = Formatting.Indented;
             serializer.NullValueHandling = NullValueHandling.Ignore;
 
-            using (StreamWriter stream = new StreamWriter(Directory.GetCurrentDirectory() + "/messages.json"))
+            using (StreamWriter stream = new StreamWriter(Directory.GetCurrentDirectory() + "/" + file))
             using (JsonWriter writer = new JsonTextWriter(stream))
             {
                 serializer.Serialize(writer, output);
             }
         }
 
-        public static String[] importMessages()
+        public static String[] importMessages(String file)
         {
             String[] import = null;
             JsonSerializer deserializer = new JsonSerializer();
@@ -62,7 +62,7 @@ namespace DataLayer
 
             try
             {
-                using (StreamReader reader = new StreamReader(Directory.GetCurrentDirectory() + "/messages.json"))
+                using (StreamReader reader = new StreamReader(Directory.GetCurrentDirectory() + "/" + file))
                 {
                     import = (String[])deserializer.Deserialize(reader, typeof(String[]));
                 }

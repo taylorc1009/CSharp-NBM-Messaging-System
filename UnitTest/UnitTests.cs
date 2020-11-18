@@ -4,13 +4,15 @@ using BusinessLayer;
 using DataLayer;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using System.IO;
 
 namespace UnitTest
 {
     [TestClass]
     public class UnitTests
     {
-        MessagesFacade messagesFacade = new MessagesFacade();
+        //you will need to make sure the textwords.csv (containing the abbreviations) is in the working directory (may be ..\UnitTest\bin\Debug\)
+        MessagesFacade messagesFacade = new MessagesFacade(null);
 
         [TestMethod]
         public void storeAndValidate()
@@ -90,7 +92,7 @@ namespace UnitTest
 
             String[] smsAbbrevated = { "+08927382", "I hope this expands lol." };
             KeyValuePair<String, SMS> sms = messagesFacade.addSMS(smsAbbrevated[0], smsAbbrevated[1]);
-            Assert.IsTrue(sms.Value.text == "I hope this expands lol <Laughing out loud>.");
+            Assert.AreEqual(sms.Value.text, "I hope this expands lol <Laughing out loud>.");
         }
 
         [TestMethod]
@@ -100,7 +102,8 @@ namespace UnitTest
 
             String[] tweetWithItems = { "@example", "Can it #find either the # or the @mention?" }; //the code should also: not crash because of the single #, exclude the '?'
             KeyValuePair<String, Tweet> tweet = messagesFacade.addTweet(tweetWithItems[0], tweetWithItems[1]);
-            Assert.IsTrue(tweet.Value.getHashtags().Contains("#find") && tweet.Value.getMentions().Contains("@mention"));
+            Assert.IsTrue(tweet.Value.getHashtags().Contains("#find")
+                && tweet.Value.getMentions().Contains("@mention"));
         }
 
         [TestMethod]
@@ -108,13 +111,83 @@ namespace UnitTest
         {
             String[] emailWithURL = { "example@domain.com", "URL quarantine test", "Click the URL (https://www.website.com) for details." }; //the code should also not crash because of the single #
             KeyValuePair<String, StandardEmailMessage> email = messagesFacade.addSEM(emailWithURL[0], emailWithURL[1], emailWithURL[2]);
-            Assert.IsTrue(email.Value.urlsQuarantined[0].intent == "https://www.website.com" && email.Value.text == "Click the URL (<URL Quarantined>) for details.");
+            Assert.IsTrue(email.Value.urlsQuarantined[0].intent == "https://www.website.com"
+                && email.Value.text == "Click the URL (<URL Quarantined>) for details.");
         }
 
         [TestMethod]
         public void importText()
         {
+            //here we try to import a provided Significant Incident Report (import-text.txt), make sure it is in the working directory (may be ..\UnitTest\bin\Debug\)
+
             IOSystem import = new IOSystem();
+            String[] values = import.importFile(Directory.GetCurrentDirectory() + "/import-test.txt");
+            Assert.IsTrue(import.header == 'E'
+                && values[0] == "example@napierbank.com"
+                && values[2] == "This is the message body"
+                && DateTime.Parse(values[4]).ToString("dd/MM/yy") == "16/11/20"
+                && values[5] == "80-40-11"
+                && values[6] == "Intelligence");
+        }
+
+        [TestMethod]
+        public void importJSON()
+        {
+            //first, we need to serialize and export all present messages (this will output our previously stored test data)
+            messagesFacade.outputMessages("test.json");
+
+            //then we need to import into a duplicate Facade (creating a new Facade instance will automatically do this for us)
+            MessagesFacade testFacade = new MessagesFacade("test.json");
+
+            //since the storage file is made for testing purposes, delete it after use
+            File.Delete(Directory.GetCurrentDirectory() + "/test.json");
+
+            //now we will analyse if each message's content in the duplicate Facade match their original ID
+            Dictionary<String, SMS> testSMSs = messagesFacade.getSMS();
+            Dictionary<String, Tweet> testTweets = messagesFacade.getTweets();
+            Dictionary<String, StandardEmailMessage> testSEMs = messagesFacade.getSEMEmails();
+            Dictionary<String, SignificantIncidentReport> testSIRs = messagesFacade.getSIREmails();
+
+            Dictionary<String, SMS> duplicateSMSs = testFacade.getSMS();
+            Dictionary<String, Tweet> duplicateTweets = testFacade.getTweets();
+            Dictionary<String, StandardEmailMessage> duplicateSEMs = testFacade.getSEMEmails();
+            Dictionary<String, SignificantIncidentReport> duplicateSIRs = testFacade.getSIREmails();
+
+            bool result = true;
+
+            var smsEnum = testSMSs.GetEnumerator();
+            while (result && smsEnum.MoveNext())
+            {
+                KeyValuePair<String, SMS> sms = smsEnum.Current;
+                if (!duplicateSEMs.ContainsKey(sms.Key) || !(duplicateSMSs[sms.Key].sender == sms.Value.sender && duplicateSMSs[sms.Key].text == sms.Value.text))
+                    result = false;
+            }
+
+            var tweetEnum = testTweets.GetEnumerator();
+            while (result && tweetEnum.MoveNext())
+            {
+                KeyValuePair<String, Tweet> tweet = tweetEnum.Current;
+                if (!duplicateSEMs.ContainsKey(tweet.Key) || !(duplicateTweets[tweet.Key].sender == tweet.Value.sender && duplicateTweets[tweet.Key].text == tweet.Value.text))
+                    result = false;
+            }
+
+            var semEnum = testSEMs.GetEnumerator();
+            while (result && semEnum.MoveNext())
+            {
+                KeyValuePair<String, StandardEmailMessage> sem = semEnum.Current;
+                if (!duplicateSEMs.ContainsKey(sem.Key) || !(duplicateSEMs[sem.Key].sender == sem.Value.sender && duplicateSEMs[sem.Key].text == sem.Value.text))
+                    result = false;
+            }
+
+            var sirEnum = testSIRs.GetEnumerator();
+            while (result && sirEnum.MoveNext())
+            {
+                KeyValuePair<String, SignificantIncidentReport> sir = sirEnum.Current;
+                if (!duplicateSEMs.ContainsKey(sir.Key) || !(duplicateSIRs[sir.Key].sender == sir.Value.sender && duplicateSIRs[sir.Key].text == sir.Value.text))
+                    result = false;
+            }
+
+            Assert.IsTrue(result);
         }
     }
 }

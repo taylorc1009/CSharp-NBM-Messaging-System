@@ -30,10 +30,10 @@ namespace BusinessLayer
 {
     public class MessagesFacade
     {
-        public MessagesFacade()
+        public MessagesFacade(String file)
         {
             importAbbreviations();
-            importMessages();
+            importMessages(file);
         }
         
         private Dictionary<String, SMS> sms = new Dictionary<String, SMS>();
@@ -168,23 +168,29 @@ namespace BusinessLayer
             return trending;
         }
 
-        public void importMessages()
+        public void importMessages(String file)
         {
-            String[] import = IOSystem.importMessages();
-            if(import != null)
+            if (!String.IsNullOrEmpty(file))
             {
-                sms = JsonConvert.DeserializeAnonymousType(import[0], sms);
-                tweets = JsonConvert.DeserializeAnonymousType(import[1], tweets);
-                SEMEmails = JsonConvert.DeserializeAnonymousType(import[2], SEMEmails);
-                SIREmails = JsonConvert.DeserializeAnonymousType(import[3], SIREmails);
-                trending = JsonConvert.DeserializeAnonymousType(import[4], trending);
+                String[] import = IOSystem.importMessages(file);
+                if (import != null)
+                {
+                    sms = JsonConvert.DeserializeAnonymousType(import[0], sms);
+                    tweets = JsonConvert.DeserializeAnonymousType(import[1], tweets);
+                    SEMEmails = JsonConvert.DeserializeAnonymousType(import[2], SEMEmails);
+                    SIREmails = JsonConvert.DeserializeAnonymousType(import[3], SIREmails);
+                    trending = JsonConvert.DeserializeAnonymousType(import[4], trending);
+                }
             }
         }
 
-        public void outputMessages()
+        public void outputMessages(String file)
         {
-            string[] output = { JsonConvert.SerializeObject(sms), JsonConvert.SerializeObject(tweets), JsonConvert.SerializeObject(SEMEmails), JsonConvert.SerializeObject(SIREmails), JsonConvert.SerializeObject(trending) };
-            IOSystem.exportMessages(output);
+            if (!String.IsNullOrEmpty(file))
+            {
+                string[] output = { JsonConvert.SerializeObject(sms), JsonConvert.SerializeObject(tweets), JsonConvert.SerializeObject(SEMEmails), JsonConvert.SerializeObject(SIREmails), JsonConvert.SerializeObject(trending) };
+                IOSystem.exportMessages(file, output);
+            }
         }
     }
 }

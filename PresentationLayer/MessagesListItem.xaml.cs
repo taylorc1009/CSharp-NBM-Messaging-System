@@ -34,12 +34,12 @@ namespace PresentationLayer
                 subject.Text = sub;
                 /*grid.RowDefinitions.ElementAt(grid.Children.IndexOf(type)).
                 grid.Children[grid.Children.IndexOf(type)].*/
-                type.SetValue(Grid.RowSpanProperty, 4);
+                //type.SetValue(Grid.RowSpanProperty, 4);
             }
             body.Text = breif;
             messageDate = dateTime;
             date.Text = messageDate.ToString("HH:mm dd/MM/yy");
-            switch(header)
+            /*switch(header)
             {
                 case 'S':
                     type.Source = new BitmapImage(new Uri(Directory.GetCurrentDirectory() + "/image-cache/sms.png", UriKind.Relative));
@@ -50,7 +50,7 @@ namespace PresentationLayer
                 case 'T':
                     type.Source = new BitmapImage(new Uri(Directory.GetCurrentDirectory() + "/image-cache/twitter.png", UriKind.Relative));
                     break;
-            }
+            }*/
         }
     }
 }

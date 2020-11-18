@@ -29,7 +29,7 @@ namespace PresentationLayer
         public MainWindow()
         {
             InitializeComponent();
-            messagesFacade = new MessagesFacade();
+            messagesFacade = new MessagesFacade("messages.json");
             importList();
         }
 
@@ -76,7 +76,7 @@ namespace PresentationLayer
                     createListItem(sem.Key, sem.Value.sender, sem.Value.subject, sem.Value.text, sem.Value.sentAt, 'E');
                 }
             }
-            messagesFacade.outputMessages();
+            messagesFacade.outputMessages("messages.json");
             return true;
         }
 
