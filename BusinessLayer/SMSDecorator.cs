@@ -14,7 +14,6 @@ namespace BusinessLayer
         {
             return !String.IsNullOrEmpty(sender)
                 && Utilities.isValidPhoneNumber(sender)
-                && sender.Length <= 12
                 && !String.IsNullOrEmpty(message)
                 && message.Length <= 140;
         }

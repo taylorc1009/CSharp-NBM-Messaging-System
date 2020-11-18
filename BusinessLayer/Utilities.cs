@@ -12,7 +12,7 @@ namespace BusinessLayer
         public static bool isValidPhoneNumber(string number)
         {
             String sub = number.Substring(1);
-            return number[0] == '+' && int.TryParse(sub, out _) && sub.Length <= 11;
+            return number[0] == '+' && Regex.IsMatch(sub, @"^[0-9]{3,11}$");
         }
 
         public static bool isValidEmail(string email)

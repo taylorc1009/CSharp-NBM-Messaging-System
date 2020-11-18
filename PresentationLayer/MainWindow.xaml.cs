@@ -42,7 +42,7 @@ namespace PresentationLayer
             return item;
         }
 
-        public bool addMessage(char type, String sender, String subject, String message, bool SIRChecked, String date, String sortCode, String nature)
+        private bool addMessage(char type, String sender, String subject, String message, bool SIRChecked, String date, String sortCode, String nature)
         {
             if (type == 'T')
             {
@@ -187,7 +187,7 @@ namespace PresentationLayer
             refreshList('0', false);
         }
 
-        public String makeBrief(String text)
+        private String makeBrief(String text)
         {
             if (text.Length > 40)
                 return text.Substring(0, 37) + "...";
