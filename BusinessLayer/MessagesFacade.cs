@@ -29,10 +29,12 @@ using DataLayer;
 
 namespace BusinessLayer
 {
+    //basically the centre program for what would be considered 'back-end' work
     public class MessagesFacade
     {
         public MessagesFacade(String file)
         {
+            //imports the list of abbreviations that SMS and Tweets can contain and the serialized messages, as soon as the Facade is declared
             importAbbreviations();
             importMessages(file);
         }
@@ -44,8 +46,10 @@ namespace BusinessLayer
         private Dictionary<String, String> abbreviations;
         private Dictionary<String, int> trending;
 
+        //imports the abbreviations from the 'textwords.csv' in the current directory
         private void importAbbreviations()
         {
+            //'using' automatically closes the file after we're done, so there's no need to manually close it
             using (var reader = new StreamReader(Directory.GetCurrentDirectory() + "\\textwords.csv"))
             {
                 abbreviations = new Dictionary<String, String>();
@@ -59,11 +63,13 @@ namespace BusinessLayer
             }
         }
 
+        //generates a 10-digit ID for each message based on the message header (type) and the count of the currently present messages of the same type
         private String generateID(char header, int count)
         {
             StringBuilder id = new StringBuilder(header + "000000000");
+            
+            //replaces the last n characters with the count, based on the amount of numbers in the count
             String countStr = count.ToString();
-
             if (countStr.Length < 10)
                 for (int i = 0; i < countStr.Length; i++)
                     id[id.Length - countStr.Length + i] = countStr[i];
@@ -75,11 +81,15 @@ namespace BusinessLayer
         {
             SMS message = new SMS(sender, text.Trim());
 
+            //if the message being added is valid, add it to the dictionary, otherwise return an empty outcome off the attempt
             if (message.validate(message.sender, null, text, DateTime.MinValue, null, null))
             {
+                //check for any abbreviations in the message body, using the dictionary of abbreviations collected
                 message.findAbbreviations(abbreviations);
+
                 String id = generateID('S', sms.Count());
                 sms.Add(id, message);
+
                 return new KeyValuePair<String, SMS>(id, sms[id]);
             }
             else
@@ -92,9 +102,12 @@ namespace BusinessLayer
 
             if (message.validate(message.sender, message.subject, text, DateTime.MinValue, null, null))
             {
+                //check for any URLs present in the message body and quarantine them for security checks
                 message.quarantineURLs();
+
                 String id = generateID('E', SEMEmails.Count() + SIREmails.Count());
                 SEMEmails.Add(id, message);
+
                 return new KeyValuePair<String, StandardEmailMessage>(id, SEMEmails[id]);
             }
             else
@@ -108,23 +121,32 @@ namespace BusinessLayer
             if (message.validate(message.sender, null, text, message.date, message.sortCode, message.nature))
             {
                 message.quarantineURLs();
+
                 String id = generateID('E', SEMEmails.Count() + SIREmails.Count());
                 SIREmails.Add(id, message);
+
                 return new KeyValuePair<String, SignificantIncidentReport>(id, SIREmails[id]);
             }
             else
                 return new KeyValuePair<String, SignificantIncidentReport>();
         }
 
+        //Tweets have a few different classifications to do, so lets do them here
         private void analyseTweet(Tweet message)
         {
             message.findAbbreviations(abbreviations);
+
+            //prevents checking for hashtags if the message body doesn't contain any
             if (message.text.Contains('#'))
             {
+                //initialises trending only if we have a hashtag to add to the trending list
                 if (trending == null)
                     trending = new Dictionary<String, int>();
+
                 message.findHashtags(trending);
             }
+
+            //again, prevents checking if the body doesn't contain a mention, signified by '@'
             if (message.text.Contains('@'))
                 message.findMentions();
         }
@@ -136,8 +158,10 @@ namespace BusinessLayer
             if (message.validate(message.sender, null, text, DateTime.MinValue, null, null))
             {
                 analyseTweet(message);
+
                 String id = generateID('T', tweets.Count());
                 tweets.Add(id, message);
+
                 return new KeyValuePair<String, Tweet>(id, tweets[id]);
             }
             else
@@ -171,11 +195,16 @@ namespace BusinessLayer
 
         public void importMessages(String file)
         {
+            //the directory normally won't be empty
+            //so far the only instance of an empty path is present to prevent any messages from being imported during testing
             if (!String.IsNullOrEmpty(file))
             {
                 String[] import = IOSystem.importMessages(file);
+
                 if (import != null)
                 {
+                    //deserializes the strings containing the serialized dictionaries
+                    //we need to deserialize them using the anonymous types method; as we have lists of object within objects, we need to signify what they are
                     sms = JsonConvert.DeserializeAnonymousType(import[0], sms);
                     tweets = JsonConvert.DeserializeAnonymousType(import[1], tweets);
                     SEMEmails = JsonConvert.DeserializeAnonymousType(import[2], SEMEmails);
@@ -189,6 +218,7 @@ namespace BusinessLayer
         {
             if (!String.IsNullOrEmpty(file))
             {
+                //serializes the dictionaries into a string[], to then be exported to a JSON
                 string[] output = { JsonConvert.SerializeObject(sms), JsonConvert.SerializeObject(tweets), JsonConvert.SerializeObject(SEMEmails), JsonConvert.SerializeObject(SIREmails), JsonConvert.SerializeObject(trending) };
                 IOSystem.exportMessages(file, output);
             }

@@ -1,8 +1,4 @@
-
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace BusinessLayer
 {
@@ -12,6 +8,8 @@ namespace BusinessLayer
         {
             this.sender = sender;
             this.text = text;
+
+            //tells the decorator we want to decorate 'validate' for this object using the 'SMSDecorator'
             this.decorate(1);
         }
     }

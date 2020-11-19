@@ -1,8 +1,4 @@
-
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace BusinessLayer
 {
@@ -13,6 +9,8 @@ namespace BusinessLayer
             this.sender = sender;
             this.text = text;
             this.subject = subject;
+
+            //tells the decorator we want to decorate 'validate' for this object using the 'SEMDecorator'
             this.decorate(3);
         }
     }

@@ -1,8 +1,4 @@
-
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace BusinessLayer
 {
@@ -10,6 +6,7 @@ namespace BusinessLayer
     {
         public TweetDecorator() { }
 
+        //used to decorate the method 'validate' with the Tweet validations
         public override bool validate(String sender, String subject, String message, DateTime SIRDate, String sortCode, String nature)
         {
             return !String.IsNullOrEmpty(sender)
