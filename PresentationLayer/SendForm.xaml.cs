@@ -9,6 +9,7 @@ namespace PresentationLayer
 {
     public partial class SendForm : Window
     {
+        //the public attributes are used to acquire the message details in other forms
         public string sender { get; set; }
         public char type { get; set; }
         public string message { get; set; }
@@ -30,9 +31,11 @@ namespace PresentationLayer
             //I set it to 1 so that a message couldn't be entered without identifying the sender, thus the type of message, first
             messageBox.MaxLength = 1;
 
+            //restrict the range of the DatePicker from a year ago to now
             SIRDate.DisplayDateStart = DateTime.Now.AddYears(-1);
             SIRDate.DisplayDateEnd = DateTime.Now;
 
+            //the SIR natures are put in a list of restricted choice
             natureCombo.Items.Insert(0, "ATM Theft");
             natureCombo.Items.Insert(1, "Bomb Threat");
             natureCombo.Items.Insert(2, "Cash Loss");
@@ -72,21 +75,23 @@ namespace PresentationLayer
 
         private void senderBox_TextChanged(object s, TextChangedEventArgs e)
         {
+            //if the sender is not empty, use the format of the sender to figure out the type of message
+            //else, set the type to '0' so we can show that no valid sender format is found
             if (!senderBox.Text.Equals(""))
             {
                 if (Utilities.isValidPhoneNumber(senderBox.Text))
                 {
                     type = 'S';
+
+                    //set the max lengths for this type of message
                     senderBox.MaxLength = 12;
                     messageBox.MaxLength = 140;
-                    invalidLabel.Visibility = Visibility.Hidden;
                 }
                 else if (Utilities.isValidTwitter(senderBox.Text))
                 {
                     type = 'T';
                     senderBox.MaxLength = 16;
                     messageBox.MaxLength = 140;
-                    invalidLabel.Visibility = Visibility.Hidden;
                 }
                 else if (Utilities.isValidEmail(senderBox.Text))
                 {
@@ -103,14 +108,15 @@ namespace PresentationLayer
                     }
                     else
                         subjectBox.Visibility = Visibility.Visible;
-                    invalidLabel.Visibility = Visibility.Hidden;
                 }
                 else
                     type = '0';
+                invalidLabel.Visibility = Visibility.Hidden;
             }
             else
                 type = '0';
 
+            //if no valid sender was found, refresh the control's visiblity and show the invalid label
             if (type == '0')
             {
                 senderBox.MaxLength = 40;
@@ -131,7 +137,7 @@ namespace PresentationLayer
             }
             else
             {
-                if (messageBox.Text.Length > messageBox.MaxLength)
+                if (messageBox.Text.Length >= messageBox.MaxLength)
                 {
                     isTooLong = true;
                     tooLongLabel.Visibility = Visibility.Visible;
@@ -147,12 +153,20 @@ namespace PresentationLayer
 
         private void messageBox_KeyDown(object s, System.Windows.Input.KeyEventArgs e)
         {
+            //this method detects if the enter key is pressed and takes a new line, as the 'TextChanged' xaml attribute does not invoke the method when the enter key is pressed
             if (e.Key == Key.Enter)
             {
+                //split the message body into two substrings, based on where the text cursor is
                 String[] str = {messageBox.Text.Substring(0, messageBox.SelectionStart), messageBox.Text.Substring(messageBox.SelectionStart)};
+
+                //append an environment-based new-line after the first substring, and the second substring following the new line
                 String concat = str[0] + Environment.NewLine + str[1];
+
+                //refresh the message body with the new line taken
                 messageBox.Clear();
                 messageBox.AppendText(concat);
+
+                //move the text cursor back to the old position + the new line
                 messageBox.Select((str[0] + Environment.NewLine).Length, 0);
             }
         }
@@ -236,8 +250,11 @@ namespace PresentationLayer
                         }
                         message = messageBox.Text;
                         sent = true;
+
+                        //the SIR checkbox may be invisible but still checked, returning SIRChecked as 'true' to the MainWindow in a message that isn't a SIR, so this check prevents that 
                         if (!SIRCheck.IsVisible)
                             SIRChecked = false;
+
                         Close();
                     }
                     else

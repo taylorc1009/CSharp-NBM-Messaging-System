@@ -9,24 +9,31 @@ namespace PresentationLayer
         public DateTime messageDate { get; set; }
         public String messageID { get; set; }
 
+        //use the parameters to push the text to the UI
         public MessagesListItem(string id, string sender, string sub, string breif, DateTime dateTime, char header)
         {
             InitializeComponent();
-
+            
             messageID = id;
             head.Text = sender;
+
+            //the subject is collapsed unless the message is an email
             if (sub != null)
             {
-                subject.Visibility = Visibility.Visible;
                 subject.Text = sub;
-                /*grid.RowDefinitions.ElementAt(grid.Children.IndexOf(type)).
-                grid.Children[grid.Children.IndexOf(type)].*/
+                subject.Visibility = Visibility.Visible;
+                //grid.RowDefinitions.ElementAt(grid.Children.IndexOf(type)).
+                //grid.Children[grid.Children.IndexOf(type)].
                 //type.SetValue(Grid.RowSpanProperty, 4);
             }
+
             body.Text = breif;
             messageDate = dateTime;
             date.Text = messageDate.ToString("HH:mm dd/MM/yy");
-            /*switch(header)
+
+            /* Was going to be used to add an ListItem icon
+            
+            switch(header)
             {
                 case 'S':
                     type.Source = new BitmapImage(new Uri(Directory.GetCurrentDirectory() + "/image-cache/sms.png", UriKind.Relative));
