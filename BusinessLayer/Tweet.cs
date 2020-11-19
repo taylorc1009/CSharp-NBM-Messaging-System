@@ -23,16 +23,6 @@ namespace BusinessLayer
             this.decorate(2);
         }
 
-        public List<String> getHashtags()
-        {
-            return hashtags;
-        }
-
-        public List<String> getMentions()
-        {
-            return mentions;
-        }
-
         public void findHashtags(Dictionary<String, int> trending)
         {
             String[] tokenized = this.text.Split(' ');

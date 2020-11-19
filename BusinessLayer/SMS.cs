@@ -8,8 +8,6 @@ namespace BusinessLayer
 {
     public class SMS : MessageSupplement
     {
-        public SMS() { }
-
         public SMS(String sender, String text)
         {
             this.sender = sender;

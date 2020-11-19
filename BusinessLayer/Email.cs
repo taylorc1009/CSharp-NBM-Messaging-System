@@ -8,8 +8,6 @@ namespace BusinessLayer
 {
     public class Email : Message
     {
-        public Email() { }
-
         public String subject { get; set; }
 
         //attribute is public for serialization purposes

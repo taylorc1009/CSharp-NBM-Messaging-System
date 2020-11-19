@@ -8,8 +8,6 @@ namespace BusinessLayer
 {
     public class StandardEmailMessage : Email
     {
-        public StandardEmailMessage() { }
-
         public StandardEmailMessage(String sender, String subject, String text)
         {
             this.sender = sender;

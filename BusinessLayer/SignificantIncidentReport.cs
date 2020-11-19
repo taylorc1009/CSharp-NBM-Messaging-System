@@ -8,8 +8,6 @@ namespace BusinessLayer
 {
     public class SignificantIncidentReport : Email
     {
-        public SignificantIncidentReport() { }
-
         public DateTime date { get; set; }
 
         public String sortCode { get; set; }
