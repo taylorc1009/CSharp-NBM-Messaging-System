@@ -10,8 +10,6 @@ namespace BusinessLayer
 {
     public class Tweet : MessageSupplement
     {
-        public Tweet() { }
-
         //attributes are public for serialization purposes
         public List<String> hashtags;
         public List<String> mentions;

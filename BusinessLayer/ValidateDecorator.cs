@@ -8,7 +8,7 @@ namespace BusinessLayer
 {
     public class ValidateDecorator : ValidateComponent
     {
-        protected ValidateComponent component;
+        private ValidateComponent component;
 
         public void setComponent(ValidateComponent component)
         {

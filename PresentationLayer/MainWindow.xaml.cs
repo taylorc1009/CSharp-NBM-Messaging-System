@@ -22,15 +22,15 @@ namespace PresentationLayer
 {
     public partial class MainWindow : Window
     {
-        List<MessagesListItem> items = new List<MessagesListItem>(), sirs = new List<MessagesListItem>(), mentions = new List<MessagesListItem>();
-        Dictionary<MessagesListItem, int> trending = new Dictionary<MessagesListItem, int>();
-        MessagesFacade messagesFacade;
+        private List<MessagesListItem> items = new List<MessagesListItem>(), sirs = new List<MessagesListItem>(), mentions = new List<MessagesListItem>();
+        private Dictionary<MessagesListItem, int> trending = new Dictionary<MessagesListItem, int>();
+        private MessagesFacade messagesFacade;
 
         public MainWindow()
         {
             InitializeComponent();
             messagesFacade = new MessagesFacade("messages.json");
-            importList();
+            importLists();
         }
 
         private MessagesListItem createListItem(String id, String sender, String subject, String text, DateTime sentAt, char header)
@@ -106,7 +106,7 @@ namespace PresentationLayer
                         System.Windows.Forms.MessageBox.Show("Message was not valid to be sent.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
                     else
-                        refreshList(header, form.SIRChecked);
+                        refreshLists(header, form.SIRChecked);
                 }
                 else
                     valid = true;
@@ -127,7 +127,7 @@ namespace PresentationLayer
             mentions.Clear();
             trending.Clear();
 
-            importList();
+            importLists();
         }
 
         private void categoriseTweetItem(MessagesListItem item, Tweet tweet)
@@ -157,7 +157,7 @@ namespace PresentationLayer
                 control.Items.Add(item);
         }
 
-        private void refreshList(char header, bool isSIR)
+        private void refreshLists(char header, bool isSIR)
         {
             if (header == '0' || (header == 'E' && isSIR))
             {
@@ -204,7 +204,7 @@ namespace PresentationLayer
                 fullList.Items.Add("No messages to show...");
         }
 
-        private void importList()
+        private void importLists()
         {
             foreach (KeyValuePair<String, SMS> sms in messagesFacade.getSMS())
                 createListItem(sms.Key, sms.Value.sender, null, sms.Value.text, sms.Value.sentAt, 'S');
@@ -220,7 +220,7 @@ namespace PresentationLayer
                 MessagesListItem item = createListItem(tweet.Key, tweet.Value.sender, null, tweet.Value.text, tweet.Value.sentAt, 'T');
                 categoriseTweetItem(item, tweet.Value);
             }
-            refreshList('0', false);
+            refreshLists('0', false);
         }
 
         private String makeBrief(String text)
@@ -230,7 +230,7 @@ namespace PresentationLayer
             return text;
         }
 
-        /* This was an attempt to allow the user to click the MessagesListItem control to open the message, but it doesn't work
+        /* This was an attempt to allow the user to click the MessagesListItem object as well as the ListItem control (in the ListBoxes) to open the message, but it doesn't work
         
         private void listBoxItem_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
@@ -294,7 +294,7 @@ namespace PresentationLayer
             }
         }
 
-        private void importMessage_Click(object sender, RoutedEventArgs e)
+        private void importMessage_Click(object s, RoutedEventArgs e)
         {
             OpenFileDialog dialog = new OpenFileDialog();
 
@@ -307,8 +307,37 @@ namespace PresentationLayer
                 IOSystem import = new IOSystem();
                 String[] values = import.importFile(dialog.FileName);
                 if (values != null)
-                    if(addMessage(import.header, values[0], values[1], values[2], values[3] == "true", values[4], values[5], values[6]))
-                        refreshList(import.header, values[3] == "true");
+                {
+                    String sender = values[0], subject = values[1], message = values[2], date = values[4], sortCode = values[5], nature = values[6];
+                    bool SIRChecked = values[3] == "true", valid = false;
+
+                    while (!valid)
+                    {
+                        SendForm form = new SendForm(sender, subject, message, SIRChecked, date, sortCode, nature);
+                        form.ShowDialog();
+                        char header = form.type;
+
+                        if (form.sent)
+                        {
+                            valid = addMessage(header, form.sender, form.subject, form.message, form.SIRChecked, form.date, form.sortCode, form.nature);
+                            if (!valid)
+                            {
+                                sender = form.sender;
+                                subject = form.subject;
+                                message = form.message;
+                                SIRChecked = form.SIRChecked;
+                                date = form.date;
+                                sortCode = form.sortCode;
+                                nature = form.nature;
+                                System.Windows.Forms.MessageBox.Show("Message was not valid to be sent.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            }
+                            else
+                                refreshLists(header, form.SIRChecked);
+                        }
+                        else
+                            valid = true;
+                    }
+                }
                 else
                     System.Windows.Forms.MessageBox.Show("Message was not valid to be imported.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
