@@ -3,7 +3,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
-using ToolTip = System.Windows.Forms.ToolTip;
 using BusinessLayer;
 
 namespace PresentationLayer
