@@ -18,7 +18,6 @@ namespace PresentationLayer
 {
     public partial class MessagesListItem : UserControl
     {
-
         public DateTime messageDate { get; set; }
         public String messageID { get; set; }
 

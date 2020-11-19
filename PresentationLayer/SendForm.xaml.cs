@@ -20,8 +20,8 @@ namespace PresentationLayer
         public bool SIRChecked { get; set; } = false;
         public bool sent { get; set; } = false;
 
-        bool tooLong = false;
-        bool validSort = true;
+        private bool tooLong = false;
+        private bool validSort = true;
 
         public SendForm(String pSender, String pSubject, String pMessage, bool pSIRChecked, String pDate, String pSortCode, String pNature)
         {

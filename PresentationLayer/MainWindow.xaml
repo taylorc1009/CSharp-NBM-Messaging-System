@@ -25,6 +25,6 @@
         <Button x:Name="sendMessage" Content="Send Message" HorizontalAlignment="Left" Margin="1302,36,0,0" VerticalAlignment="Top" FontSize="14" Width="98" Height="24" Click="sendMessage_Click"/>
         <Button x:Name="refreshMessages" Content="Refresh" HorizontalAlignment="Left" Margin="1302,65,0,0" VerticalAlignment="Top" FontSize="14" Width="98" Height="24" Click="refresh_Click"/>
         <Button x:Name="importMessage" Content="Import" HorizontalAlignment="Left" Margin="1302,94,0,0" VerticalAlignment="Top" FontSize="14" Width="98" Height="24" Click="importMessage_Click"/>
-        <Button x:Name="exportMessage" Content="Export" HorizontalAlignment="Left" Margin="1302,123,0,0" VerticalAlignment="Top" FontSize="14" Width="98" Height="24"/>
+        <!--<Button x:Name="exportMessage" Content="Export" HorizontalAlignment="Left" Margin="1302,123,0,0" VerticalAlignment="Top" FontSize="14" Width="98" Height="24"/>-->
     </Grid>
 </Window>
