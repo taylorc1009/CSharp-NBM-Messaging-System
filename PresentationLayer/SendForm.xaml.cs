@@ -20,8 +20,8 @@ namespace PresentationLayer
         public bool SIRChecked { get; set; } = false;
         public bool sent { get; set; } = false;
 
-        private bool tooLong = false;
-        private bool validSort = true;
+        private bool isTooLong = false;
+        private bool isValidSort = true;
 
         public SendForm(String pSender, String pSubject, String pMessage, bool pSIRChecked, String pDate, String pSortCode, String pNature)
         {
@@ -134,12 +134,12 @@ namespace PresentationLayer
             {
                 if (messageBox.Text.Length > messageBox.MaxLength)
                 {
-                    tooLong = true;
+                    isTooLong = true;
                     tooLongLabel.Visibility = Visibility.Visible;
                 }
                 else
                 {
-                    tooLong = false;
+                    isTooLong = false;
                     tooLongLabel.Visibility = Visibility.Hidden;
                 }
             }
@@ -184,17 +184,17 @@ namespace PresentationLayer
         {
             if (sortCodeBox.Text.Equals(""))
             {
-                validSort = false;
+                isValidSort = false;
                 invalidSortLabel.Visibility = Visibility.Collapsed;
             }
             else if(Utilities.isValidSortCode(sortCodeBox.Text))
             {
-                validSort = true;
+                isValidSort = true;
                 invalidSortLabel.Visibility = Visibility.Collapsed;
             }
             else
             {
-                validSort = false;
+                isValidSort = false;
                 invalidSortLabel.Visibility = Visibility.Visible;
             }
         }
@@ -203,7 +203,7 @@ namespace PresentationLayer
         {
             if (sender != null && !sender.Equals("") && type != '0')
             {
-                if (!tooLong)
+                if (!isTooLong)
                 {
                     if (!messageBox.Text.Equals(""))
                     {
@@ -216,7 +216,7 @@ namespace PresentationLayer
                                     System.Windows.Forms.MessageBox.Show("SIRs must have a:\n\n1. Date of the incident\n2. Branch sort code\n3. Nature of the incident", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                                     return;
                                 }
-                                else if (!validSort)
+                                else if (!isValidSort)
                                 {
                                     System.Windows.Forms.MessageBox.Show("Branch sort code is invalid.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                                     return;
