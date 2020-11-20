@@ -160,6 +160,9 @@ namespace PresentationLayer
             mentions.Clear();
             trending.Clear();
 
+            //attempt to import the serialized messages again
+            messagesFacade.importMessages("messages.json");
+
             importLists();
         }
 

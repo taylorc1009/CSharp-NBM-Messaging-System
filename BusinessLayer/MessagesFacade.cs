@@ -209,6 +209,17 @@ namespace BusinessLayer
                     SIREmails = JsonConvert.DeserializeAnonymousType(import[3], SIREmails);
                     trending = JsonConvert.DeserializeAnonymousType(import[4], trending);
                 }
+                else
+                {
+                    //if we failed to import a file, the serialized messages may have been deleted
+                    //show this in the UI by clearing the dictionaries, giving no messages to show
+                    sms.Clear();
+                    tweets.Clear();
+                    SEMEmails.Clear();
+                    SIREmails.Clear();
+                    trending.Clear();
+                }
+
             }
         }
 
