@@ -49,16 +49,25 @@ namespace PresentationLayer
             natureCombo.Items.Insert(10, "Theft");
 
             //reopens an invalid message to be edited
-            if (!String.IsNullOrEmpty(pSender))
-                senderBox.Text = pSender;
-            if (!String.IsNullOrEmpty(pSubject))
-                subjectBox.Text = pSubject;
             if (!String.IsNullOrEmpty(pMessage))
                 messageBox.Text = pMessage;
+            if (!String.IsNullOrEmpty(pSender))
+            {
+                senderBox.Text = pSender;
+                senderChanged();
+            }
+            if (!String.IsNullOrEmpty(pSubject))
+            {
+                subjectBox.Text = pSubject;
+                subjectChanged();
+            }
             if (!String.IsNullOrEmpty(pDate))
                 SIRDate.SelectedDate = DateTime.Parse(pDate);
             if (!String.IsNullOrEmpty(pSortCode))
+            {
                 sortCodeBox.Text = pSortCode;
+                sortCodeChanged();
+            }
             if (!String.IsNullOrEmpty(pNature))
                 natureCombo.SelectedItem = pNature;
             if (pSIRChecked)
@@ -73,7 +82,7 @@ namespace PresentationLayer
             }
         }
 
-        private void senderBox_TextChanged(object s, TextChangedEventArgs e)
+        private void senderChanged()
         {
             //if the sender is not empty, use the format of the sender to figure out the type of message
             //else, set the type to '0' so we can show that no valid sender format is found
@@ -107,7 +116,10 @@ namespace PresentationLayer
                         natureCombo.Visibility = Visibility.Visible;
                     }
                     else
+                    {
+                        subjectLabel.Visibility = Visibility.Visible;
                         subjectBox.Visibility = Visibility.Visible;
+                    }
                 }
                 else
                     type = '0';
@@ -123,6 +135,8 @@ namespace PresentationLayer
                 invalidLabel.Visibility = Visibility.Visible;
                 if (SIRCheck.IsVisible)
                     SIRCheck.Visibility = Visibility.Collapsed;
+                if (subjectLabel.IsVisible)
+                    subjectLabel.Visibility = Visibility.Collapsed;
                 if (subjectBox.IsVisible)
                     subjectBox.Visibility = Visibility.Collapsed;
                 if (SIRDate.IsVisible)
@@ -149,6 +163,25 @@ namespace PresentationLayer
                 }
             }
             sender = senderBox.Text;
+            subjectChanged();
+        }
+
+        private void senderBox_TextChanged(object s, TextChangedEventArgs e)
+        {
+            senderChanged();
+        }
+
+        private void subjectBox_TextChanged(object s, TextChangedEventArgs e)
+        {
+            subjectChanged();
+        }
+
+        private void subjectChanged()
+        {
+            if (subjectBox.Visibility == Visibility.Visible && subjectBox.Text.Length > 20)
+                subjectInvalid.Visibility = Visibility.Visible;
+            else
+                subjectInvalid.Visibility = Visibility.Collapsed;
         }
 
         private void messageBox_KeyDown(object s, System.Windows.Input.KeyEventArgs e)
@@ -176,6 +209,7 @@ namespace PresentationLayer
             if (!SIRChecked)
             {
                 SIRChecked = true;
+                subjectLabel.Visibility = Visibility.Collapsed;
                 subjectBox.Visibility = Visibility.Collapsed;
                 SIRDate.Visibility = Visibility.Visible;
                 sortCodeLabel.Visibility = Visibility.Visible;
@@ -185,22 +219,24 @@ namespace PresentationLayer
             else
             {
                 SIRChecked = false;
+                subjectLabel.Visibility = Visibility.Visible;
                 subjectBox.Visibility = Visibility.Visible;
                 SIRDate.Visibility = Visibility.Collapsed;
                 sortCodeLabel.Visibility = Visibility.Collapsed;
                 sortCodeBox.Visibility = Visibility.Collapsed;
                 natureCombo.Visibility = Visibility.Collapsed;
             }
+            subjectChanged();
         }
 
-        private void sortCodeBox_TextChanged(object s, TextChangedEventArgs e)
+        private void sortCodeChanged()
         {
             if (sortCodeBox.Text.Equals(""))
             {
                 isValidSort = false;
                 invalidSortLabel.Visibility = Visibility.Collapsed;
             }
-            else if(Utilities.isValidSortCode(sortCodeBox.Text))
+            else if (Utilities.isValidSortCode(sortCodeBox.Text))
             {
                 isValidSort = true;
                 invalidSortLabel.Visibility = Visibility.Collapsed;
@@ -210,6 +246,11 @@ namespace PresentationLayer
                 isValidSort = false;
                 invalidSortLabel.Visibility = Visibility.Visible;
             }
+        }
+
+        private void sortCodeBox_TextChanged(object s, TextChangedEventArgs e)
+        {
+            sortCodeChanged();
         }
 
         private void sendButton_Click(object s, EventArgs e)
@@ -239,14 +280,7 @@ namespace PresentationLayer
                                 nature = natureCombo.SelectedItem.ToString();
                             }
                             else
-                            {
-                                if (subjectBox.Text.Equals(""))
-                                {
-                                    System.Windows.Forms.MessageBox.Show("Please give the recipient a short subject description.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                                    return;
-                                }
                                 subject = subjectBox.Text;
-                            }
                         }
                         message = messageBox.Text;
                         sent = true;

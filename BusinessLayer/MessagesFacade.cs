@@ -217,7 +217,8 @@ namespace BusinessLayer
                     tweets.Clear();
                     SEMEmails.Clear();
                     SIREmails.Clear();
-                    trending.Clear();
+                    if (trending != null)
+                        trending.Clear();
                 }
 
             }
