@@ -1,22 +1,20 @@
 /* TODO List
  * 
- * Implement:
- *      search query (?)
- *      Fins a better way (using classes, like the old way) to import message (?)
- *      export message (?)
- *      message filter (?)
- *      credentials/log-in system (?)
- *      make list items width match parent (?)
- *      change list item type text to bitmap and collapse in in lists other than 'fullList' (?)
- *      line separator to ListBoxes (?)
- * 
- * Testing:
- *      Unit Tests
- *      Compare with Use Cases
- *      
- * Other:
- *      Finish Class Diagram
- *      Double check Use Case Diagram
+ * Implement (? - signifies a non-essential proposal; one of my own proposed additions):
+ *      (?) search query
+ *      (?) export message
+ *      (?) credentials/log-in system
+ *      (?) make list items width match parent
+ *      (?) change list item type text to bitmap and collapse in in lists other than 'fullList'
+ *      (?) line separator to ListBoxes
+ *      (?) allow logins with different authorization levels;
+ *              either:
+ *                  user
+ *                  manager
+ *              and allow the user to link their email, Twitter and phone number all to the same login:
+ *                  for example, in a credentials.json, store email, phone number and Twitter ID together for accounts that have linked them.
+ *              display messages sent only to the current login.
+ *                  store messages with recipient info also.
  */
 
 using System;
