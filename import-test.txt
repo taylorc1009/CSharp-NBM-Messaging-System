@@ -2,4 +2,6 @@ E
 example@napierbank.com
 true
 16/11/20:80-40-11:Intelligence
-This is the message body
+This is the message body.
+
+This line should also be recognised.

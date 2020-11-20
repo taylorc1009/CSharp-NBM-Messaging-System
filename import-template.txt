@@ -3,7 +3,12 @@ sender 			   //this can be left blank and be entered in the form manually.
 true;false 		   //if the message is type 'E', determine a Significant Incident Report using 'true' or 'false' (if it isn't 'E', remove this line completely).
 subject 		   //if SIR email is 'false', provide an email subject (max 20 characters), otherwise remove this line completely.
 dd/mm/yy:sort-code:nature  //if SIR email is 'true', provide all three of these values separated by colons, otherwise remove this line completely.
-message 		   //message body (max lengths: S/T = 140, E = 1028).
+message (line 1)	   //message body (max lengths: S/T = 140, E = 1028).
+message (line 2)
+...
+message (line n)	   //if you wish to import a message that contains a new line (more than one line) then that is fine, the systm can handle this format.
+
+
 
 /* Keys - ';' separates different accepted values (should not be present upon import), ':' separates attributes required in a single line.
  * This is just a template file; it is not a valid import.
@@ -30,13 +35,16 @@ message 		   //message body (max lengths: S/T = 140, E = 1028).
  *  Theft
  */
 
-/* Example 1 (Tweet):
+/* --- Example 1 (Tweet):
  * 
  * T
  * @example
  * This is the message body, no furthur information is needed after this.
  *
- * Example 2 (Significant Incident Report):
+ * --- Example 1 end
+ *
+ * 
+ * --- Example 2 (Significant Incident Report):
  * 
  * E
  * example@napierbank.com
@@ -44,11 +52,18 @@ message 		   //message body (max lengths: S/T = 140, E = 1028).
  * 16/11/20:80-40-11:Intelligence
  * This is the message body, no further information is needed after this.
  * 
- * Example 3 (Standard Email Message)
+ * --- Example 2 end
+ * 
+ * 
+ * --- Example 3 (Standard Email Message with separate lines in the message body)
  * 
  * E
  * example@gmail.com
  * false
  * This is the message subject.
  * This is the message body, no further information is needed after this.
+ * 
+ * Although, the system should still detect this line of the message body, including the empty line in between.
+ * 
+ * --- Example 3 end
  */

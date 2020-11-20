@@ -101,8 +101,8 @@ namespace UnitTest
 
             String[] tweetWithItems = { "@example", "Can it #find either the # or the @mention?" }; //the code should also: not crash because of the single #, exclude the '?'
             KeyValuePair<String, Tweet> tweet = messagesFacade.addTweet(tweetWithItems[0], tweetWithItems[1]);
-            Assert.IsTrue(tweet.Value.getHashtags().Contains("#find")
-                && tweet.Value.getMentions().Contains("@mention"));
+            Assert.IsTrue(tweet.Value.hashtags.Contains("#find")
+                && tweet.Value.mentions.Contains("@mention"));
         }
 
         [TestMethod]
@@ -123,7 +123,7 @@ namespace UnitTest
             String[] values = import.importFile(Directory.GetCurrentDirectory() + "/import-test.txt");
             Assert.IsTrue(import.header == 'E'
                 && values[0] == "example@napierbank.com"
-                && values[2] == "This is the message body"
+                && values[2] == "This is the message body." + Environment.NewLine + Environment.NewLine + "This line should also be recognised."
                 && DateTime.Parse(values[4]).ToString("dd/MM/yy") == "16/11/20"
                 && values[5] == "80-40-11"
                 && values[6] == "Intelligence");

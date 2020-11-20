@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Text;
 using Newtonsoft.Json;
 
 namespace DataLayer
@@ -18,25 +19,31 @@ namespace DataLayer
                 string contents = File.ReadAllText(file);
 
                 //splits the vile by an environment-based new-line (Windows - "\r\n", Unix - '\n')
-                string[] values = contents.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                string[] values = contents.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+
+                header = values[0][0];
+
+                //this is used to rebuild any message body that contained a new line taken, after the first message body line in the text file
+                StringBuilder body = new StringBuilder();
+                for (int i = header == 'E' ? 4 : 2; i < values.Length; i++)
+                    body.Append(values[i] + (i == values.Length - 1 ? "" : Environment.NewLine));
 
                 //uses the first line of the file to determine the type of the message, thus understanding what data to expect and what to return
-                header = values[0][0];
                 switch (header)
                 {
                     //indexes:
                     //1 - sender, 2 - subject, 3 - message body, 4 - is SIR, 5 - SIR date, 6 - SIR sort code, 7 - SIR nature
                     case 'S':
-                        return new String[] { values[1], String.Empty, values[2], "false", String.Empty, String.Empty, String.Empty };
+                        return new String[] { values[1], String.Empty, body.ToString(), "false", String.Empty, String.Empty, String.Empty };
                     case 'T':
-                        return new String[] { values[1], String.Empty, values[2], "false", String.Empty, String.Empty, String.Empty };
+                        return new String[] { values[1], String.Empty, body.ToString(), "false", String.Empty, String.Empty, String.Empty };
                     case 'E':
                         if (values[2] == "true") {
                             String[] sirData = values[3].Split(':');
-                            return new String[] { values[1], String.Empty, values[4], values[2], sirData[0], sirData[1], sirData[2] };
+                            return new String[] { values[1], String.Empty, body.ToString(), values[2], sirData[0], sirData[1], sirData[2] };
                         }
                         else
-                            return new String[] { values[1], values[3], values[4], values[2], String.Empty, String.Empty, String.Empty };
+                            return new String[] { values[1], values[3], body.ToString(), values[2], String.Empty, String.Empty, String.Empty };
                     default:
                         return null;
                 }
