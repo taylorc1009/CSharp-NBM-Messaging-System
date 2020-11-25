@@ -21,6 +21,10 @@ namespace DataLayer
                 //splits the vile by an environment-based new-line (Windows - "\r\n", Unix - '\n')
                 string[] values = contents.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
 
+                //this is used to fix importing a text file after the conversion of the new line from "\r\n" to '\n' in, for example, GitHub
+                if (values.Length == 1)
+                    values = contents.Split('\n');
+
                 header = values[0][0];
 
                 //this is used to rebuild any message body that contained a new line taken, after the first message body line in the text file
