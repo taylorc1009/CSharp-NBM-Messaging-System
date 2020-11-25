@@ -4,4 +4,4 @@ true
 16/11/20:80-40-11:Intelligence
 This is the message body.
 
-This line should also be recognised.
+This line should also be recognised and the URL (https://g.c) quarantined.

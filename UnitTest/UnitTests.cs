@@ -123,7 +123,7 @@ namespace UnitTest
             String[] values = import.importFile(Directory.GetCurrentDirectory() + "/import-test.txt");
             Assert.IsTrue(import.header == 'E'
                 && values[0] == "example@napierbank.com"
-                && values[2] == "This is the message body." + Environment.NewLine + Environment.NewLine + "This line should also be recognised."
+                && values[2] == "This is the message body." + Environment.NewLine + Environment.NewLine + "This line should also be recognised and the URL (https://g.c) quarantined."
                 && DateTime.Parse(values[4]).ToString("dd/MM/yy") == "16/11/20"
                 && values[5] == "80-40-11"
                 && values[6] == "Intelligence");
