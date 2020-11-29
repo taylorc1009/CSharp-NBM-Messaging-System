@@ -3,7 +3,7 @@ Napier Bank Messaging System (Edinburgh Napier, Software Engineering Module Cour
 
 This system allows both users and employees to create enquiiries and post updates about the company. Managers can also access the system and create incident reports about their branch.
 
-###Message types and requirements:
+### Message types and requirements:
 * __SMS__ - text messages sent directly from mobile phones over mobile services.
 	* Properties:
 		* Sender - who the text is from.
