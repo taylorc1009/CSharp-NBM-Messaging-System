@@ -3,6 +3,16 @@ Napier Bank Messaging System (Edinburgh Napier, Software Engineering Module Cour
 
 This system allows both users and employees to create enquiiries and post updates about the company. Managers can also access the system and create incident reports about their branch.
 
+Prerequisits in order to run the:
+* Application:
+	* Copy the "textwords.csv" into the working directory.
+	* If you have any pre-existing messages (in "messages.json"), copy the file into the working directory.
+* UnitTests:
+	* Copy the "textwords.csv" into the working directory.
+	* Copy the "import-test.txt" into the working directory.
+
+If you're unsure where the working directory is, it is where the .exe is active. If you started the application in Visual Studio then this will probably be "../PresentationLayer/bin/Debug/", and for Unit Tests it's most likely "../UnitTest/bin/Debug/".
+
 ### Message types and requirements:
 * __SMS__ - text messages sent from mobile phones over mobile services.
 	* Properties:
