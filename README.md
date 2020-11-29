@@ -25,23 +25,23 @@ This system allows both users and employees to create enquiiries and post update
 			* URLs received must be quarantined for security inspection.
 			* SIRs can also be (partially) generated (more below also).
 	* Formats:
-			* Standard Email Messages - standard emails from users.
-			* Significant Incident Report - sent by branch managers (maybe implement certification to create one) reporting serious incidents.
-				* Email Subject format - “SIR dd/mm/yy” (SIR + the incident date).
-				* Message Text - standard again but must, by default, consist of:
-					* Branch sort code in the format: “xx-xx-xx”.
-					* Nature: “Nature of Incident: <incident>”. Can be any of:
-					* Theft
-					* Staff Attack
-					* ATM Theft
-					* Raid
-					* Customer Attack
-					* Staff Abuse
-					* Bomb Threat
-					* Terrorism
-					* Suspicious Incident
-					* Intelligence
-					* Cash Loss
+		* Standard Email Messages - standard emails from users.
+		* Significant Incident Report - sent by branch managers (maybe implement certification to create one) reporting serious incidents.
+			* Email Subject format - “SIR dd/mm/yy” (SIR + the incident date).
+			* Message Text - standard again but must, by default, consist of:
+				* Branch sort code in the format: “xx-xx-xx”.
+				* Nature: “Nature of Incident: <incident>”. Can be any of:
+				* Theft
+				* Staff Attack
+				* ATM Theft
+				* Raid
+				* Customer Attack
+				* Staff Abuse
+				* Bomb Threat
+				* Terrorism
+				* Suspicious Incident
+				* Intelligence
+				* Cash Loss
 * __Tweet__ - text sent via Twitter (as Tweets).
 	* Properties:
 		* Sender - from the user’s Twitter account.
