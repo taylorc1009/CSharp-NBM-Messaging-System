@@ -1,14 +1,14 @@
-# CSharp-NBM-Messaging-System
+# Napier Bank Messaging System
 Napier Bank Messaging System (Edinburgh Napier, Software Engineering Module Coursework).
 
 This system allows both users and employees to create enquiiries and post updates about the company. Managers can also access the system and create incident reports about their branch.
 
 ### Message types and requirements:
-* __SMS__ - text messages sent directly from mobile phones over mobile services.
+* __SMS__ - text messages sent from mobile phones over mobile services.
 	* Properties:
 		* Sender - who the text is from.
 			* Will be a phone number.
-			* In an international format (starts with ‘+’).
+			* In an international format (starts with â€˜+â€™).
 		* Message Text - simply the message of enquiry.
 			* Limit of 140 characters.
 			* May contain textspeak abbreviations (for example, lol, rofl).
@@ -27,10 +27,10 @@ This system allows both users and employees to create enquiiries and post update
 	* Formats:
 		* Standard Email Messages - standard emails from users.
 		* Significant Incident Report - sent by branch managers (maybe implement certification to create one) reporting serious incidents.
-			* Email Subject format - “SIR dd/mm/yy” (SIR + the incident date).
+			* Email Subject format - â€œSIR dd/mm/yyâ€ (SIR + the incident date).
 			* Message Text - standard again but must, by default, consist of:
-				* Branch sort code in the format: “xx-xx-xx”.
-				* Nature: “Nature of Incident: <incident>”. Can be any of:
+				* Branch sort code in the format: â€œxx-xx-xxâ€.
+				* Nature: â€œNature of Incident: <incident>â€. Can be any of:
 				* Theft
 				* Staff Attack
 				* ATM Theft
@@ -44,15 +44,15 @@ This system allows both users and employees to create enquiiries and post update
 				* Cash Loss
 * __Tweet__ - text sent via Twitter (as Tweets).
 	* Properties:
-		* Sender - from the user’s Twitter account.
-			* Their account ID - “@exampleID”.
+		* Sender - from the userâ€™s Twitter account.
+			* Their account ID - â€œ@exampleIDâ€.
 			* Limit of 15 characters.
 		* Message Text - enquiry text that the Tweet contains.
 			* Limit of 140 characters.
 			* May also contain textspeak abbreviations.
 	* Formats:
 			* Hashtags - used to group a Tweet with a topic.
-			* Mentions - using another Twitter account’s ID (@) in a message.
+			* Mentions - using another Twitter accountâ€™s ID (@) in a message.
 * UI Requirements:
 	* Use an input form, allowing text message headers to be entered in a heading text box and the message text in a body text box.
 	* Display messages as mentioned above; headers as a heading, body text in the body.
@@ -64,7 +64,7 @@ This system allows both users and employees to create enquiiries and post update
 	* Input (a list of) messages from a file.
 	* Automatically identify a message type.
 	* Give each message an ID of 10 characters:
-		* SMS character 1 - “S”.
-		* Email character 1 - “E”.
-		* Tweet character 1 - “T”.
+		* SMS character 1 - â€œSâ€.
+		* Email character 1 - â€œEâ€.
+		* Tweet character 1 - â€œTâ€.
 		* Characters 2-10 are generated numeric characters.
