@@ -41,17 +41,17 @@ If you're unsure where the working directory is, it is where the .exe is active.
 			* Message Text - standard again but must, by default, consist of:
 				* Branch sort code in the format: “xx-xx-xx”.
 				* Nature: “Nature of Incident: <incident>”. Can be any of:
-				* Theft
-				* Staff Attack
-				* ATM Theft
-				* Raid
-				* Customer Attack
-				* Staff Abuse
-				* Bomb Threat
-				* Terrorism
-				* Suspicious Incident
-				* Intelligence
-				* Cash Loss
+					* Theft
+					* Staff Attack
+					* ATM Theft
+					* Raid
+					* Customer Attack
+					* Staff Abuse
+					* Bomb Threat
+					* Terrorism
+					* Suspicious Incident
+					* Intelligence
+					* Cash Loss
 * __Tweet__ - text sent via Twitter (as Tweets).
 	* Properties:
 		* Sender - from the user’s Twitter account.
