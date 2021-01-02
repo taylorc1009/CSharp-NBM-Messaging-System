@@ -12,7 +12,7 @@ Prerequisits in order to run the:
 	* Copy the "import-test.txt" into the working directory.
 * Class and Use Case Diagrams:
 	* Class: have [StarUML 3](http://staruml.io/) installed (can be used for free to view the class diagram).
-	* Use Case: have [StarUML 5.0](https://staruml.informer.com/5.0/) and [RE Tools 3.0](http://sourceforge.net/projects/re-tools/).
+	* Use Case: have [StarUML 5.0](https://staruml.informer.com/5.0/) and [RE Tools 3](http://sourceforge.net/projects/re-tools/).
 
 If you're unsure where the working directory is, it is where the .exe is active. If you started the application in Visual Studio then this will probably be "../PresentationLayer/bin/Debug/", and for Unit Tests it's most likely "../UnitTest/bin/Debug/".
 
